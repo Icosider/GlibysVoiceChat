@@ -1,7 +1,5 @@
 package net.gliby.voicechat.common;
 
-import net.gliby.gman.GMan;
-import net.gliby.gman.ModInfo;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.api.VoiceChatAPI;
 import net.gliby.voicechat.common.commands.CommandChatMode;
@@ -25,12 +23,10 @@ import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.Random;
-import java.util.concurrent.Executors;
 
 public class VoiceChatServer
 {
     protected static final Logger LOGGER = LogManager.getLogger("Gliby\'s Voice Chat Mod");
-    public ModInfo modInfo;
     private VoiceServer voiceServer;
     private Thread voiceServerThread;
     public ServerNetwork serverNetwork;
@@ -50,8 +46,7 @@ public class VoiceChatServer
                 ss.setReuseAddress(true);
                 ds = new DatagramSocket(port);
                 ds.setReuseAddress(true);
-                boolean e = true;
-                return e;
+                return true;
             }
             catch (IOException var13)
             {
@@ -88,11 +83,6 @@ public class VoiceChatServer
         return LOGGER;
     }
 
-    private static String getMinecraftVersion()
-    {
-        return "1.9.4";
-    }
-
     public static int randInt(int min, int max)
     {
         return new Random().nextInt(max - min + 1) + min;
@@ -100,7 +90,6 @@ public class VoiceChatServer
 
     public void commonInit(final FMLPreInitializationEvent event)
     {
-        Executors.newSingleThreadExecutor().execute(() -> GMan.launchMod(VoiceChatServer.LOGGER, VoiceChatServer.this.modInfo = new ModInfo("gvc", event.getModMetadata().updateJSON), VoiceChatServer.getMinecraftVersion(), VoiceChatServer.this.getVersion()));
         (new VoiceChatAPI()).init();
     }
 
@@ -113,11 +102,6 @@ public class VoiceChatServer
         }
         while(!available(port1));
         return port1;
-    }
-
-    public ModInfo getModInfo()
-    {
-        return this.modInfo;
     }
 
     private int getNearestPort(int port)

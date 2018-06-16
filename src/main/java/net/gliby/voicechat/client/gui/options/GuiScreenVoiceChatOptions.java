@@ -47,7 +47,7 @@ public class GuiScreenVoiceChatOptions extends GuiScreen
                 break;
             case 1:
                 this.voiceChat.getSettings().getConfiguration().save();
-                this.mc.displayGuiScreen(new GuiScreenDonate(this.voiceChat.getModInfo(), VoiceChatClient.getModMetadata(), this));
+                this.mc.displayGuiScreen(new GuiScreenDonate(VoiceChatClient.getModMetadata(), this));
                 break;
             case 2:
                 if (!this.tester.recording)
@@ -175,11 +175,12 @@ public class GuiScreenVoiceChatOptions extends GuiScreen
             this.warningMessages.add(ChatFormatting.DARK_RED + "No input devices found, add input device and restart Minecraft.");
         }
 
-        if (this.voiceChat.getModInfo().updateNeeded())
+        //TODO: Remove
+        /*if (this.voiceChat.getModInfo().updateNeeded())
         {
             this.warningMessages.add(this.updateMessage = I18n.format("menu.downloadLatest") + "§b " + this.voiceChat.getModInfo().updateURL);
             this.warningMessages.add(ChatFormatting.RED + I18n.format("menu.modOutdated"));
-        }
+        }*/
 
         if (this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic())
         {
@@ -208,9 +209,8 @@ public class GuiScreenVoiceChatOptions extends GuiScreen
     {
         if (b == 0)
         {
-            if (!this.voiceChat.getModInfo().updateNeeded()) {}
-
-            for (int device = 0; device < this.warningMessages.size(); ++device)
+            //TODO: Remove
+            /*for (int device = 0; device < this.warningMessages.size(); ++device)
             {
                 String s = this.warningMessages.get(device);
 
@@ -224,7 +224,7 @@ public class GuiScreenVoiceChatOptions extends GuiScreen
                         this.openURL(this.voiceChat.modInfo.updateURL);
                     }
                 }
-            }
+            }*/
 
             if (this.dropDown.getMouseOverInteger() != -1 && this.dropDown.dropDownMenu && !this.voiceChat.getSettings().getDeviceHandler().isEmpty())
             {

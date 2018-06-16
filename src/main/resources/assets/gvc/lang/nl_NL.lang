@@ -41,3 +41,4 @@ menu.setupWizardPageOne=Deze Setup Wizard kan je helpen bij het configureren van
 menu.setupWizardPageTwo=$n$n$n$n$nSelecteer je inputapparaat. Indien je niet weet wat je standaard inputapparaat is  kies dan §n'Primary Sound Capture Driver.'
 menu.setupWizardPageThree=$n$n$n$n$n$n$n$nWijzig je versterkingsniveau, dit is nodig indien je input device te zacht klinkt. Het is aangeraden om binnen de §aGroene §ftot §eGele §fzone te blijven anders kan je geluidskwaliteit mogelijk slecht zijn.
 menu.setupWizardPageFour=U bent klaar met het opzetten van §aGliby's §7Voice Chat§f. Als je meer instellingen wilt veranderen druk dan op §n$a.$n$nVoice Chat kan nu worden geactiveerd door op §n$b§f te drukken$n$nJe kunt de Opties Wizard openen in het options menu als dat nodig is. je kan nu terug gaan en veranderingen aanbrengen door op 'Vorige' te klikken.
+menu.gman.supportIvasik=Support Ivasik

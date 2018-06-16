@@ -2,7 +2,6 @@ package net.gliby.voicechat.client.gui;
 
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.client.Settings;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.Tessellator;

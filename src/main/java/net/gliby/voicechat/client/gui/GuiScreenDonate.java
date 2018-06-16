@@ -1,6 +1,5 @@
 package net.gliby.voicechat.client.gui;
 
-import net.gliby.gman.ModInfo;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -23,15 +22,13 @@ import java.io.InputStream;
 public class GuiScreenDonate extends GuiScreen
 {
     private final GuiScreen parent;
-    private final ModInfo info;
     private final ModMetadata modMetadata;
     private ResourceLocation cachedLogo;
     private Dimension cachedLogoDimensions;
 
-    public GuiScreenDonate(ModInfo info, ModMetadata modMetadata, GuiScreen parent)
+    public GuiScreenDonate(ModMetadata modMetadata, GuiScreen parent)
     {
         this.parent = parent;
-        this.info = info;
         this.modMetadata = modMetadata;
     }
 
@@ -44,18 +41,18 @@ public class GuiScreenDonate extends GuiScreen
                 this.mc.displayGuiScreen(this.parent);
                 break;
             case 1:
-                this.openURL(this.info.donateURL);
+                this.openURL("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PBXHJ67N62ZRW");
         }
     }
 
     @Override
     public void drawScreen(int x, int y, float tick)
     {
-        this.renderModLogo(this.info.modId, this.modMetadata, false);
+        this.renderModLogo(this.modMetadata, false);
         this.drawBackground(0);
         GL11.glPushMatrix();
         GL11.glTranslatef((float)(this.width / 2 - this.cachedLogoDimensions.width / 2), (float)(this.height / 2 - (this.cachedLogoDimensions.height + 60)), 0.0F);
-        this.renderModLogo(this.info.modId, this.modMetadata, true);
+        this.renderModLogo(this.modMetadata, true);
         GL11.glPopMatrix();
         String s = I18n.format("menu.gman.supportGliby.description");
         this.fontRendererObj.drawSplitString(s, this.width / 2 - 150, this.height / 2 - 50, 300, -1);
@@ -76,7 +73,7 @@ public class GuiScreenDonate extends GuiScreen
         Sys.openURL(url);
     }
 
-    private void renderModLogo(String modId, ModMetadata modMetadata, boolean draw)
+    private void renderModLogo(ModMetadata modMetadata, boolean draw)
     {
         String logoFile = modMetadata.logoFile;
 
@@ -84,7 +81,7 @@ public class GuiScreenDonate extends GuiScreen
         {
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             TextureManager tm = this.mc.getTextureManager();
-            IResourcePack pack = FMLClientHandler.instance().getResourcePackFor(modId);
+            IResourcePack pack = FMLClientHandler.instance().getResourcePackFor("gvc");
 
             try
             {
