@@ -155,7 +155,6 @@ public class GuiInGameHandlerVoiceChat extends Gui
                     {
                         Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
                     }
-                    GL11.glDisable(3042);
                     GL11.glPopMatrix();
                 }
             }
@@ -215,7 +214,6 @@ public class GuiInGameHandlerVoiceChat extends Gui
                         GL11.glPopMatrix();
                     }
                 }
-                GL11.glDisable(3042);
             }
 
             if (VoiceChatClient.getSoundManager().currentStreams.isEmpty())
