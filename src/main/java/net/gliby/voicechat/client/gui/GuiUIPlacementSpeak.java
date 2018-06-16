@@ -37,12 +37,12 @@ public class GuiUIPlacementSpeak extends GuiPlaceableInterface
             case 2:
                 gui.drawTexturedModalRect(40, -3, 38, 47, 16, 49);
         }
-        mc.getTextureManager().bindTexture(mc.thePlayer.getLocationSkin());
+        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
         GL11.glTranslatef(0.0F, 14.0F, 0.0F);
         GL11.glScalef(2.4F, 2.4F, 0.0F);
         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-        if (mc.thePlayer != null && mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
+        if (mc.player != null && mc.player.isWearing(EnumPlayerModelParts.HAT))
         {
             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
         }

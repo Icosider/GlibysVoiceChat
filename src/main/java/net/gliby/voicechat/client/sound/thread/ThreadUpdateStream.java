@@ -71,14 +71,14 @@ public class ThreadUpdateStream implements Runnable
                         sndSystem.setPosition(source, vector.x, vector.y, vector.z);
                     }
                     else {
-                        sndSystem.setPosition(source, (float)this.mc.thePlayer.posX, (float)this.mc.thePlayer.posY, (float)this.mc.thePlayer.posZ);
+                        sndSystem.setPosition(source, (float)this.mc.player.posX, (float)this.mc.player.posY, (float)this.mc.player.posZ);
                     }
 
                     if (stream.volume >= 0)
                     {
                         sndSystem.setVolume(source, this.voiceChat.getSettings().getWorldVolume() * (float)stream.volume * 0.01F);
                     }
-                    Minecraft.getMinecraft().addScheduledTask(() -> stream.player.update(ThreadUpdateStream.this.mc.theWorld));
+                    Minecraft.getMinecraft().addScheduledTask(() -> stream.player.update(ThreadUpdateStream.this.mc.world));
                 }
 
                 try

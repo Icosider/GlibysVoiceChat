@@ -33,7 +33,7 @@ public class GuiScreenLocalMute extends GuiScreen
         {
             case 0:
                 this.playerNotFound = false;
-                EntityPlayer entityPlayer = this.mc.theWorld.getPlayerEntityByName(this.playerTextField.getText().trim().replaceAll(" ", ""));
+                EntityPlayer entityPlayer = this.mc.world.getPlayerEntityByName(this.playerTextField.getText().trim().replaceAll(" ", ""));
                 if (entityPlayer != null)
                 {
                     if (!entityPlayer.isServerWorld() && !VoiceChatClient.getSoundManager().playersMuted.contains(entityPlayer.getEntityId())) {
@@ -107,7 +107,7 @@ public class GuiScreenLocalMute extends GuiScreen
                 }
                 else {
                     this.autoCompletionNames.clear();
-                    java.util.List<EntityPlayer> players = this.mc.theWorld.playerEntities;
+                    java.util.List<EntityPlayer> players = this.mc.world.playerEntities;
 
                     for (EntityPlayer player : players)
                     {

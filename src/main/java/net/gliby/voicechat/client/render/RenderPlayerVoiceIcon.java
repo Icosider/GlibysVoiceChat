@@ -95,7 +95,7 @@ public class RenderPlayerVoiceIcon extends Gui
                         GL11.glScalef(2.0F, 2.0F, 0.0F);
                         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-                        if (this.mc.thePlayer != null && this.mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
+                        if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                         {
                             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
                         }
@@ -134,6 +134,6 @@ public class RenderPlayerVoiceIcon extends Gui
 
     private void translateWorld(Minecraft mc, float tick)
     {
-        GL11.glTranslated(-(mc.thePlayer.prevPosX + (mc.thePlayer.posX - mc.thePlayer.prevPosX) * (double) tick), -(mc.thePlayer.prevPosY + (mc.thePlayer.posY - mc.thePlayer.prevPosY) * (double) tick), -(mc.thePlayer.prevPosZ + (mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * (double) tick));
+        GL11.glTranslated(-(mc.player.prevPosX + (mc.player.posX - mc.player.prevPosX) * (double) tick), -(mc.player.prevPosY + (mc.player.posY - mc.player.prevPosY) * (double) tick), -(mc.player.prevPosZ + (mc.player.posZ - mc.player.prevPosZ) * (double) tick));
     }
 }

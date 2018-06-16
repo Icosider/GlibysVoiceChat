@@ -21,7 +21,7 @@ public class ExampleStreamHandlerOnlyOP
     {
         if (!this.isOP(event.stream.player))
         {
-            event.stream.player.addChatMessage(new TextComponentString("Only OP\'s are allowed to talk!"));
+            event.stream.player.sendMessage(new TextComponentString("Only OP\'s are allowed to talk!"));
         }
     }
 

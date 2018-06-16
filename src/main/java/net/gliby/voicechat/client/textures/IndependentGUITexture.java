@@ -14,7 +14,7 @@ public class IndependentGUITexture
 
     public static void bindClientPlayer(Minecraft mc)
     {
-        mc.getTextureManager().bindTexture(mc.thePlayer.getLocationSkin());
+        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
     }
 
     public static void bindDefaultPlayer(Minecraft mc)

@@ -19,7 +19,7 @@ public class KeyOpenOptionsEvent extends KeyEvent
     {
         Minecraft mc = Minecraft.getMinecraft();
 
-        if (mc.currentScreen == null && mc.theWorld != null && tickEnd)
+        if (mc.currentScreen == null && mc.world != null && tickEnd)
         {
             mc.displayGuiScreen(new GuiScreenVoiceChatOptions(this.voiceChat));
         }

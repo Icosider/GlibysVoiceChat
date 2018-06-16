@@ -118,7 +118,7 @@ public class ServerStreamManager
     void feedStreamToWorld(ServerStream stream, ServerDatalet voiceData)
     {
         EntityPlayerMP speaker = voiceData.player;
-        List players = speaker.worldObj.playerEntities;
+        List players = speaker.world.playerEntities;
         int i;
         EntityPlayerMP target;
 
@@ -151,7 +151,7 @@ public class ServerStreamManager
     void feedWithinEntityWithRadius(ServerStream stream, ServerDatalet voiceData, int distance)
     {
         EntityPlayerMP speaker = stream.player;
-        List players = speaker.worldObj.playerEntities;
+        List players = speaker.world.playerEntities;
         int i;
         EntityPlayerMP target;
         double d4;

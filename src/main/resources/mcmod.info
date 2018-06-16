@@ -2,11 +2,11 @@
   "modid": "gvc",
   "description": "Gliby's Voice Chat mod enables in-game voice communication, as well as support for positional audio. Options are opened by PERIOD by default.",
   "name": "Gliby's Voice Chat Mod",
-  "version": "0.7.1.1",
-  "mcversion": "1.9.4",
+  "version": "0.7.0",
+  "mcversion": "1.11.2",
   "logoFile": "gvclogo.png",
   "url": "https://minecraft.curseforge.com/projects/glibys-voice-chat-reloaded",
-  "updateUrl": "https://gitlab.com/Ivasik78/GlibysVoiceChat/raw/master/gvc_updates.json",
+  "updateUrl": "https://gitlab.com/Ivasik78/UpdateLinks/raw/master/gvc_updates.json",
   "authors": ["theGliby", "Ivasik"],
   "credits": "Made by theGliby, port by Ivasik"
 }]
