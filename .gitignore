@@ -1,0 +1,17 @@
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea
+.idea/*
+
+# gradle
+build
+.gradle
+
+# other
+run
+*.rar
+*.zip
+*.class

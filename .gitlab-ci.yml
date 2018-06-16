@@ -1,0 +1,24 @@
+image: gradle:3.5
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+
+stages:
+  - build
+
+cache:
+  key: "$CI_COMMIT_REF_NAME"
+  policy: push
+  paths:
+    - .gradle
+    - build
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+build:
+  stage: build
+  script: gradle --build-cache build
+  artifacts:
+    paths:
+      - build/libs/*.jar
