@@ -20,7 +20,7 @@ public class GuiCustomButton extends GuiButton
         if (super.visible)
         {
             FontRenderer fontrenderer = mc.fontRendererObj;
-            mc.getTextureManager().bindTexture(GuiButton.BUTTON_TEXTURES);
+            mc.getTextureManager().bindTexture(GuiButton.buttonTextures);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
             super.hovered = mouseX >= super.xPosition && mouseY >= super.yPosition && mouseX < super.xPosition + super.width && mouseY < super.yPosition + super.height;
             int k = this.getHoverState(super.hovered);

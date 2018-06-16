@@ -4,7 +4,7 @@ import net.gliby.voicechat.common.api.VoiceChatAPI;
 import net.gliby.voicechat.common.api.events.ServerStreamEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class ExampleStreamHandlerOnlyOP
     {
         if (!this.isOP(event.stream.player))
         {
-            event.stream.player.addChatMessage(new TextComponentString("Only OP\'s are allowed to talk!"));
+            event.stream.player.addChatMessage(new ChatComponentText("Only OP\'s are allowed to talk!"));
         }
     }
 
@@ -46,6 +46,6 @@ public class ExampleStreamHandlerOnlyOP
 
     private boolean isOP(EntityPlayerMP player)
     {
-        return player.mcServer.getPlayerList().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
+        return player.mcServer.getConfigurationManager().getOppedPlayers().getEntry(player.getGameProfile()).getPermissionLevel() == 4;
     }
 }

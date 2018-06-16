@@ -3,23 +3,17 @@ package net.gliby.voicechat.common.commands;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.networking.ServerStream;
 import net.gliby.voicechat.common.networking.ServerStreamManager;
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.PlayerNotFoundException;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-
-import javax.annotation.Nullable;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.ChatComponentText;
 import java.util.List;
 
 public class CommandChatMode extends CommandBase
 {
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
+    public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos)
     {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "distance", "global", "world") : (args.length == 2 ? getListOfStringsMatchingLastWord(args, this.getListOfPlayerUsernames()) : null);
     }
@@ -48,7 +42,7 @@ public class CommandChatMode extends CommandBase
 
     private String[] getListOfPlayerUsernames()
     {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getAllUsernames();
+        return MinecraftServer.getServer().getAllUsernames();
     }
 
     @Override
@@ -64,7 +58,7 @@ public class CommandChatMode extends CommandBase
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException
+    public void processCommand(ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException
     {
         if (args.length > 0)
         {
@@ -84,21 +78,21 @@ public class CommandChatMode extends CommandBase
 
                 if (player != sender)
                 {
-                    notifyCommandListener(sender, this, player.getName() + " set chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")", args[0]);
+                    notifyOperators(sender, this, player.getName() + " set chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")", args[0]);
                 }
                 else {
-                    player.addChatMessage(new TextComponentString("Set own chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")"));
+                    player.addChatMessage(new ChatComponentText("Set own chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")"));
 
                     switch (chatMode)
                     {
                         case 0:
-                            player.addChatMessage(new TextComponentString("Only players near you can hear you."));
+                            player.addChatMessage(new ChatComponentText("Only players near you can hear you."));
                             break;
                         case 1:
-                            player.addChatMessage(new TextComponentString("Every player in this world can hear you"));
+                            player.addChatMessage(new ChatComponentText("Every player in this world can hear you"));
                             break;
                         case 2:
-                            player.addChatMessage(new TextComponentString("Every player can hear you."));
+                            player.addChatMessage(new ChatComponentText("Every player can hear you."));
                     }
                 }
             }

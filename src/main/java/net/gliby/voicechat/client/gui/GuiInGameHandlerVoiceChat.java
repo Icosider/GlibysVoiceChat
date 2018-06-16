@@ -62,7 +62,7 @@ public class GuiInGameHandlerVoiceChat extends Gui
     @SubscribeEvent
     public void render(Text text)
     {
-        if (text.getType() == ElementType.DEBUG && VoiceChat.getProxyInstance().getSettings().isDebug())
+        if (text.type == ElementType.DEBUG && VoiceChat.getProxyInstance().getSettings().isDebug())
         {
             Statistics stats = VoiceChatClient.getStatistics();
 
@@ -73,11 +73,11 @@ public class GuiInGameHandlerVoiceChat extends Gui
                 String decodedAvg = ValueFormat.format((long)stats.getDecodedAverageDataReceived(), settings);
                 String encodedData = ValueFormat.format((long)stats.getEncodedDataReceived(), settings);
                 String decodedData = ValueFormat.format((long)stats.getDecodedDataReceived(), settings);
-                text.getRight().add("Voice Chat Debug Info");
-                text.getRight().add("VC Data [ENC AVG]: " + encodedAvg + "");
-                text.getRight().add("VC Data [DEC AVG]: " + decodedAvg + "");
-                text.getRight().add("VC Data [ENC REC]: " + encodedData + "");
-                text.getRight().add("VC Data [DEC REC]: " + decodedData + "");
+                text.right.add("Voice Chat Debug Info");
+                text.right.add("VC Data [ENC AVG]: " + encodedAvg + "");
+                text.right.add("VC Data [DEC AVG]: " + decodedAvg + "");
+                text.right.add("VC Data [ENC REC]: " + encodedData + "");
+                text.right.add("VC Data [DEC REC]: " + decodedData + "");
             }
         }
     }
@@ -85,7 +85,7 @@ public class GuiInGameHandlerVoiceChat extends Gui
     @SubscribeEvent
     public void renderInGameGui(Post event)
     {
-        if (!event.isCancelable() && event.getType() == ElementType.ALL)
+        if (!event.isCancelable() && event.type == ElementType.ALL)
         {
             if (this.res == null)
             {
@@ -155,7 +155,6 @@ public class GuiInGameHandlerVoiceChat extends Gui
                     {
                         Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
                     }
-                    GL11.glDisable(3042);
                     GL11.glPopMatrix();
                 }
             }
@@ -215,7 +214,6 @@ public class GuiInGameHandlerVoiceChat extends Gui
                         GL11.glPopMatrix();
                     }
                 }
-                GL11.glDisable(3042);
             }
 
             if (VoiceChatClient.getSoundManager().currentStreams.isEmpty())

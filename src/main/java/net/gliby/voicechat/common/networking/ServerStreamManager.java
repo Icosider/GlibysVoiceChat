@@ -24,7 +24,7 @@ public class ServerStreamManager
     private Thread threadUpdate;
     private Thread treadQueue;
     private final VoiceChatServer voiceChat;
-    public List mutedPlayers;
+    public List<UUID> mutedPlayers;
     public EntityHandler entityHandler;
     volatile boolean running;
 

@@ -6,10 +6,10 @@ import net.gliby.voicechat.client.sound.thread.ThreadSoundQueue;
 import net.gliby.voicechat.client.sound.thread.ThreadUpdateStream;
 import net.gliby.voicechat.common.PlayerProxy;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.audio.SoundCategory;
 import net.minecraft.client.audio.SoundManager.SoundSystemStarterThread;
 import net.minecraft.client.gui.GuiScreenOptionsSounds;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.SoundCategory;
 import org.lwjgl.util.vector.Vector3f;
 
 import javax.sound.sampled.AudioFormat;
@@ -292,7 +292,7 @@ public class ClientStreamManager
             this.WEATHER = this.mc.gameSettings.getSoundLevel(SoundCategory.WEATHER);
             this.RECORDS = this.mc.gameSettings.getSoundLevel(SoundCategory.RECORDS);
             this.BLOCKS = this.mc.gameSettings.getSoundLevel(SoundCategory.BLOCKS);
-            this.MOBS = this.mc.gameSettings.getSoundLevel(SoundCategory.HOSTILE);
+            this.MOBS = this.mc.gameSettings.getSoundLevel(SoundCategory.MOBS);
             this.ANIMALS = this.mc.gameSettings.getSoundLevel(SoundCategory.PLAYERS);
 
             if (this.mc.gameSettings.getSoundLevel(SoundCategory.WEATHER) > 0.15F)
@@ -310,14 +310,14 @@ public class ClientStreamManager
                 this.mc.gameSettings.setSoundLevel(SoundCategory.BLOCKS, 0.15F);
             }
 
-            if (this.mc.gameSettings.getSoundLevel(SoundCategory.HOSTILE) > 0.15F)
+            if (this.mc.gameSettings.getSoundLevel(SoundCategory.MOBS) > 0.15F)
             {
-                this.mc.gameSettings.setSoundLevel(SoundCategory.HOSTILE, 0.15F);
+                this.mc.gameSettings.setSoundLevel(SoundCategory.MOBS, 0.15F);
             }
 
-            if (this.mc.gameSettings.getSoundLevel(SoundCategory.NEUTRAL) > 0.15F)
+            if (this.mc.gameSettings.getSoundLevel(SoundCategory.ANIMALS) > 0.15F)
             {
-                this.mc.gameSettings.setSoundLevel(SoundCategory.NEUTRAL, 0.15F);
+                this.mc.gameSettings.setSoundLevel(SoundCategory.ANIMALS, 0.15F);
             }
             this.volumeControlActive = true;
         }
@@ -330,8 +330,8 @@ public class ClientStreamManager
             this.mc.gameSettings.setSoundLevel(SoundCategory.WEATHER, this.WEATHER);
             this.mc.gameSettings.setSoundLevel(SoundCategory.RECORDS, this.RECORDS);
             this.mc.gameSettings.setSoundLevel(SoundCategory.BLOCKS, this.BLOCKS);
-            this.mc.gameSettings.setSoundLevel(SoundCategory.HOSTILE, this.MOBS);
-            this.mc.gameSettings.setSoundLevel(SoundCategory.NEUTRAL, this.ANIMALS);
+            this.mc.gameSettings.setSoundLevel(SoundCategory.MOBS, this.MOBS);
+            this.mc.gameSettings.setSoundLevel(SoundCategory.ANIMALS, this.ANIMALS);
             this.volumeControlActive = false;
         }
     }

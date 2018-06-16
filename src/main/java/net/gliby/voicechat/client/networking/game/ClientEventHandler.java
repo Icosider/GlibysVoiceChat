@@ -21,17 +21,15 @@ public class ClientEventHandler
     @SubscribeEvent
     public void entityJoinWorld(final EntityJoinWorldEvent event)
     {
-        if (event.getWorld().isRemote)
+        if (event.world.isRemote)
         {
             (new Thread(() -> {
-                if (event.getEntity() instanceof EntityOtherPlayerMP)
+                if (event.entity instanceof EntityOtherPlayerMP)
                 {
-                    EntityOtherPlayerMP player = (EntityOtherPlayerMP)event.getEntity();
+                    EntityOtherPlayerMP player = (EntityOtherPlayerMP) event.entity;
 
                     if (!VoiceChatClient.getSoundManager().playersMuted.contains(player.getEntityId()))
                     {
-                        VoiceChatClient.getSoundManager();
-
                         for (Object o : ClientStreamManager.playerMutedData.entrySet())
                         {
                             Entry entry = (Entry) o;
@@ -41,17 +39,15 @@ public class ClientEventHandler
                             if (value.equals(player.getName()))
                             {
                                 VoiceChatClient.getSoundManager().playersMuted.remove(key);
-                                VoiceChatClient.getSoundManager();
                                 ClientStreamManager.playerMutedData.remove(key);
                                 VoiceChatClient.getSoundManager().playersMuted.add(player.getEntityId());
-                                VoiceChatClient.getSoundManager();
                                 ClientStreamManager.playerMutedData.put(player.getEntityId(), player.getName());
                                 break;
                             }
                         }
                     }
 
-                    PlayerProxy proxy1 = (PlayerProxy)VoiceChatClient.getSoundManager().playerData.get(player.getEntityId());
+                    PlayerProxy proxy1 = VoiceChatClient.getSoundManager().playerData.get(player.getEntityId());
 
                     if (proxy1 != null)
                     {
