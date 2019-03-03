@@ -2,17 +2,14 @@ package net.gliby.voicechat.client.networking.voiceclients;
 
 import net.gliby.voicechat.common.networking.voiceservers.EnumVoiceNetworkType;
 
-public abstract class VoiceClient implements Runnable
-{
+public abstract class VoiceClient implements Runnable {
     protected EnumVoiceNetworkType type;
 
-    VoiceClient(EnumVoiceNetworkType enumVoiceServer)
-    {
+    VoiceClient(EnumVoiceNetworkType enumVoiceServer) {
         this.type = enumVoiceServer;
     }
 
-    public final EnumVoiceNetworkType getType()
-    {
+    public final EnumVoiceNetworkType getType() {
         return this.type;
     }
 
@@ -22,8 +19,8 @@ public abstract class VoiceClient implements Runnable
 
     public abstract void handlePacket(int var1, byte[] var2, int var3, boolean var4, byte var5);
 
-    public final void run()
-    {
+    @Override
+    public final void run() {
         this.start();
     }
 

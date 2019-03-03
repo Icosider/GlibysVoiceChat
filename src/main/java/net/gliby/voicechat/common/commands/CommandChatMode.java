@@ -19,8 +19,7 @@ import java.util.List;
 public class CommandChatMode extends CommandBase
 {
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
-    {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "distance", "global", "world") : (args.length == 2 ? getListOfStringsMatchingLastWord(args, this.getListOfPlayerUsernames()) : null);
     }
 
@@ -35,20 +34,18 @@ public class CommandChatMode extends CommandBase
     }
 
     @Override
-    public String getCommandName()
-    {
+    public String getName() {
         return "vchatmode";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender par1ICommandSender)
-    {
+    public String getUsage(ICommandSender sender) {
         return "/vchatmode <mode> or /vchatmode <mode> [player]";
     }
 
     private String[] getListOfPlayerUsernames()
     {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getAllUsernames();
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOnlinePlayerNames();
     }
 
     @Override
@@ -85,20 +82,19 @@ public class CommandChatMode extends CommandBase
                 if (player != sender)
                 {
                     notifyCommandListener(sender, this, player.getName() + " set chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")", args[0]);
-                }
-                else {
-                    player.addChatMessage(new TextComponentString("Set own chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")"));
+                } else {
+                    player.sendMessage(new TextComponentString("Set own chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")"));
 
-                    switch (chatMode)
-                    {
+                    switch (chatMode) {
                         case 0:
-                            player.addChatMessage(new TextComponentString("Only players near you can hear you."));
+                            player.sendMessage(new TextComponentString("Only players near you can hear you."));
                             break;
                         case 1:
-                            player.addChatMessage(new TextComponentString("Every player in this world can hear you"));
+                            player.sendMessage(new TextComponentString("Every player in this world can hear you"));
                             break;
                         case 2:
-                            player.addChatMessage(new TextComponentString("Every player can hear you."));
+                            player.sendMessage(new TextComponentString("Every player can hear you."));
+                            break;
                     }
                 }
             }
@@ -107,7 +103,7 @@ public class CommandChatMode extends CommandBase
             }
         }
         else {
-            throw new WrongUsageException(this.getCommandUsage(null));
+            throw new WrongUsageException(this.getUsage(sender));
         }
     }
 }

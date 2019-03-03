@@ -7,17 +7,15 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import org.lwjgl.opengl.GL11;
 
-public class GuiUIPlacementSpeak extends GuiPlaceableInterface
-{
-    GuiUIPlacementSpeak(UIPosition position, int width, int height)
-    {
+public class GuiUIPlacementSpeak extends GuiPlaceableInterface {
+    GuiUIPlacementSpeak(UIPosition position, int width, int height) {
         super(position, width, height);
         super.width = 56;
         super.height = 52;
     }
 
-    public void draw(Minecraft mc, GuiScreen gui, int x, int y, float tick)
-    {
+    @Override
+    public void draw(Minecraft mc, GuiScreen gui, int x, int y, float tick) {
         GL11.glEnable(3042);
         GL11.glBlendFunc(770, 771);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -26,8 +24,7 @@ public class GuiUIPlacementSpeak extends GuiPlaceableInterface
         IndependentGUITexture.TEXTURES.bindTexture(mc);
         gui.drawTexturedModalRect(0, 0, 0, 0, 54, 46);
 
-        switch ((int)((float)(Minecraft.getSystemTime() % 1000L) / 350.0F))
-        {
+        switch ((int)((float)(Minecraft.getSystemTime() % 1000L) / 350.0F)) {
             case 0:
                 gui.drawTexturedModalRect(12, -3, 0, 47, 22, 49);
                 break;
@@ -37,14 +34,12 @@ public class GuiUIPlacementSpeak extends GuiPlaceableInterface
             case 2:
                 gui.drawTexturedModalRect(40, -3, 38, 47, 16, 49);
         }
-        mc.getTextureManager().bindTexture(mc.thePlayer.getLocationSkin());
+        mc.getTextureManager().bindTexture(mc.player.getLocationSkin());
         GL11.glTranslatef(0.0F, 14.0F, 0.0F);
         GL11.glScalef(2.4F, 2.4F, 0.0F);
         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-        if (mc.thePlayer != null && mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
-        {
+        if (mc.player != null && mc.player.isWearing(EnumPlayerModelParts.HAT))
             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
-        }
     }
 }

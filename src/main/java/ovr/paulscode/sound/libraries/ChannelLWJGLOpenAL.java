@@ -48,25 +48,25 @@ public class ChannelLWJGLOpenAL extends Channel {
 
    private boolean checkALError() {
       switch(AL10.alGetError()) {
-      case 0:
-         return false;
-      case '\ua001':
-         this.errorMessage("Invalid name parameter.");
-         return true;
-      case '\ua002':
-         this.errorMessage("Invalid parameter.");
-         return true;
-      case '\ua003':
-         return false;
-      case '\ua004':
-         this.errorMessage("Illegal call.");
-         return true;
-      case '\ua005':
-         this.errorMessage("Unable to allocate memory.");
-         return true;
-      default:
-         this.errorMessage("An unrecognized error occurred.");
-         return true;
+         case 0:
+            return false;
+         case '\ua001':
+            this.errorMessage("Invalid name parameter.");
+            return true;
+         case '\ua002':
+            this.errorMessage("Invalid parameter.");
+            return true;
+         case '\ua003':
+            return false;
+         case '\ua004':
+            this.errorMessage("Illegal call.");
+            return true;
+         case '\ua005':
+            this.errorMessage("Unable to allocate memory.");
+            return true;
+         default:
+            this.errorMessage("An unrecognized error occurred.");
+            return true;
       }
    }
 
@@ -186,17 +186,17 @@ public class ChannelLWJGLOpenAL extends Channel {
       float offset = (float)AL10.alGetSourcei(this.ALSource.get(0), 4134);
       float bytesPerFrame = 1.0F;
       switch(this.ALformat) {
-      case 4352:
-         bytesPerFrame = 1.0F;
-         break;
-      case 4353:
-         bytesPerFrame = 2.0F;
-         break;
-      case 4354:
-         bytesPerFrame = 2.0F;
-         break;
-      case 4355:
-         bytesPerFrame = 4.0F;
+         case 4352:
+            bytesPerFrame = 1.0F;
+            break;
+         case 4353:
+            bytesPerFrame = 2.0F;
+            break;
+         case 4354:
+            bytesPerFrame = 2.0F;
+            break;
+         case 4355:
+            bytesPerFrame = 4.0F;
       }
 
       offset = offset / bytesPerFrame / (float)this.sampleRate * 1000.0F;

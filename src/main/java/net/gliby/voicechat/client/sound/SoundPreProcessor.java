@@ -92,8 +92,7 @@ public class SoundPreProcessor
                 buf = this.buffer;
             }
 
-            if (buf != null)
-            {
+            if (buf != null) {
                 VoiceChatClient.getSoundManager().addQueue(buf, direct, id, volume);
 
                 if (this.stats != null)

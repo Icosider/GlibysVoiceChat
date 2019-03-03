@@ -99,26 +99,26 @@ public class SourceLWJGLOpenAL extends Source {
 
    private boolean checkALError() {
       switch(AL10.alGetError()) {
-      case 0:
-         return false;
-      case '\ua001':
-         this.errorMessage("Invalid name parameter.");
-         return true;
-      case '\ua002':
-         this.errorMessage("Invalid parameter.");
-         return true;
-      case '\ua003':
-         this.errorMessage("Invalid enumerated parameter value.");
-         return true;
-      case '\ua004':
-         this.errorMessage("Illegal call.");
-         return true;
-      case '\ua005':
-         this.errorMessage("Unable to allocate memory.");
-         return true;
-      default:
-         this.errorMessage("An unrecognized error occurred.");
-         return true;
+         case 0:
+            return false;
+         case '\ua001':
+            this.errorMessage("Invalid name parameter.");
+            return true;
+         case '\ua002':
+            this.errorMessage("Invalid parameter.");
+            return true;
+         case '\ua003':
+            this.errorMessage("Invalid enumerated parameter value.");
+            return true;
+         case '\ua004':
+            this.errorMessage("Illegal call.");
+            return true;
+         case '\ua005':
+            this.errorMessage("Unable to allocate memory.");
+            return true;
+         default:
+            this.errorMessage("An unrecognized error occurred.");
+            return true;
       }
    }
 
@@ -130,6 +130,7 @@ public class SourceLWJGLOpenAL extends Source {
 
    }
 
+   @Override
    public void cleanup() {
       super.cleanup();
    }
@@ -167,13 +168,14 @@ public class SourceLWJGLOpenAL extends Source {
 
    }
 
+   @Override
    public void flush() {
-      if(this.channel != null) {
+      if (this.channel != null) {
          this.channel.flush();
       }
-
    }
 
+   @Override
    public boolean incrementSoundSequence() {
       if(!this.toStream) {
          this.errorMessage("Method \'incrementSoundSequence\' may only be used for streaming sources.");
@@ -242,10 +244,12 @@ public class SourceLWJGLOpenAL extends Source {
       }
    }
 
+   @Override
    public void listenerMoved() {
       this.positionChanged();
    }
 
+   @Override
    public void play(Channel c) {
       if(!this.active()) {
          if(this.toLoop) {
@@ -362,6 +366,7 @@ public class SourceLWJGLOpenAL extends Source {
       }
    }
 
+   @Override
    public void positionChanged() {
       this.calculateDistance();
       this.calculateGain();
@@ -373,6 +378,7 @@ public class SourceLWJGLOpenAL extends Source {
       this.checkPitch();
    }
 
+   @Override
    public boolean preLoad() {
       if(this.codec == null) {
          return false;
@@ -404,6 +410,7 @@ public class SourceLWJGLOpenAL extends Source {
       this.positionChanged();
    }
 
+   @Override
    public void setAttenuation(int model) {
       super.setAttenuation(model);
       if(this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
@@ -418,6 +425,7 @@ public class SourceLWJGLOpenAL extends Source {
 
    }
 
+   @Override
    public void setDistOrRoll(float dr) {
       super.setDistOrRoll(dr);
       if(this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
@@ -432,28 +440,31 @@ public class SourceLWJGLOpenAL extends Source {
 
    }
 
+   @Override
    public void setLooping(boolean lp) {
       super.setLooping(lp);
-      if(this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
-         if(lp) {
+
+      if (this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
+         if (lp) {
             AL10.alSourcei(this.channelOpenAL.ALSource.get(0), 4103, 1);
          } else {
             AL10.alSourcei(this.channelOpenAL.ALSource.get(0), 4103, 0);
          }
-
          this.checkALError();
       }
-
    }
 
+   @Override
    public void setPitch(float value) {
       super.setPitch(value);
       this.checkPitch();
    }
 
+   @Override
    public void setPosition(float x, float y, float z) {
       super.setPosition(x, y, z);
-      if(this.sourcePosition == null) {
+
+      if (this.sourcePosition == null) {
          this.resetALInformation();
       } else {
          this.positionChanged();
@@ -463,22 +474,21 @@ public class SourceLWJGLOpenAL extends Source {
       this.sourcePosition.put(1, y);
       this.sourcePosition.put(2, z);
       this.fixChannelOpenAL();
-      if(this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
+      if (this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
          AL10.alSource(this.channelOpenAL.ALSource.get(0), 4100, this.sourcePosition);
          this.checkALError();
       }
-
    }
 
+   @Override
    public void setVelocity(float x, float y, float z) {
       super.setVelocity(x, y, z);
       this.sourceVelocity = BufferUtils.createFloatBuffer(3).put(new float[]{x, y, z});
       this.sourceVelocity.flip();
       this.fixChannelOpenAL();
-      if(this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
+      if (this.channel != null && this.channel.attachedSource == this && this.channelOpenAL != null && this.channelOpenAL.ALSource != null) {
          AL10.alSource(this.channelOpenAL.ALSource.get(0), 4102, this.sourceVelocity);
          this.checkALError();
       }
-
    }
 }

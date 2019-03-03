@@ -78,26 +78,26 @@ public class LibraryLWJGLOpenAL extends Library {
 
    private boolean checkALError() {
       switch(AL10.alGetError()) {
-      case 0:
-         return false;
-      case '\ua001':
-         this.errorMessage("Invalid name parameter.");
-         return true;
-      case '\ua002':
-         this.errorMessage("Invalid parameter.");
-         return true;
-      case '\ua003':
-         this.errorMessage("Invalid enumerated parameter value.");
-         return true;
-      case '\ua004':
-         this.errorMessage("Illegal call.");
-         return true;
-      case '\ua005':
-         this.errorMessage("Unable to allocate memory.");
-         return true;
-      default:
-         this.errorMessage("An unrecognized error occurred.");
-         return true;
+         case 0:
+            return false;
+         case '\ua001':
+            this.errorMessage("Invalid name parameter.");
+            return true;
+         case '\ua002':
+            this.errorMessage("Invalid parameter.");
+            return true;
+         case '\ua003':
+            this.errorMessage("Invalid enumerated parameter value.");
+            return true;
+         case '\ua004':
+            this.errorMessage("Illegal call.");
+            return true;
+         case '\ua005':
+            this.errorMessage("Unable to allocate memory.");
+            return true;
+         default:
+            this.errorMessage("An unrecognized error occurred.");
+            return true;
       }
    }
 

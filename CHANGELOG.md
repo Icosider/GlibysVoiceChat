@@ -1,4 +1,2 @@
-# Upd of 15 june 2018
-* Fixed russian text in DropDown menu
-* Port for 1.9.4 minecraft
-* Minor bug fixes
+# Upd of 2 march 2019
+* Port for 1.12.2 minecraft

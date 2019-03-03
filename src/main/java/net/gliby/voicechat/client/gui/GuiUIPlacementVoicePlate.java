@@ -30,7 +30,7 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface
         for (int i = 0; i < this.players.length; ++i)
         {
             String stream = this.players[i];
-            int length = mc.fontRendererObj.getStringWidth(stream);
+            int length = mc.fontRenderer.getStringWidth(stream);
             float scale = 0.75F * super.scale;
             GL11.glPushMatrix();
             GL11.glTranslatef(super.positionUI.x + (float)super.positionUI.info.offsetX, super.positionUI.y + (float)super.positionUI.info.offsetY + (float)(i * 23) * scale, 0.0F);
@@ -43,9 +43,9 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface
             gui.drawTexturedModalRect(0, 0, 56, 0, 109, 22);
             GL11.glPushMatrix();
             scale = MathUtility.clamp(50.5F / (float)length, 0.0F, 1.25F);
-            GL11.glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(mc.fontRendererObj.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
+            GL11.glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
             GL11.glScalef(scale, scale, 0.0F);
-            gui.drawString(mc.fontRendererObj, stream, 0, 0, -1);
+            gui.drawString(mc.fontRenderer, stream, 0, 0, -1);
             GL11.glPopMatrix();
             GL11.glPushMatrix();
             mc.getTextureManager().bindTexture(skinDefault);
@@ -53,7 +53,7 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface
             GL11.glScalef(2.0F, 2.0F, 0.0F);
             Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-            if (mc.thePlayer != null && mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
+            if (mc.player != null && mc.player.isWearing(EnumPlayerModelParts.HAT))
             {
                 Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
             }

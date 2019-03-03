@@ -55,9 +55,9 @@ public class GuiScreenDonate extends GuiScreen
         this.renderModLogo(this.modMetadata, true);
         GL11.glPopMatrix();
         String s = I18n.format("menu.gman.supportGliby.description");
-        this.fontRendererObj.drawSplitString(s, this.width / 2 - 150, this.height / 2 - 50, 300, -1);
+        this.fontRenderer.drawSplitString(s, this.width / 2 - 150, this.height / 2 - 50, 300, -1);
         String s1 = I18n.format("menu.gman.supportGliby.contact");
-        this.fontRendererObj.drawSplitString(s1, this.width / 2 - 150, this.height / 2 + 35, 300, -1);
+        this.fontRenderer.drawSplitString(s1, this.width / 2 - 150, this.height / 2 + 35, 300, -1);
         super.drawScreen(x, y, tick);
     }
 

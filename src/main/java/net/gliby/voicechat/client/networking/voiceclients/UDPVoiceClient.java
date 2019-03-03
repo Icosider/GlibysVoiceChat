@@ -19,8 +19,7 @@ import java.net.DatagramSocket;
 import java.net.InetSocketAddress;
 import java.net.SocketException;
 
-public class UDPVoiceClient extends VoiceAuthenticatedClient
-{
+public class UDPVoiceClient extends VoiceAuthenticatedClient {
     public static volatile boolean running;
     private final int port;
     private final String host;
@@ -32,8 +31,7 @@ public class UDPVoiceClient extends VoiceAuthenticatedClient
     private int key;
     private ByteArrayDataOutput packetBuffer = ByteStreams.newDataOutput();
 
-    public UDPVoiceClient(EnumVoiceNetworkType enumVoiceServer, String hash, String host, int udpPort)
-    {
+    public UDPVoiceClient(EnumVoiceNetworkType enumVoiceServer, String hash, String host, int udpPort) {
         super(enumVoiceServer, hash);
         this.port = udpPort;
         this.host = host;
@@ -41,85 +39,70 @@ public class UDPVoiceClient extends VoiceAuthenticatedClient
         this.key = (int)(new BigInteger(hash.replaceAll("[^0-9.]", ""))).longValue();
     }
 
-    public void autheticate()
-    {
+    @Override
+    public void autheticate() {
         this.sendPacket(new UDPClientAuthenticationPacket(super.hash));
     }
 
-    void handleAuth()
-    {
+    void handleAuth() {
         VoiceChat.getLogger().info("Successfully authenticated with voice server, client functionical.");
         this.setAuthed(true);
     }
 
-    public void handleEnd(int id)
-    {
+    @Override
+    public void handleEnd(int id) {
         VoiceChatClient.getSoundManager().alertEnd(id);
     }
 
-    public void handleEntityPosition(int entityID, double x, double y, double z)
-    {
-        PlayerProxy proxy = this.soundManager.playerData.get(entityID);
+    @Override
+    public void handleEntityPosition(int entityID, double x, double y, double z) {
+        final PlayerProxy proxy = this.soundManager.playerData.get(entityID);
 
         if (proxy != null)
-        {
             proxy.setPosition(x, y, z);
-        }
     }
 
-    public void handlePacket(int entityID, byte[] data, int chunkSize, boolean direct, byte volume)
-    {
+    @Override
+    public void handlePacket(int entityID, byte[] data, int chunkSize, boolean direct, byte volume) {
         VoiceChatClient.getSoundManager().getSoundPreProcessor().process(entityID, data, chunkSize, direct, volume);
     }
 
-    private void sendPacket(UDPPacket packet)
-    {
-        if (!this.datagramSocket.isClosed())
-        {
+    private void sendPacket(UDPPacket packet) {
+        if (!this.datagramSocket.isClosed()) {
             this.packetBuffer.writeByte(packet.id());
             packet.write(this.packetBuffer);
             byte[] data = this.packetBuffer.toByteArray();
 
-            try
-            {
+            try {
                 this.datagramSocket.send(new DatagramPacket(data, data.length, this.address));
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             this.packetBuffer = ByteStreams.newDataOutput();
         }
     }
 
-    public void sendVoiceData(byte divider, byte[] samples, boolean end)
-    {
-        if (super.authed)
-        {
+    @Override
+    public void sendVoiceData(byte divider, byte[] samples, boolean end) {
+        if (super.authed) {
             if (end)
-            {
                 this.sendPacket(new UDPClientVoiceEnd());
-            }
-            else {
+            else
                 this.sendPacket(new UDPClientVoicePacket(divider, samples));
-            }
         }
     }
 
-    public void start()
-    {
+    @Override
+    public void start() {
         running = true;
         this.address = new InetSocketAddress(this.host, this.port);
 
-        try
-        {
+        try {
             this.datagramSocket = new DatagramSocket();
             this.datagramSocket.setSoTimeout(0);
             this.datagramSocket.connect(this.address);
             (new Thread(this.handler = new UDPVoiceClientHandler(this), "UDP Voice Client Process")).start();
-        }
-        catch (SocketException e)
-        {
+        } catch (SocketException e) {
             running = false;
             e.printStackTrace();
         }
@@ -127,35 +110,28 @@ public class UDPVoiceClient extends VoiceAuthenticatedClient
         VoiceChat.getLogger().info("Connected to UDP[" + this.host + ":" + this.port + "] voice server, requesting authentication.");
         this.autheticate();
 
-        while(running)
-        {
+        while (running) {
             byte[] packetBuffer = new byte[2048];
             DatagramPacket p = new DatagramPacket(packetBuffer, 2048);
 
-            try
-            {
+            try {
                 this.datagramSocket.receive(p);
                 this.handler.packetQueue.offer(p.getData());
 
-                synchronized (this.handler)
-                {
+                synchronized (this.handler) {
                     this.handler.notify();
                 }
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void stop()
-    {
+    @Override
+    public void stop() {
         running = false;
 
         if (this.datagramSocket != null)
-        {
             this.datagramSocket.close();
-        }
     }
 }

@@ -110,7 +110,7 @@ public class VoiceChatClient extends VoiceChatServer
     public void initMod(VoiceChat voiceChat, FMLInitializationEvent event)
     {
         Minecraft mc = Minecraft.getMinecraft();
-        new UpdatedSoundManager(this);
+        new UpdatedSoundManager();
         this.recorder = new Recorder(this);
         this.keyManager.init();
 

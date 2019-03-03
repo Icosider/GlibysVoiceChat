@@ -6,14 +6,10 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class ClientDisconnectHandler
-{
+public class ClientDisconnectHandler {
     @SubscribeEvent
-    public void onClientDisconnected(FMLNetworkEvent.ClientDisconnectionFromServerEvent event)
-    {
+    public void onClientDisconnected(FMLNetworkEvent.ClientDisconnectionFromServerEvent event) {
         if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
-        {
             VoiceChat.getProxyInstance().getClientNetwork().stopClientNetwork();
-        }
     }
 }

@@ -146,12 +146,12 @@ public class GuiInGameHandlerVoiceChat extends Gui
                         case 2:
                             this.drawTexturedModalRect(40, -3, 38, 47, 16, 49);
                     }
-                    this.mc.getTextureManager().bindTexture(this.mc.thePlayer.getLocationSkin());
+                    this.mc.getTextureManager().bindTexture(this.mc.player.getLocationSkin());
                     GL11.glTranslatef(0.0F, 14.0F, 0.0F);
                     GL11.glScalef(2.4F, 2.4F, 0.0F);
                     Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-                    if (this.mc.thePlayer != null && this.mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
+                    if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                     {
                         Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
                     }
@@ -176,7 +176,7 @@ public class GuiInGameHandlerVoiceChat extends Gui
                     {
                         String s = stream.player.entityName();
                         boolean playerExists = stream.player.getPlayer() != null;
-                        int length = this.mc.fontRendererObj.getStringWidth(s);
+                        int length = this.mc.fontRenderer.getStringWidth(s);
                         scale = 0.75F * positionUI.scale;
                         GL11.glPushMatrix();
                         GL11.glTranslatef(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY + (float)(i * 23) * scale, 0.0F);
@@ -187,9 +187,9 @@ public class GuiInGameHandlerVoiceChat extends Gui
                         this.drawTexturedModalRect(0, 0, 56, stream.special * 22, 109, 22);
                         GL11.glPushMatrix();
                         scale = MathUtility.clamp(50.5F / (float)length, 0.0F, 1.25F);
-                        GL11.glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(this.mc.fontRendererObj.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
+                        GL11.glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(this.mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
                         GL11.glScalef(scale, scale, 0.0F);
-                        this.drawString(this.mc.fontRendererObj, s, 0, 0, -1);
+                        this.drawString(this.mc.fontRenderer, s, 0, 0, -1);
                         GL11.glPopMatrix();
                         GL11.glPushMatrix();
 
@@ -207,7 +207,7 @@ public class GuiInGameHandlerVoiceChat extends Gui
                         GL11.glScalef(2.0F, 2.0F, 0.0F);
                         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-                        if (this.mc.thePlayer != null && this.mc.thePlayer.isWearing(EnumPlayerModelParts.HAT))
+                        if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                         {
                             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
                         }

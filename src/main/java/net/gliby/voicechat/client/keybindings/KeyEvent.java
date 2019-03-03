@@ -5,15 +5,13 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class KeyEvent
-{
+public abstract class KeyEvent {
     KeyBinding forgeKeyBinding;
     EnumBinding keyBind;
     int keyID;
     boolean repeating;
 
-    KeyEvent(EnumBinding keyBind, int keyID, boolean repeating)
-    {
+    KeyEvent(EnumBinding keyBind, int keyID, boolean repeating) {
         this.keyBind = keyBind;
         this.keyID = keyID;
         this.repeating = repeating;

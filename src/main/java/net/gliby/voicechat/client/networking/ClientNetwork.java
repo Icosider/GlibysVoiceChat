@@ -12,12 +12,10 @@ import net.minecraft.client.multiplayer.ServerAddress;
 import net.minecraft.client.multiplayer.ServerData;
 
 public class ClientNetwork {
-
    private final VoiceChatClient voiceChat;
    private VoiceClient voiceClient;
    private Thread voiceClientThread;
    public boolean connected;
-
 
    public ClientNetwork(VoiceChatClient voiceChatClient) {
       this.voiceChat = voiceChatClient;
@@ -30,14 +28,14 @@ public class ClientNetwork {
 
    public void handleEntityData(int entityID, String name, double x, double y, double z) {
       PlayerProxy proxy = VoiceChatClient.getSoundManager().playerData.get(entityID);
-      if(proxy != null) {
+
+      if (proxy != null) {
          proxy.setName(name);
          proxy.setPosition(x, y, z);
       } else {
          proxy = new PlayerProxy(null, entityID, name, x, y, z);
          VoiceChatClient.getSoundManager().playerData.put(entityID, proxy);
       }
-
    }
 
    public void handleVoiceAuthenticatedServer(boolean showVoicePlates, boolean showVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType, int udpPort, String hash, String ip) {
@@ -53,39 +51,37 @@ public class ClientNetwork {
    }
 
    public void sendSamples(byte divider, byte[] samples, boolean end) {
-      if(this.voiceClientExists()) {
+      if (this.voiceClientExists()) {
          this.voiceClient.sendVoiceData(divider, samples, end);
       }
-
    }
 
    public VoiceClient startClientNetwork(EnumVoiceNetworkType type, String hash, String ip, int udpPort, int soundDist, int bufferSize, int soundQualityMin, int soundQualityMax, boolean showVoicePlates, boolean showVoiceIcons) {
       this.voiceChat.getSettings().resetQuality();
-      if(this.connected) {
+      if (this.connected) {
          this.stopClientNetwork();
       }
 
       VoiceChatClient.getSoundManager().reset();
-      switch(type.ordinal()) {
-      case 1:
-         this.voiceClient = new MinecraftVoiceClient(type);
-         break;
-      case 2:
-         String serverAddress = ip;
-         if(ip.isEmpty()) {
-            ServerData serverData;
-            if((serverData = Minecraft.getMinecraft().getCurrentServerData()) != null) {
-               ServerAddress server = ServerAddress.fromString(serverData.serverIP);
-               serverAddress = server.getIP();
-            } else {
-               serverAddress = "localhost";
-            }
-         }
 
-         this.voiceClient = new UDPVoiceClient(type, hash, serverAddress, udpPort);
-         break;
-      default:
-         this.voiceClient = new MinecraftVoiceClient(type);
+      switch (type.ordinal()) {
+         case 1:
+            this.voiceClient = new MinecraftVoiceClient(type);
+            break;
+         case 2:
+            String serverAddress = ip;
+            if (ip.isEmpty()) {
+               ServerData serverData;
+               if ((serverData = Minecraft.getMinecraft().getCurrentServerData()) != null) {
+                  ServerAddress server = ServerAddress.fromString(serverData.serverIP);
+                  serverAddress = server.getIP();
+               } else
+                  serverAddress = "localhost";
+            }
+            this.voiceClient = new UDPVoiceClient(type, hash, serverAddress, udpPort);
+            break;
+         default:
+            this.voiceClient = new MinecraftVoiceClient(type);
       }
 
       this.voiceChat.getSettings().setBufferSize(bufferSize);
@@ -104,15 +100,15 @@ public class ClientNetwork {
    public void stopClientNetwork() {
       this.connected = false;
       VoiceChatClient.getSoundManager().reset();
-      if(this.voiceClient != null) {
+
+      if (this.voiceClient != null) {
          this.voiceClient.stop();
          VoiceChatClient.getLogger().info("Stopped Voice Client.");
       }
 
-      if(this.voiceClientThread != null) {
+      if (this.voiceClientThread != null) {
          this.voiceClientThread.interrupt();
       }
-
       this.voiceClient = null;
       this.voiceClientThread = null;
    }

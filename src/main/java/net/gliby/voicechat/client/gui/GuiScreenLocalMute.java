@@ -33,7 +33,7 @@ public class GuiScreenLocalMute extends GuiScreen
         {
             case 0:
                 this.playerNotFound = false;
-                EntityPlayer entityPlayer = this.mc.theWorld.getPlayerEntityByName(this.playerTextField.getText().trim().replaceAll(" ", ""));
+                EntityPlayer entityPlayer = this.mc.world.getPlayerEntityByName(this.playerTextField.getText().trim().replaceAll(" ", ""));
                 if (entityPlayer != null)
                 {
                     if (!entityPlayer.isServerWorld() && !VoiceChatClient.getSoundManager().playersMuted.contains(entityPlayer.getEntityId())) {
@@ -54,11 +54,11 @@ public class GuiScreenLocalMute extends GuiScreen
     public void drawScreen(int mouseX, int mouseY, float ticks)
     {
         this.listPlayers.drawScreen(mouseX, mouseY, ticks);
-        this.drawCenteredString(this.fontRendererObj, I18n.format("menu.mutedPlayers"), this.width / 2, 16, -1);
+        this.drawCenteredString(this.fontRenderer, I18n.format("menu.mutedPlayers"), this.width / 2, 16, -1);
 
         if (this.playerNotFound)
         {
-            this.drawCenteredString(this.fontRendererObj, "§c" + I18n.format("commands.generic.player.notFound"), this.width / 2, this.height - 59, -1);
+            this.drawCenteredString(this.fontRenderer, "§c" + I18n.format("commands.generic.player.notFound"), this.width / 2, this.height - 59, -1);
         }
         this.playerTextField.drawTextBox();
         super.drawScreen(mouseX, mouseY, ticks);
@@ -69,9 +69,12 @@ public class GuiScreenLocalMute extends GuiScreen
     {
         Keyboard.enableRepeatEvents(true);
         this.autoCompletionNames = new ArrayList<>();
-        this.playerTextField = new GuiTextField(0, this.fontRendererObj, this.width / 2 - 100, this.height - 57 - -9, 130, 20);
+        this.playerTextField = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height - 57 - -9, 130, 20);
         this.playerTextField.setFocused(true);
-        this.buttonList.add(new GuiOptionButton(0, this.width / 2 + 32, this.height - 57 - -9, 98, 20, I18n.format("menu.add")));
+        final GuiOptionButton menuAdd = new GuiOptionButton(0, this.width / 2 + 32, this.height - 57 - -9, I18n.format("menu.add"));
+        menuAdd.width = 98;
+        menuAdd.height = 20;
+        this.buttonList.add(menuAdd);
         this.buttonList.add(new GuiOptionButton(1, this.width / 2 - 75, this.height - 32 - -9, I18n.format("gui.done")));
         this.listPlayers = new GuiScreenLocalMute.List();
         this.listPlayers.registerScrollButtons(7, 8);
@@ -107,7 +110,7 @@ public class GuiScreenLocalMute extends GuiScreen
                 }
                 else {
                     this.autoCompletionNames.clear();
-                    java.util.List<EntityPlayer> players = this.mc.theWorld.playerEntities;
+                    java.util.List<EntityPlayer> players = this.mc.world.playerEntities;
 
                     for (EntityPlayer player : players)
                     {
@@ -158,50 +161,42 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @SideOnly(Side.CLIENT)
-    class List extends GuiSlot
-    {
-        public List()
-        {
+    class List extends GuiSlot {
+        public List() {
             super(GuiScreenLocalMute.this.mc, GuiScreenLocalMute.this.width, GuiScreenLocalMute.this.height, 32, GuiScreenLocalMute.this.height - 65 + 4, 18);
         }
 
         @Override
-        protected void drawBackground()
-        {
+        protected void drawBackground() {
             GuiScreenLocalMute.this.drawDefaultBackground();
         }
 
         @Override
-        protected void drawSlot(int entryID, int insideLeft, int yPos, int insideSlotHeight, int mouseXIn, int mouseYIn)
-        {
+        protected void drawSlot(int slotIndex, int xPos, int yPos, int heightIn, int mouseXIn, int mouseYIn, float partialTicks) {
             GuiScreenLocalMute guiScreenLocalMute = GuiScreenLocalMute.this;
-            FontRenderer fr = GuiScreenLocalMute.this.fontRendererObj;
-            guiScreenLocalMute.drawCenteredString(fr, ClientStreamManager.playerMutedData.get(VoiceChatClient.getSoundManager().playersMuted.get(entryID)), super.width / 2, yPos + 1, 16777215);
-            GuiScreenLocalMute.this.drawCenteredString(GuiScreenLocalMute.this.fontRendererObj, "§lX", super.width / 2 + 88, yPos + 3, 16711680);
+            FontRenderer fr = GuiScreenLocalMute.this.fontRenderer;
+            guiScreenLocalMute.drawCenteredString(fr, ClientStreamManager.playerMutedData.get(VoiceChatClient.getSoundManager().playersMuted.get(slotIndex)), super.width / 2, yPos + 1, 16777215);
+            GuiScreenLocalMute.this.drawCenteredString(GuiScreenLocalMute.this.fontRenderer, "§lX", super.width / 2 + 88, yPos + 3, 16711680);
         }
 
         @Override
-        protected void elementClicked(int index, boolean doubleClick, int x, int y)
-        {
+        protected void elementClicked(int index, boolean doubleClick, int x, int y) {
             VoiceChatClient.getSoundManager().playersMuted.remove(index);
             ClientStreamManager.playerMutedData.remove(index);
         }
 
         @Override
-        protected int getContentHeight()
-        {
+        protected int getContentHeight() {
             return this.getSize() * 18;
         }
 
         @Override
-        protected int getSize()
-        {
+        protected int getSize() {
             return VoiceChatClient.getSoundManager().playersMuted.size();
         }
 
         @Override
-        protected boolean isSelected(int p_148131_1_)
-        {
+        protected boolean isSelected(int p_148131_1_) {
             return true;
         }
     }

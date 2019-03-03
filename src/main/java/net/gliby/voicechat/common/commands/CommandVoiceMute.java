@@ -15,29 +15,27 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class CommandVoiceMute extends CommandBase
-{
+public class CommandVoiceMute extends CommandBase {
     @Override
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos)
-    {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1?getListOfStringsMatchingLastWord(args, this.getPlayers()):null;
     }
 
     @Override
-    public String getCommandName()
+    public String getName()
     {
         return "vmute";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender)
+    public String getUsage(ICommandSender sender)
     {
         return "Usage: /vmute <player>";
     }
 
     protected String[] getPlayers()
     {
-        return FMLCommonHandler.instance().getMinecraftServerInstance().getAllUsernames();
+        return FMLCommonHandler.instance().getMinecraftServerInstance().getOnlinePlayerNames();
     }
 
     @Override
@@ -65,20 +63,20 @@ public class CommandVoiceMute extends CommandBase
                 {
                     network.getDataManager().mutedPlayers.remove(player.getUniqueID());
                     notifyCommandListener(sender, this, player.getDisplayName() + " has been unmuted.", args[0]);
-                    player.addChatMessage(new TextComponentString("You have been unmuted!"));
+                    player.sendMessage(new TextComponentString("You have been unmuted!"));
                 }
                 else {
                     notifyCommandListener(sender, this, player.getDisplayName() + " has been muted.", args[0]);
                     network.getDataManager().mutedPlayers.add(player.getUniqueID());
-                    player.addChatMessage(new TextComponentString("You have been voice muted, you cannot talk untill you have been unmuted."));
+                    player.sendMessage(new TextComponentString("You have been voice muted, you cannot talk untill you have been unmuted."));
                 }
             }
             else {
-                sender.addChatMessage(new TextComponentString("Player not found for vmute."));
+                sender.sendMessage(new TextComponentString("Player not found for vmute."));
             }
         }
         else {
-            throw new WrongUsageException(this.getCommandUsage(sender));
+            throw new WrongUsageException(this.getUsage(sender));
         }
     }
 }

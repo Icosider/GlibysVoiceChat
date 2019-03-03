@@ -12,8 +12,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = "gvc", name = "Gliby\'s Voice Chat Mod", version = "0.7.1.1", updateJSON = "https://gitlab.com/Ivasik78/GlibysVoiceChat/raw/master/gvc_updates.json")
-public class VoiceChat
-{
+public class VoiceChat {
     @Mod.Instance
     public static VoiceChat instance;
 
@@ -21,76 +20,63 @@ public class VoiceChat
     public static VoiceChatServer proxy;
     public static SimpleNetworkWrapper DISPATCH;
 
-    public static SimpleNetworkWrapper getDispatcher()
-    {
+    public static SimpleNetworkWrapper getDispatcher() {
         return DISPATCH;
     }
 
-    public static VoiceChat getInstance()
-    {
+    public static VoiceChat getInstance() {
         return instance;
     }
 
-    public static Logger getLogger()
-    {
+    public static Logger getLogger() {
         return VoiceChatServer.getLogger();
     }
 
-    public static VoiceChatClient getProxyInstance()
-    {
+    public static VoiceChatClient getProxyInstance() {
         return (VoiceChatClient) (proxy instanceof VoiceChatClient ? (VoiceChatClient) proxy : proxy);
     }
 
-    public static VoiceChatServer getServerInstance()
-    {
+    public static VoiceChatServer getServerInstance() {
         return proxy;
     }
 
-    public static synchronized VoiceChatClient getSynchronizedProxyInstance()
-    {
-        return (VoiceChatClient)proxy;
+    public static synchronized VoiceChatClient getSynchronizedProxyInstance() {
+        return (VoiceChatClient) proxy;
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         proxy.initMod(this, event);
     }
 
     @Mod.EventHandler
-    public void initServer(FMLServerStartedEvent event)
-    {
+    public void initServer(FMLServerStartedEvent event) {
         proxy.initServer(event);
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         proxy.postInitMod(this, event);
     }
 
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         this.registerNetwork();
         proxy.commonInit(event);
         proxy.preInitClient(event);
     }
 
     @Mod.EventHandler
-    public void preInitServer(FMLServerStartingEvent event)
-    {
+    public void preInitServer(FMLServerStartingEvent event) {
         proxy.preInitServer(event);
     }
 
     @Mod.EventHandler
-    public void aboutToStartServer(FMLServerAboutToStartEvent event)
-    {
+    public void aboutToStartServer(FMLServerAboutToStartEvent event) {
         proxy.aboutToStartServer(event);
     }
 
-    private void registerNetwork()
-    {
+    private void registerNetwork() {
         DISPATCH = NetworkRegistry.INSTANCE.newSimpleChannel("GVC");
         DISPATCH.registerMessage(MinecraftServerVoicePacket.class, MinecraftServerVoicePacket.class, 1, Side.SERVER);
         DISPATCH.registerMessage(MinecraftServerVoiceEndPacket.class, MinecraftServerVoiceEndPacket.class, 2, Side.SERVER);
@@ -103,8 +89,7 @@ public class VoiceChat
     }
 
     @Mod.EventHandler
-    public void stopServer(FMLServerStoppedEvent event)
-    {
+    public void stopServer(FMLServerStoppedEvent event) {
         proxy.stop();
     }
 }

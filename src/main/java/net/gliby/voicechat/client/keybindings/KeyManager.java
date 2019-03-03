@@ -15,38 +15,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class KeyManager
-{
+public class KeyManager {
     private final VoiceChatClient voiceChat;
     @SideOnly(Side.CLIENT)
     private final List<KeyEvent> keyEvents = new ArrayList<>();
     private boolean[] keyDown;
 
-    public KeyManager(VoiceChatClient voiceChat)
-    {
+    public KeyManager(VoiceChatClient voiceChat) {
         this.voiceChat = voiceChat;
     }
 
     @SideOnly(Side.CLIENT)
-    public List getKeyEvents()
-    {
+    public List getKeyEvents() {
         return this.keyEvents;
     }
 
-    public String getKeyName(EnumBinding binding)
-    {
-        for (KeyEvent key : this.keyEvents)
-        {
+    public String getKeyName(EnumBinding binding) {
+        for (KeyEvent key : this.keyEvents) {
             if (key.keyBind == binding)
-            {
                 return Keyboard.getKeyName(key.keyID);
-            }
         }
         return null;
     }
 
-    public void init()
-    {
+    public void init() {
         this.keyEvents.add(new KeySpeakEvent(this.voiceChat, EnumBinding.SPEAK, 47, false));
         this.keyEvents.add(new KeyOpenOptionsEvent(this.voiceChat, EnumBinding.OPEN_GUI_OPTIONS, 52, false));
         this.registerKeyBindings();
@@ -54,35 +46,27 @@ public class KeyManager
     }
 
     @SubscribeEvent
-    void keyEvent(InputEvent.KeyInputEvent event)
-    {
-        for (int i = 0; i < this.keyEvents.size(); ++i)
-        {
+    public void keyEvent(InputEvent.KeyInputEvent e) {
+        for (int i = 0; i < this.keyEvents.size(); ++i) {
             KeyEvent keyEvent = this.keyEvents.get(i);
             KeyBinding keyBinding = this.keyEvents.get(i).forgeKeyBinding;
             int keyCode = keyBinding.getKeyCode();
-            boolean state = keyCode < 0?Mouse.isButtonDown(keyCode + 100):Keyboard.isKeyDown(keyCode);
+            boolean state = keyCode < 0 ? Mouse.isButtonDown(keyCode + 100) : Keyboard.isKeyDown(keyCode);
 
-            if (state != this.keyDown[i] || state && keyEvent.repeating)
-            {
+            if (state != this.keyDown[i] || state && keyEvent.repeating) {
                 if (state)
-                {
                     keyEvent.keyDown(keyBinding, true, state != this.keyDown[i]);
-                }
-                else {
+                else
                     keyEvent.keyUp(keyBinding, true);
-                }
                 this.keyDown[i] = state;
             }
         }
     }
 
-    private KeyBinding[] registerKeyBindings()
-    {
+    private KeyBinding[] registerKeyBindings() {
         KeyBinding[] keyBinding = new KeyBinding[this.keyEvents.size()];
 
-        for (int i = 0; i < keyBinding.length; ++i)
-        {
+        for (int i = 0; i < keyBinding.length; ++i) {
             KeyEvent keyEvent = this.keyEvents.get(i);
             keyBinding[i] = new KeyBinding(keyEvent.keyBind.name, keyEvent.keyID, "key.categories.multiplayer");
             this.keyDown = new boolean[keyBinding.length];
