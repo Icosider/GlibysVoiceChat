@@ -24,7 +24,11 @@ minecraft {
     mappings = "snapshot_20161220"
 }
 
-dependencies {}
+jar {
+    manifest {
+        attributes 'FMLAT': 'gvc_at.cfg'
+    }
+}
 
 processResources {
     inputs.property "version", project.version
