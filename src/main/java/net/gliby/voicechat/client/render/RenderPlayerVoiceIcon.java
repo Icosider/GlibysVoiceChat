@@ -94,6 +94,7 @@ public class RenderPlayerVoiceIcon extends Gui {
                     }
                 }
             }
+            GL11.glEnabled(2929);
             GL11.glDisable(3042);
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         }
