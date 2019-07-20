@@ -64,11 +64,11 @@ public class ClientNetwork {
 
       VoiceChatClient.getSoundManager().reset();
 
-      switch (type.ordinal()) {
-         case 1:
+      switch (type) {
+         case MINECRAFT:
             this.voiceClient = new MinecraftVoiceClient(type);
             break;
-         case 2:
+         case UDP:
             String serverAddress = ip;
             if (ip.isEmpty()) {
                ServerData serverData;
