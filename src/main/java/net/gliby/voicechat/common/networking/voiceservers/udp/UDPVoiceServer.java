@@ -11,6 +11,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.util.HashMap;
@@ -134,10 +135,6 @@ public class UDPVoiceServer extends VoiceAuthenticatedServer
             try
             {
                 UDPVoiceServer.this.handler.read(evt.getPacketAsBytes(), evt.getPacket());
-            }
-            catch (EOFException e)
-            {
-                
             }
             catch (Exception e)
             {
