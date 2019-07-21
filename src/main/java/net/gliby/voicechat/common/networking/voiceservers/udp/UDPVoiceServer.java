@@ -137,7 +137,7 @@ public class UDPVoiceServer extends VoiceAuthenticatedServer
             }
             catch (EOFException e)
             {
-                break;
+                
             }
             catch (Exception e)
             {
