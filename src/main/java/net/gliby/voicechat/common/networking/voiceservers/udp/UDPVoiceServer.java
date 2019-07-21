@@ -135,6 +135,10 @@ public class UDPVoiceServer extends VoiceAuthenticatedServer
             {
                 UDPVoiceServer.this.handler.read(evt.getPacketAsBytes(), evt.getPacket());
             }
+            catch (EOFException e)
+            {
+                break;
+            }
             catch (Exception e)
             {
                 e.printStackTrace();
