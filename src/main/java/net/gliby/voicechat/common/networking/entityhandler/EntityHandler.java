@@ -22,7 +22,7 @@ public class EntityHandler
 
     public void disconnected(int id)
     {
-        ServerStream stream = (ServerStream)this.dataManager.streaming.get(id);
+        ServerStream stream = this.dataManager.streaming.get(id);
 
         if (stream != null)
         {

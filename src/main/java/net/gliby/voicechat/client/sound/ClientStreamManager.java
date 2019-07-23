@@ -184,7 +184,6 @@ public class ClientStreamManager {
             stream.buffer.updateJitter(stream.getJitterRate());
 
             if (stream.buffer.isReady() || stream.needsEnd) {
-                // FIXME
                 sndSystem.flush(identifier);
                 sndSystem.feedRawAudioData(identifier, stream.buffer.get());
                 stream.buffer.clearBuffer(stream.getJitterRate());

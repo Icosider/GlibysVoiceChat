@@ -158,7 +158,7 @@ public class ServerStreamManager {
     }
 
     public ServerStream getStream(int entityId) {
-        return (ServerStream) this.streaming.get(entityId);
+        return this.streaming.get(entityId);
     }
 
     public void giveEntity(EntityPlayerMP receiver, EntityPlayerMP speaker) {
@@ -176,7 +176,7 @@ public class ServerStreamManager {
     public void init() {
         this.running = true;
         this.entityHandler = new EntityHandler(this.voiceChat);
-        this.mutedPlayers = new ArrayList();
+        this.mutedPlayers = new ArrayList<>();
         this.dataQueue = new ConcurrentLinkedQueue<>();
         this.currentStreams = new ArrayList<>();
         this.streaming = new ConcurrentHashMap<>();
@@ -195,7 +195,7 @@ public class ServerStreamManager {
     }
 
     ServerStream newDatalet(ServerDatalet let) {
-        return (ServerStream)this.streaming.get(let.id);
+        return this.streaming.get(let.id);
     }
 
     void reset() {

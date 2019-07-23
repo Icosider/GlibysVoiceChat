@@ -6,37 +6,28 @@ import net.gliby.voicechat.VoiceChat;
 import java.io.File;
 import java.io.IOException;
 
-public class ServerConfiguration
-{
+public class ServerConfiguration {
     private final File location;
     private final ServerSettings settings;
     private JINIFile init;
 
-    ServerConfiguration(ServerSettings settings, File file)
-    {
+    ServerConfiguration(ServerSettings settings, File file) {
         this.settings = settings;
         this.location = file;
     }
 
-    public void init()
-    {
-        if (!this.load())
-        {
+    public void init() {
+        if (!this.load()) {
             VoiceChat.getLogger().info("No Configuration file found on server, will create one with default settings.");
 
             if (this.save())
-            {
                 VoiceChat.getLogger().info("Created Configuration file with default settings on server.");
-            }
         }
     }
 
-    private boolean load()
-    {
-        if (this.location.exists())
-        {
-            try
-            {
+    private boolean load() {
+        if (this.location.exists()) {
+            try {
                 this.init = new JINIFile(this.location);
                 this.settings.setSoundDistance(this.init.ReadFloat("Game", "SoundDistance", 64.0F).intValue());
                 this.settings.setDefaultChatMode(this.init.ReadInteger("Game", "DefaultChatMode", 0));
@@ -49,27 +40,19 @@ public class ServerConfiguration
                 this.settings.setUsingProxy(this.init.ReadBool("Network", "ServerBehindProxy", false));
                 this.settings.setModPackID(this.init.ReadInteger("Miscellaneous", "ModPackID", 1));
                 return true;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 VoiceChat.getLogger().fatal("Couldn\'t read configuration file, fix it or delete it. Default settings being used.");
                 e.printStackTrace();
             }
         }
-
         return false;
     }
 
-    boolean save()
-    {
-        if (this.init == null || !this.location.exists())
-        {
-            try
-            {
+    boolean save() {
+        if (this.init == null || !this.location.exists()) {
+            try {
                 this.init = new JINIFile(this.location);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

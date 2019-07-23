@@ -8,6 +8,8 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.opengl.GL11;
 
+import static org.lwjgl.opengl.GL11.*;
+
 public class GuiScreenOptionsUI extends GuiScreen {
     private final VoiceChatClient voiceChat;
     private final GuiScreen parent;
@@ -38,15 +40,15 @@ public class GuiScreenOptionsUI extends GuiScreen {
         final int centerW = this.width / 2;
 
         this.drawDefaultBackground();
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) (centerW - this.fontRenderer.getStringWidth("Gliby\'s Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
-        GL11.glScalef(1.5F, 1.5F, 0F);
+        glPushMatrix();
+        glTranslatef((float) (centerW - this.fontRenderer.getStringWidth("Gliby\'s Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
+        glScalef(1.5F, 1.5F, 0F);
         this.drawString(this.mc.fontRenderer, "Gliby\'s Voice Chat Options", 0, 6, -1);
-        GL11.glPopMatrix();
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) (centerW - this.fontRenderer.getStringWidth(I18n.format("menu.uiOptions")) / 2), 12.0F, 0.0F);
+        glPopMatrix();
+        glPushMatrix();
+        glTranslatef((float) (centerW - this.fontRenderer.getStringWidth(I18n.format("menu.uiOptions")) / 2), 12.0F, 0.0F);
         this.drawString(this.mc.fontRenderer, I18n.format("menu.uiOptions"), 0, 12, -1);
-        GL11.glPopMatrix();
+        glPopMatrix();
         super.drawScreen(x, y, partialTicks);
     }
 

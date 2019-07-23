@@ -20,84 +20,65 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ServerConnectionHandler
-{
+public class ServerConnectionHandler {
     private VoiceChatServer voiceChat;
     private List<GameProfile> loggedIn;
 
-    public ServerConnectionHandler(VoiceChatServer vc)
-    {
+    public ServerConnectionHandler(VoiceChatServer vc) {
         this.voiceChat = vc;
         this.loggedIn = new ArrayList<>();
     }
 
     @SubscribeEvent
-    public void onJoin(TickEvent.PlayerTickEvent event)
-    {
-        if (event.phase == TickEvent.Phase.END && event.side == Side.SERVER && !this.loggedIn.contains(event.player.getGameProfile()))
-        {
+    public void onJoin(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && event.side == Side.SERVER && !this.loggedIn.contains(event.player.getGameProfile())) {
             this.loggedIn.add(event.player.getGameProfile());
             this.onConnected(event.player);
         }
     }
 
-    private void onConnected(EntityPlayer entity)
-    {
+    private void onConnected(EntityPlayer entity) {
         EntityPlayerMP player = (EntityPlayerMP)entity;
 
-        if (this.voiceChat.getVoiceServer() instanceof VoiceAuthenticatedServer)
-        {
+        if (this.voiceChat.getVoiceServer() instanceof VoiceAuthenticatedServer) {
             VoiceAuthenticatedServer voiceServer = (VoiceAuthenticatedServer)this.voiceChat.getVoiceServer();
             String hash = null;
 
-            while (hash == null)
-            {
-                try
-                {
+            while (hash == null) {
+                try {
                     hash = this.sha256(RandomStringUtils.random(32));
-                }
-                catch (NoSuchAlgorithmException e)
-                {
+                } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();
                 }
             }
             voiceServer.waitingAuth.put(hash, player);
             VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceAuthenticatedServer(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal(), this.voiceChat.getServerSettings().getUDPPort(), hash, this.voiceChat.serverSettings.isUsingProxy()?this.voiceChat.serverNetwork.getAddress():""), player);
-        }
-        else {
+        } else
             VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceServerPacket(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal()), player);
-        }
         this.voiceChat.serverNetwork.dataManager.entityHandler.connected(player);
     }
 
     @SubscribeEvent
-    public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event)
-    {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer())
-        {
+    public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             this.loggedIn.remove(event.player.getGameProfile());
             this.voiceChat.serverNetwork.dataManager.entityHandler.disconnected(event.player.getEntityId());
         }
     }
 
-    private String sha256(String s) throws NoSuchAlgorithmException
-    {
+    private String sha256(String s) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         byte[] hash = md.digest(s.getBytes());
         StringBuilder sb = new StringBuilder();
 
-        for (byte aHash : Objects.requireNonNull(hash))
-        {
+        for (byte aHash : Objects.requireNonNull(hash)) {
             String hex = Integer.toHexString(aHash);
 
-            if (hex.length() == 1)
-            {
+            if (hex.length() == 1) {
                 sb.append(0);
                 sb.append(hex.charAt(hex.length() - 1));
-            }
-            else {
+            } else
                 sb.append(hex.substring(hex.length() - 2));
-            }
         }
         return sb.toString();
     }

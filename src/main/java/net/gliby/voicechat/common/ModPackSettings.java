@@ -8,9 +8,10 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class ModPackSettings {
+    private final Gson gson = (new GsonBuilder()).create();
+
     public ModPackSettings.GVCModPackInstructions init() throws UnsupportedEncodingException {
         InputStreamReader reader = new InputStreamReader(this.getClass().getResourceAsStream("/modpack.json"), StandardCharsets.UTF_8);
-        Gson gson = (new GsonBuilder()).create();
         return gson.fromJson(reader, GVCModPackInstructions.class);
     }
 

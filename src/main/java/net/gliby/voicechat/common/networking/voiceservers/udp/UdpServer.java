@@ -202,9 +202,9 @@ public class UdpServer
 
     private synchronized void reset()
     {
-        switch (this.currentState.ordinal())
+        switch (this.currentState)
         {
-            case 1:
+            case STARTED:
                 this.addPropertyChangeListener("state", new PropertyChangeListener() {
                     public void propertyChange(PropertyChangeEvent evt)
                     {

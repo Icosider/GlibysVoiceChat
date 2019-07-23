@@ -12,14 +12,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 
-public class ServerNetwork
-{
+public class ServerNetwork {
     private final VoiceChatServer voiceChat;
     private String externalAddress;
     public final ServerStreamManager dataManager;
 
-    public ServerNetwork(VoiceChatServer voiceChat)
-    {
+    public ServerNetwork(VoiceChatServer voiceChat) {
         this.voiceChat = voiceChat;
         this.dataManager = new ServerStreamManager(voiceChat);
     }
@@ -34,59 +32,45 @@ public class ServerNetwork
         return this.dataManager;
     }
 
-    public String[] getPlayerIPs()
-    {
+    public String[] getPlayerIPs() {
         List players = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().playerEntities;
         String[] ips = new String[players.size()];
 
-        for (int i = 0; i < players.size(); ++i)
-        {
+        for (int i = 0; i < players.size(); ++i) {
             EntityPlayerMP p = (EntityPlayerMP)players.get(i);
             ips[i] = p.getPlayerIP();
         }
         return ips;
     }
 
-    public EntityPlayerMP[] getPlayers()
-    {
+    public EntityPlayerMP[] getPlayers() {
         List pl = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().playerEntities;
         return (EntityPlayerMP[])pl.toArray(new EntityPlayerMP[0]);
     }
 
-    public void init()
-    {
-        if (this.voiceChat.getServerSettings().isUsingProxy())
-        {
+    public void init() {
+        if (this.voiceChat.getServerSettings().isUsingProxy()) {
             (new Thread(() -> ServerNetwork.this.externalAddress = ServerNetwork.this.retrieveExternalAddress(), "Extrernal Address Retriver Process")).start();
         }
         this.dataManager.init();
     }
 
-    private String retrieveExternalAddress()
-    {
+    private String retrieveExternalAddress() {
         VoiceChat.getLogger().info("Retrieving server address.");
-        BufferedReader in;
 
-        try
-        {
-            URL e = new URL("http://checkip.amazonaws.com");
-            in = new BufferedReader(new InputStreamReader(e.openStream()));
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com").openStream()))) {
             return in.readLine();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
             return "0.0.0.0";
         }
     }
 
-    void sendEntityData(EntityPlayerMP player, int entityID, String username, double x, double y, double z)
-    {
+    void sendEntityData(EntityPlayerMP player, int entityID, String username, double x, double y, double z) {
         VoiceChat.getDispatcher().sendTo(new MinecraftClientEntityDataPacket(entityID, username, x, y, z), player);
     }
 
-    public void stop()
-    {
+    public void stop() {
         this.dataManager.reset();
     }
 }

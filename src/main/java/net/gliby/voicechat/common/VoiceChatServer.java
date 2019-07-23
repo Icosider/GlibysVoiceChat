@@ -188,12 +188,10 @@ public class VoiceChatServer
 
         switch (this.serverSettings.getAdvancedNetworkType())
         {
-            case 0:
-                this.voiceServer = new MinecraftVoiceServer(this);
-                break;
             case 1:
                 this.voiceServer = new UDPVoiceServer(this);
                 break;
+            case 0:
             default:
                 this.voiceServer = new MinecraftVoiceServer(this);
         }

@@ -91,9 +91,9 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
 
         this.drawDefaultBackground();
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)(centerW) - (float)(this.fontRenderer.getStringWidth("Gliby\'s Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
+        GL11.glTranslatef((float)(centerW) - (float)(this.fontRenderer.getStringWidth("Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
         GL11.glScalef(1.5F, 1.5F, 0.0F);
-        this.drawString(this.fontRenderer, "Gliby\'s Voice Chat Options", 0, 6, -1);
+        this.drawString(this.fontRenderer, "Voice Chat Options", 0, 6, -1);
         GL11.glPopMatrix();
 
         for (int i = 0; i < this.warningMessages.size(); ++i) {

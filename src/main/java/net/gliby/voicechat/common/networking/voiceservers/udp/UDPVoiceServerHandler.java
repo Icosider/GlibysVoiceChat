@@ -10,53 +10,37 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class UDPVoiceServerHandler
-{
+public class UDPVoiceServerHandler {
     private final ExecutorService threadService;
     private final Map<InetSocketAddress, UDPClient> clientNetworkMap;
     private final UDPVoiceServer server;
 
-    UDPVoiceServerHandler(UDPVoiceServer server)
-    {
+    UDPVoiceServerHandler(UDPVoiceServer server) {
         this.server = server;
         this.threadService = Executors.newFixedThreadPool((int)MathUtility.clamp((float)FMLCommonHandler.instance().getMinecraftServerInstance().getMaxPlayers(), 1.0F, 10.0F));
-        this.clientNetworkMap = new HashMap();
+        this.clientNetworkMap = new HashMap<>();
     }
 
-    public void close()
-    {
+    public void close() {
         this.clientNetworkMap.clear();
         this.threadService.shutdown();
     }
 
-    void closeConnection(InetSocketAddress address)
-    {
+    void closeConnection(InetSocketAddress address) {
         this.clientNetworkMap.remove(address);
     }
 
-    private void handleAuthetication(InetSocketAddress address, DatagramPacket packet, ByteArrayDataInput in)
-    {
-        String hash;
+    private void handleAuthetication(InetSocketAddress address, DatagramPacket packet, ByteArrayDataInput in) {
+        final String hash = new String(UDPByteUtilities.readBytes(in), StandardCharsets.UTF_8);
+        final EntityPlayerMP player = this.server.waitingAuth.get(hash);
 
-        try
-        {
-            hash = new String(UDPByteUtilities.readBytes(in), "UTF-8");
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            e.printStackTrace();
-            return;
-        }
-
-        EntityPlayerMP player = (EntityPlayerMP)this.server.waitingAuth.get(hash);
-
-        if (player != null)
-        {
+        if (player != null) {
             UDPClient client = new UDPClient(player, address, hash);
             this.clientNetworkMap.put(client.socketAddress, client);
             this.server.clientMap.put(player.getEntityId(), client);
@@ -66,18 +50,15 @@ public class UDPVoiceServerHandler
         }
     }
 
-    private void handleVoice(UDPClient client, ByteArrayDataInput in)
-    {
+    private void handleVoice(UDPClient client, ByteArrayDataInput in) {
         this.server.handleVoiceData(client.player, UDPByteUtilities.readBytes(in), in.readByte(), client.player.getEntityId(), false);
     }
 
-    private void handleVoiceEnd(UDPClient client)
-    {
+    private void handleVoiceEnd(UDPClient client) {
         this.server.handleVoiceData(client.player, null, (byte)0, client.player.getEntityId(), true);
     }
 
-    public void read(byte[] data, final DatagramPacket packet)
-    {
+    public void read(byte[] data, final DatagramPacket packet) {
         final InetSocketAddress address = (InetSocketAddress)packet.getSocketAddress();
         final UDPClient client = this.clientNetworkMap.get(address);
         final ByteArrayDataInput in = ByteStreams.newDataInput(data);
@@ -85,14 +66,10 @@ public class UDPVoiceServerHandler
 
         this.threadService.execute(() -> {
             if (id == 0)
-            {
                 UDPVoiceServerHandler.this.handleAuthetication(address, packet, in);
-            }
 
-            if (client != null)
-            {
-                switch (id)
-                {
+            if (client != null) {
+                switch (id) {
                     case 1:
                         UDPVoiceServerHandler.this.handleVoice(client, in);
                         break;

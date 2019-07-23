@@ -3,14 +3,12 @@ package net.gliby.voicechat.common.networking.voiceservers;
 import net.gliby.voicechat.VoiceChat;
 import net.minecraft.entity.player.EntityPlayerMP;
 
-public abstract class VoiceServer implements Runnable
-{
+public abstract class VoiceServer implements Runnable {
     public abstract EnumVoiceNetworkType getType();
 
     public abstract void handleVoiceData(EntityPlayerMP var1, byte[] var2, byte var3, int var4, boolean var5);
 
-    public final void run()
-    {
+    public final void run() {
         VoiceChat.getLogger().info(this.start()?"Started [" + this.getType().name + "] Server.":"Failed to start [" + this.getType().name + "] Server.");
     }
 

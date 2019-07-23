@@ -11,14 +11,17 @@ import net.gliby.voicechat.client.sound.MicrophoneTester;
 import net.gliby.voicechat.client.textures.IndependentGUITexture;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.resources.I18n;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_ZERO;
 
 public class GuiScreenOptionsWizard extends GuiScreen {
     private final VoiceChatClient voiceChat;
@@ -94,20 +97,19 @@ public class GuiScreenOptionsWizard extends GuiScreen {
                     this.tester.start();
 
                 this.title = I18n.format("menu.adjustMicrophone");
-                GL11.glPushMatrix();
-                GL11.glEnable(3042);
-                GL11.glEnable(3042);
-                GL11.glBlendFunc(770, 771);
-                GL11.glDisable(3008);
-                GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                GL11.glTranslatef((float) (centerW) - 39.75F, (float) (centerH) - 67.5F, 0.0F);
-                GL11.glScalef(2.0F, 2.0F, 0.0F);
+                glPushMatrix();
+                glEnable(GL_BLEND);
+                OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+                glDisable(GL_ALPHA_TEST);
+                glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+                glTranslatef((float) (centerW) - 39.75F, (float) (centerH) - 67.5F, 0.0F);
+                glScalef(2.0F, 2.0F, 0.0F);
                 IndependentGUITexture.GUI_WIZARD.bindTexture(this.mc);
                 this.drawTexturedModalRect(0, 0, 0, 127, 35, 20);
                 int progress = (int) this.tester.currentAmplitude;
                 this.drawTexturedModalRect(3.35F, 0.0F, 35, 127, progress, 20);
-                GL11.glEnable(3008);
-                GL11.glPopMatrix();
+                glEnable(GL_ALPHA_TEST);
+                glPopMatrix();
                 this.drawCenteredString(this.fontRenderer, I18n.format("menu.boostVoiceVolume"), centerW, centerH - 26, -1);
                 break;
             case 4:
@@ -123,11 +125,11 @@ public class GuiScreenOptionsWizard extends GuiScreen {
 
         this.drawDefaultBackground();
         IndependentGUITexture.GUI_WIZARD.bindTexture(this.mc);
-        GL11.glPushMatrix();
-        GL11.glTranslatef((float) (centerW) - 142.5F, (float) (centerH) - 94.5F, 0.0F);
-        GL11.glScalef(1.5F, 1.5F, 0.0F);
+        glPushMatrix();
+        glTranslatef((float) (centerW) - 142.5F, (float) (centerH) - 94.5F, 0.0F);
+        glScalef(1.5F, 1.5F, 0.0F);
         this.drawTexturedModalRect(0, 0, 0, 0, 190, 127);
-        GL11.glPopMatrix();
+        glPopMatrix();
         this.drawString(this.mc.fontRenderer, this.currentPage + "/" + 4, centerW + 108, centerH + 67, -1);
 
         if (this.title != null)
@@ -216,13 +218,6 @@ public class GuiScreenOptionsWizard extends GuiScreen {
         if (this.lastPage != this.currentPage || this.dirty) {
             switch (this.currentPage) {
                 case 1:
-                    this.previousButton.visible = false;
-                    this.doneButton.visible = false;
-                    this.nextButton.x = this.width / 2 - 90;
-                    this.nextButton.y = this.height / 2 + 60;
-                    this.nextButton.setWidth(180);
-                    this.nextButton.setHeight(20);
-                    break;
                 case 2:
                     this.previousButton.visible = false;
                     this.doneButton.visible = false;

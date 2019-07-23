@@ -3,8 +3,7 @@ package net.gliby.voicechat.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
-public abstract class GuiPlaceableInterface
-{
+public abstract class GuiPlaceableInterface {
     int screenWidth;
     int screenHeight;
     UIPosition positionUI;
@@ -16,8 +15,7 @@ public abstract class GuiPlaceableInterface
     float scale;
     EnumUIPlacement info;
 
-    GuiPlaceableInterface(UIPosition position, int width, int height)
-    {
+    GuiPlaceableInterface(UIPosition position, int width, int height) {
         this.positionUI = position;
         this.info = position.info;
         this.x = position.type == 0?position.x * (float)width:position.x;
@@ -30,8 +28,7 @@ public abstract class GuiPlaceableInterface
 
     public abstract void draw(Minecraft var1, GuiScreen var2, int var3, int var4, float var5);
 
-    void update(int x, int y, int width, int height)
-    {
+    void update(int x, int y, int width, int height) {
         this.x = (float)x;
         this.y = (float)y;
         this.screenWidth = width;

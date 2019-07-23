@@ -9,14 +9,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GuiUIPlacement extends GuiScreen
-{
+import static org.lwjgl.opengl.GL11.*;
+
+public class GuiUIPlacement extends GuiScreen {
     private final List<GuiPlaceableInterface> placeables = new ArrayList<>();
     private final GuiScreen parent;
     private int offsetX;
@@ -28,19 +28,16 @@ public class GuiUIPlacement extends GuiScreen
     private GuiPlaceableInterface selectedUIPlaceable;
     private GuiPlaceableInterface lastSelected;
 
-    private static void drawRectLines(int par0, int par1, int par2, int par3, int par4)
-    {
+    private static void drawRectLines(int par0, int par1, int par2, int par3, int par4) {
         int j1;
 
-        if (par0 < par2)
-        {
+        if (par0 < par2) {
             j1 = par0;
             par0 = par2;
             par2 = j1;
         }
 
-        if (par1 < par3)
-        {
+        if (par1 < par3) {
             j1 = par1;
             par1 = par3;
             par3 = j1;
@@ -50,10 +47,10 @@ public class GuiUIPlacement extends GuiScreen
         float f2 = (float)(par4 >> 8 & 255) / 255.0F;
         float f3 = (float)(par4 & 255) / 255.0F;
         Tessellator tessellator = Tessellator.getInstance();
-        GL11.glEnable(3042);
-        GL11.glDisable(3553);
-        GL11.glBlendFunc(770, 771);
-        GL11.glColor4f(f1, f2, f3, f);
+        glEnable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+        glBlendFunc(770, 771);
+        glColor4f(f1, f2, f3, f);
         BufferBuilder vb = tessellator.getBuffer();
         vb.begin(2, DefaultVertexFormats.POSITION);
         vb.pos((double)par0, (double)par3, 0.0D).endVertex();
@@ -61,36 +58,27 @@ public class GuiUIPlacement extends GuiScreen
         vb.pos((double)par2, (double)par1, 0.0D).endVertex();
         vb.pos((double)par0, (double)par1, 0.0D).endVertex();
         tessellator.draw();
-        GL11.glEnable(3553);
-        GL11.glDisable(3042);
+        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
     }
 
-    public GuiUIPlacement(GuiScreen parent)
-    {
+    public GuiUIPlacement(GuiScreen parent) {
         this.parent = parent;
     }
 
-    public void actionPerformed(GuiButton button)
-    {
-        if (button.id == 0 && this.lastSelected != null)
-        {
+    public void actionPerformed(GuiButton button) {
+        if (button.id == 0 && this.lastSelected != null) {
             if (this.lastSelected.positionType >= 1)
-            {
                 this.lastSelected.positionType = 0;
-            }
-            else {
+            else
                 ++this.lastSelected.positionType;
-            }
         }
 
-        if (button.id == 1 && this.lastSelected != null)
-        {
-            if (this.lastSelected.info.positionType == 0)
-            {
+        if (button.id == 1 && this.lastSelected != null) {
+            if (this.lastSelected.info.positionType == 0) {
                 this.lastSelected.x = this.lastSelected.info.x * (float)this.width;
                 this.lastSelected.y = this.lastSelected.info.y * (float)this.height;
-            }
-            else {
+            } else {
                 this.lastSelected.x = this.lastSelected.info.x;
                 this.lastSelected.y = this.lastSelected.info.y;
             }
@@ -106,9 +94,8 @@ public class GuiUIPlacement extends GuiScreen
             this.selectedUIPlaceable.x = (float)(mouseX - this.offsetX);
             this.selectedUIPlaceable.y = (float)(mouseY - this.offsetY);
 
-            if (!Mouse.isButtonDown(0)) {
+            if (!Mouse.isButtonDown(0))
                 this.selectedUIPlaceable = null;
-            }
         }
 
         if (this.lastSelected != null) {
@@ -131,16 +118,16 @@ public class GuiUIPlacement extends GuiScreen
         }
 
         for (GuiPlaceableInterface placeable : this.placeables) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(placeable.x, placeable.y, 0.0F);
+            glPushMatrix();
+            glTranslatef(placeable.x, placeable.y, 0.0F);
             placeable.draw(this.mc, this, mouseX, mouseY, partialTicks);
-            GL11.glPopMatrix();
-            GL11.glPushMatrix();
-            GL11.glTranslatef(placeable.x, placeable.y, 0.0F);
-            GL11.glLineWidth(4.0F);
+            glPopMatrix();
+            glPushMatrix();
+            glTranslatef(placeable.x, placeable.y, 0.0F);
+            glLineWidth(4.0F);
             drawRectLines(0, 0, placeable.width, placeable.height, this.selectedUIPlaceable == placeable ? -16711936 : -1);
-            GL11.glLineWidth(1.0F);
-            GL11.glPopMatrix();
+            glLineWidth(1.0F);
+            glPopMatrix();
         }
     }
 
@@ -149,13 +136,11 @@ public class GuiUIPlacement extends GuiScreen
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         this.positionTypes[0] = I18n.format("menu.positionAutomatic");
         this.positionTypes[1] = I18n.format("menu.positionAbsolute");
 
-        if (this.scaleSlider == null)
-        {
+        if (this.scaleSlider == null) {
             this.placeables.add(new GuiUIPlacementSpeak(VoiceChat.getProxyInstance().getSettings().getUIPositionSpeak(), this.width, this.height));
             this.placeables.add(new GuiUIPlacementVoicePlate(VoiceChat.getProxyInstance().getSettings().getUIPositionPlate(), this.width, this.height));
         }
@@ -174,86 +159,61 @@ public class GuiUIPlacement extends GuiScreen
     }
 
     @Override
-    public void keyTyped(char character, int key)
-    {
-        if (this.lastSelected != null)
-        {
+    public void keyTyped(char character, int key) {
+        if (this.lastSelected != null) {
             if (key == 200)
-            {
                 --this.lastSelected.y;
-            }
 
             if (key == 208)
-            {
                 ++this.lastSelected.y;
-            }
 
             if (key == 205)
-            {
                 ++this.lastSelected.x;
-            }
 
             if (key == 203)
-            {
                 --this.lastSelected.x;
-            }
         }
 
         if (key == 1)
-        {
             this.mc.displayGuiScreen(this.parent);
-        }
     }
 
     @Override
-    public void mouseClicked(int x, int y, int b) throws IOException
-    {
-        if (b == 0)
-        {
-            if (this.selectedUIPlaceable == null)
-            {
-                for (GuiPlaceableInterface placeable : this.placeables)
-                {
-                    if (this.inBounds((float) x, (float) y, placeable.x, placeable.y, (float) placeable.width, (float) placeable.height))
-                    {
+    public void mouseClicked(int x, int y, int b) throws IOException {
+        if (b == 0) {
+            if (this.selectedUIPlaceable == null) {
+                for (GuiPlaceableInterface placeable : this.placeables) {
+                    if (this.inBounds((float) x, (float) y, placeable.x, placeable.y, (float) placeable.width, (float) placeable.height)) {
                         this.offsetX = (int) Math.abs((float) x - placeable.x);
                         this.offsetY = (int) Math.abs((float) y - placeable.y);
                         this.selectedUIPlaceable = placeable;
                         this.lastSelected = this.selectedUIPlaceable;
                     }
                 }
-            }
-            else {
+            } else
                 this.selectedUIPlaceable = null;
-            }
         }
         super.mouseClicked(x, y, b);
     }
 
     @Override
-    public void onGuiClosed()
-    {
+    public void onGuiClosed() {
         super.onGuiClosed();
         this.save();
     }
 
-    private void resize(GuiPlaceableInterface placeable)
-    {
+    private void resize(GuiPlaceableInterface placeable) {
         placeable.update((int)((float)this.width * (placeable.x * 1.0F / (float)placeable.screenWidth)), (int)((float)this.height * (placeable.y * 1.0F / (float)placeable.screenHeight)), this.width, this.height);
     }
 
-    private void save()
-    {
+    private void save() {
         Settings settings = VoiceChat.getProxyInstance().getSettings();
 
-        for (GuiPlaceableInterface placeable : this.placeables)
-        {
-            if (placeable.positionType == 0)
-            {
+        for (GuiPlaceableInterface placeable : this.placeables) {
+            if (placeable.positionType == 0) {
                 placeable.positionUI.x = placeable.x * 1.0F / (float) placeable.screenWidth;
                 placeable.positionUI.y = placeable.y * 1.0F / (float) placeable.screenHeight;
-            }
-            else {
+            } else {
                 placeable.positionUI.x = placeable.x;
                 placeable.positionUI.y = placeable.y;
             }
