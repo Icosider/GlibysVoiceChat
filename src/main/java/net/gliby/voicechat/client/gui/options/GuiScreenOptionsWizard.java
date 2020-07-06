@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_ZERO;
 
 public class GuiScreenOptionsWizard extends GuiScreen {
     private final VoiceChatClient voiceChat;
@@ -86,7 +85,7 @@ public class GuiScreenOptionsWizard extends GuiScreen {
 
         switch (this.currentPage) {
             case 1:
-                this.title = "Gliby\'s Voice Chat " + I18n.format("menu.setupWizard");
+                this.title = "Gliby's Voice Chat " + I18n.format("menu.setupWizard");
                 break;
             case 2:
                 this.title = I18n.format("menu.selectInputDevice");
@@ -166,7 +165,7 @@ public class GuiScreenOptionsWizard extends GuiScreen {
         this.buttonList.add(this.doneButton = new GuiCustomButton(2, centerW - 90, centerH, 180, 20, I18n.format("gui.done")));
         GuiCustomButton backButton;
         this.buttonList.add(backButton = new GuiCustomButton(3, centerW - 90, centerH + 18, 180, 20, I18n.format("gui.back")));
-        this.buttonList.add(this.boostSlider = new GuiBoostSlider(900, centerW - 75, centerH - 15, "", I18n.format("menu.boost") + ": " + ((int)(this.voiceChat.getSettings().getInputBoost() * 5.0F) <= 0?I18n.format("options.off"):"" + (int)(this.voiceChat.getSettings().getInputBoost() * 5.0F) + "db"), 0.0F));
+        this.buttonList.add(this.boostSlider = new GuiBoostSlider(900, centerW - 75, centerH - 15, "", I18n.format("menu.boost") + ": " + ((int) (this.voiceChat.getSettings().getInputBoost() * 5.0F) <= 0 ? I18n.format("options.off") : "" + (int) (this.voiceChat.getSettings().getInputBoost() * 5.0F) + "db"), 0.0F));
         this.boostSlider.sliderValue = this.voiceChat.getSettings().getInputBoost();
         this.doneButton.visible = false;
         this.buttonMap.put(backButton, 1);

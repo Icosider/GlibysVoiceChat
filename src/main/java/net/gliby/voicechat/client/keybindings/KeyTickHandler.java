@@ -6,7 +6,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public class KeyTickHandler {
-    private VoiceChatClient voiceChat;
+    private final VoiceChatClient voiceChat;
 
     public KeyTickHandler(VoiceChatClient voiceChat) {
         this.voiceChat = voiceChat;

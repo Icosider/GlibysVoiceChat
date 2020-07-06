@@ -3,8 +3,8 @@ package net.gliby.voicechat.client.debug;
 import net.gliby.voicechat.client.sound.MovingAverage;
 
 public class Statistics {
-    private MovingAverage decodedAverage = new MovingAverage(8);
-    private MovingAverage encodedAverage = new MovingAverage(8);
+    private final MovingAverage decodedAverage = new MovingAverage(8);
+    private final MovingAverage encodedAverage = new MovingAverage(8);
 
     private int encodedSum;
     private int decodedSum;

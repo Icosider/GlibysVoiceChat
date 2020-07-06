@@ -16,21 +16,18 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class CommandChatMode extends CommandBase
-{
+public class CommandChatMode extends CommandBase {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         return args.length == 1 ? getListOfStringsMatchingLastWord(args, "distance", "global", "world") : (args.length == 2 ? getListOfStringsMatchingLastWord(args, this.getListOfPlayerUsernames()) : null);
     }
 
-    private String getChatMode(int chatMode)
-    {
+    private String getChatMode(int chatMode) {
         return chatMode == 0 ? "distance" : (chatMode == 2 ? "global" : (chatMode == 1 ? "world" : "distance"));
     }
 
-    private int getChatModeFromCommand(ICommandSender par1ICommandSender, String par2Str)
-    {
-        return !par2Str.equalsIgnoreCase("distance") && !par2Str.startsWith("d") && !par2Str.equalsIgnoreCase("0")?(!par2Str.equalsIgnoreCase("world") && !par2Str.startsWith("w") && !par2Str.equalsIgnoreCase("1")?(!par2Str.equalsIgnoreCase("global") && !par2Str.startsWith("g") && !par2Str.equalsIgnoreCase("2")?0:2):1):0;
+    private int getChatModeFromCommand(ICommandSender par1ICommandSender, String par2Str) {
+        return !par2Str.equalsIgnoreCase("distance") && !par2Str.startsWith("d") && !par2Str.equalsIgnoreCase("0") ? (!par2Str.equalsIgnoreCase("world") && !par2Str.startsWith("w") && !par2Str.equalsIgnoreCase("1") ? (!par2Str.equalsIgnoreCase("global") && !par2Str.startsWith("g") && !par2Str.equalsIgnoreCase("2") ? 0 : 2) : 1) : 0;
     }
 
     @Override
@@ -43,44 +40,36 @@ public class CommandChatMode extends CommandBase
         return "/vchatmode <mode> or /vchatmode <mode> [player]";
     }
 
-    private String[] getListOfPlayerUsernames()
-    {
+    private String[] getListOfPlayerUsernames() {
         return FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getOnlinePlayerNames();
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
+    public int getRequiredPermissionLevel() {
         return 3;
     }
 
     @Override
-    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2)
-    {
+    public boolean isUsernameIndex(String[] par1ArrayOfStr, int par2) {
         return par2 == 1;
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException
-    {
-        if (args.length > 0)
-        {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
+        if (args.length > 0) {
             int chatMode = this.getChatModeFromCommand(sender, args[0]);
             EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
-            if (player != null)
-            {
+            if (player != null) {
                 ServerStreamManager dataManager = VoiceChat.getServerInstance().getServerNetwork().getDataManager();
                 dataManager.chatModeMap.put(player.getPersistentID(), chatMode);
                 ServerStream stream = dataManager.getStream(player.getEntityId());
 
-                if (stream != null)
-                {
+                if (stream != null) {
                     stream.dirty = true;
                 }
 
-                if (player != sender)
-                {
+                if (player != sender) {
                     notifyCommandListener(sender, this, player.getName() + " set chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")", args[0]);
                 } else {
                     player.sendMessage(new TextComponentString("Set own chat mode to " + this.getChatMode(chatMode).toUpperCase() + " (" + chatMode + ")"));
@@ -97,12 +86,10 @@ public class CommandChatMode extends CommandBase
                             break;
                     }
                 }
-            }
-            else {
+            } else {
                 throw new WrongUsageException("commands.generic.player.notFound");
             }
-        }
-        else {
+        } else {
             throw new WrongUsageException(this.getUsage(sender));
         }
     }

@@ -31,7 +31,7 @@ public class MinecraftVoiceServer extends VoiceServer {
     }
 
     public void sendVoiceData(EntityPlayerMP player, int entityID, boolean direct, byte[] samples, byte volume) {
-        VoiceChat.getDispatcher().sendTo(new MinecraftClientVoicePacket((byte)samples.length, samples, entityID, direct, volume), player);
+        VoiceChat.getDispatcher().sendTo(new MinecraftClientVoicePacket((byte) samples.length, samples, entityID, direct, volume), player);
     }
 
     public void sendVoiceEnd(EntityPlayerMP player, int id) {
@@ -43,5 +43,6 @@ public class MinecraftVoiceServer extends VoiceServer {
         return true;
     }
 
-    public void stop() {}
+    public void stop() {
+    }
 }

@@ -22,13 +22,11 @@ public class ServerNetwork {
         this.dataManager = new ServerStreamManager(voiceChat);
     }
 
-    public String getAddress()
-    {
+    public String getAddress() {
         return this.externalAddress;
     }
 
-    public ServerStreamManager getDataManager()
-    {
+    public ServerStreamManager getDataManager() {
         return this.dataManager;
     }
 
@@ -37,7 +35,7 @@ public class ServerNetwork {
         String[] ips = new String[players.size()];
 
         for (int i = 0; i < players.size(); ++i) {
-            EntityPlayerMP p = (EntityPlayerMP)players.get(i);
+            EntityPlayerMP p = (EntityPlayerMP) players.get(i);
             ips[i] = p.getPlayerIP();
         }
         return ips;
@@ -45,7 +43,7 @@ public class ServerNetwork {
 
     public EntityPlayerMP[] getPlayers() {
         List pl = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().playerEntities;
-        return (EntityPlayerMP[])pl.toArray(new EntityPlayerMP[0]);
+        return (EntityPlayerMP[]) pl.toArray(new EntityPlayerMP[0]);
     }
 
     public void init() {

@@ -6,8 +6,7 @@ import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceServerPacket, MinecraftClientVoiceServerPacket>
-{
+public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceServerPacket, MinecraftClientVoiceServerPacket> {
     private boolean showVoicePlates;
     private boolean showVoiceIcons;
     private int minQuality;
@@ -16,9 +15,10 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
     private int soundDistance;
     private int voiceServerType;
 
-    public MinecraftClientVoiceServerPacket() {}
-    public MinecraftClientVoiceServerPacket(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType)
-    {
+    public MinecraftClientVoiceServerPacket() {
+    }
+
+    public MinecraftClientVoiceServerPacket(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType) {
         this.showVoicePlates = canShowVoicePlates;
         this.showVoiceIcons = canShowVoiceIcons;
         this.minQuality = minQuality;
@@ -28,8 +28,7 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
         this.voiceServerType = voiceServerType;
     }
 
-    public void fromBytes(ByteBuf buf)
-    {
+    public void fromBytes(ByteBuf buf) {
         this.showVoicePlates = buf.readBoolean();
         this.showVoiceIcons = buf.readBoolean();
         this.minQuality = buf.readInt();
@@ -39,8 +38,7 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
         this.voiceServerType = buf.readInt();
     }
 
-    public void toBytes(ByteBuf buf)
-    {
+    public void toBytes(ByteBuf buf) {
         buf.writeBoolean(this.showVoicePlates);
         buf.writeBoolean(this.showVoiceIcons);
         buf.writeInt(this.minQuality);
@@ -50,8 +48,7 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
         buf.writeInt(this.voiceServerType);
     }
 
-    public MinecraftClientVoiceServerPacket onMessage(MinecraftClientVoiceServerPacket packet, MessageContext ctx)
-    {
+    public MinecraftClientVoiceServerPacket onMessage(MinecraftClientVoiceServerPacket packet, MessageContext ctx) {
         VoiceChat.getProxyInstance().getClientNetwork().handleVoiceServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType);
         return null;
     }

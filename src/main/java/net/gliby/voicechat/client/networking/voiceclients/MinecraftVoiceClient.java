@@ -43,7 +43,10 @@ public class MinecraftVoiceClient extends VoiceClient {
     }
 
     @Override
-    public void start() {}
+    public void start() {
+    }
+
     @Override
-    public void stop() {}
+    public void stop() {
+    }
 }

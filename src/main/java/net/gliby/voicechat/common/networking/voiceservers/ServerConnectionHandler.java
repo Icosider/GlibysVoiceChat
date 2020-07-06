@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class ServerConnectionHandler {
-    private VoiceChatServer voiceChat;
-    private List<GameProfile> loggedIn;
+    private final VoiceChatServer voiceChat;
+    private final List<GameProfile> loggedIn;
 
     public ServerConnectionHandler(VoiceChatServer vc) {
         this.voiceChat = vc;
@@ -38,10 +38,10 @@ public class ServerConnectionHandler {
     }
 
     private void onConnected(EntityPlayer entity) {
-        EntityPlayerMP player = (EntityPlayerMP)entity;
+        EntityPlayerMP player = (EntityPlayerMP) entity;
 
         if (this.voiceChat.getVoiceServer() instanceof VoiceAuthenticatedServer) {
-            VoiceAuthenticatedServer voiceServer = (VoiceAuthenticatedServer)this.voiceChat.getVoiceServer();
+            VoiceAuthenticatedServer voiceServer = (VoiceAuthenticatedServer) this.voiceChat.getVoiceServer();
             String hash = null;
 
             while (hash == null) {
@@ -52,7 +52,7 @@ public class ServerConnectionHandler {
                 }
             }
             voiceServer.waitingAuth.put(hash, player);
-            VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceAuthenticatedServer(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal(), this.voiceChat.getServerSettings().getUDPPort(), hash, this.voiceChat.serverSettings.isUsingProxy()?this.voiceChat.serverNetwork.getAddress():""), player);
+            VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceAuthenticatedServer(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal(), this.voiceChat.getServerSettings().getUDPPort(), hash, this.voiceChat.serverSettings.isUsingProxy() ? this.voiceChat.serverNetwork.getAddress() : ""), player);
         } else
             VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceServerPacket(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal()), player);
         this.voiceChat.serverNetwork.dataManager.entityHandler.connected(player);

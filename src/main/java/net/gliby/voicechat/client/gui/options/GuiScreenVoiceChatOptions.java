@@ -25,7 +25,6 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
     private GuiDropDownMenu dropDown;
     private GuiButton microphoneMode;
     private List<String> warningMessages;
-    private String updateMessage;
 
     public GuiScreenVoiceChatOptions(VoiceChatClient voiceChat) {
         this.voiceChat = voiceChat;
@@ -37,18 +36,14 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
         switch (button.id) {
             case 0:
                 if (button instanceof GuiDropDownMenu && !this.voiceChat.getSettings().getDeviceHandler().isEmpty())
-                    ((GuiDropDownMenu)button).dropDownMenu = !((GuiDropDownMenu)button).dropDownMenu;
-                break;
-            case 1:
-                this.voiceChat.getSettings().getConfiguration().save();
-                this.mc.displayGuiScreen(new GuiScreenDonate(VoiceChatClient.getModMetadata(), this));
+                    ((GuiDropDownMenu) button).dropDownMenu = !((GuiDropDownMenu) button).dropDownMenu;
                 break;
             case 2:
                 if (!this.tester.recording)
                     this.tester.start();
                 else
                     this.tester.stop();
-                button.displayString = this.tester.recording?I18n.format("menu.microphoneStopTest"):I18n.format("menu.microphoneTest");
+                button.displayString = this.tester.recording ? I18n.format("menu.microphoneStopTest") : I18n.format("menu.microphoneTest");
                 break;
             case 3:
                 this.voiceChat.getSettings().getConfiguration().save();
@@ -61,8 +56,8 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
                 if (!this.dropDown.dropDownMenu) {
                     this.microphoneMode.visible = true;
                     this.microphoneMode.enabled = true;
-                    this.voiceChat.getSettings().setSpeakMode(this.voiceChat.getSettings().getSpeakMode() == 0?1:0);
-                    this.microphoneMode.displayString = I18n.format("menu.speakMode") + ": " + (this.voiceChat.getSettings().getSpeakMode() == 0?I18n.format("menu.speakModePushToTalk"):I18n.format("menu.speakModeToggleToTalk"));
+                    this.voiceChat.getSettings().setSpeakMode(this.voiceChat.getSettings().getSpeakMode() == 0 ? 1 : 0);
+                    this.microphoneMode.displayString = I18n.format("menu.speakMode") + ": " + (this.voiceChat.getSettings().getSpeakMode() == 0 ? I18n.format("menu.speakModePushToTalk") : I18n.format("menu.speakModeToggleToTalk"));
                 } else if (this.voiceChat.getSettings().getDeviceHandler().isEmpty()) {
                     this.microphoneMode.visible = false;
                     this.microphoneMode.enabled = false;
@@ -91,7 +86,7 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
 
         this.drawDefaultBackground();
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)(centerW) - (float)(this.fontRenderer.getStringWidth("Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
+        GL11.glTranslatef((float) (centerW) - (float) (this.fontRenderer.getStringWidth("Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
         GL11.glScalef(1.5F, 1.5F, 0.0F);
         this.drawString(this.fontRenderer, "Voice Chat Options", 0, 6, -1);
         GL11.glPopMatrix();
@@ -120,19 +115,18 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
             array[heightOffset] = devices.get(heightOffset).getName();
         }
 
-        this.dropDown = new GuiDropDownMenu(0, centerW - 151, centerH - 55, 148, 20, this.voiceChat.getSettings().getInputDevice() != null?this.voiceChat.getSettings().getInputDevice().getName():"None", array);
-        this.microphoneMode = new GuiButton(5, centerW - 152, centerH + 25 - 55, 150, 20, I18n.format("menu.speakMode") + ": " + (this.voiceChat.getSettings().getSpeakMode() == 0?I18n.format("menu.speakModePushToTalk"):I18n.format("menu.speakModeToggleToTalk")));
+        this.dropDown = new GuiDropDownMenu(0, centerW - 151, centerH - 55, 148, 20, this.voiceChat.getSettings().getInputDevice() != null ? this.voiceChat.getSettings().getInputDevice().getName() : "None", array);
+        this.microphoneMode = new GuiButton(5, centerW - 152, centerH + 25 - 55, 150, 20, I18n.format("menu.speakMode") + ": " + (this.voiceChat.getSettings().getSpeakMode() == 0 ? I18n.format("menu.speakModePushToTalk") : I18n.format("menu.speakModeToggleToTalk")));
         final GuiButton UIPosition = new GuiButton(4, centerW + 2, centerH + 25 - 55, 150, 20, I18n.format("menu.uiOptions"));
-        this.voiceVolume = new GuiBoostSlider(910, centerW + 2, centerH - 25 - 55, "", I18n.format("menu.worldVolume") + ": " + (this.voiceChat.getSettings().getWorldVolume() == 0.0F?I18n.format("options.off"):(int)(this.voiceChat.getSettings().getWorldVolume() * 100.0F) + "%"), 0.0F);
+        this.voiceVolume = new GuiBoostSlider(910, centerW + 2, centerH - 25 - 55, "", I18n.format("menu.worldVolume") + ": " + (this.voiceChat.getSettings().getWorldVolume() == 0.0F ? I18n.format("options.off") : (int) (this.voiceChat.getSettings().getWorldVolume() * 100.0F) + "%"), 0.0F);
         this.voiceVolume.sliderValue = this.voiceChat.getSettings().getWorldVolume();
-        this.boostSlider = new GuiBoostSlider(900, centerW + 2, centerH - 55, "", I18n.format("menu.boost") + ": " + ((int)(this.voiceChat.getSettings().getInputBoost() * 5.0F) <= 0?I18n.format("options.off"):"" + (int)(this.voiceChat.getSettings().getInputBoost() * 5.0F) + "db"), 0.0F);
+        this.boostSlider = new GuiBoostSlider(900, centerW + 2, centerH - 55, "", I18n.format("menu.boost") + ": " + ((int) (this.voiceChat.getSettings().getInputBoost() * 5.0F) <= 0 ? I18n.format("options.off") : "" + (int) (this.voiceChat.getSettings().getInputBoost() * 5.0F) + "db"), 0.0F);
         this.boostSlider.sliderValue = this.voiceChat.getSettings().getInputBoost();
         this.advancedOptions = new GuiCustomButton(899, centerW + 2, centerH + 49 - 55, 150, 20, I18n.format("menu.advancedOptions"));
-        this.buttonList.add(new GuiButton(1, centerW - 151, this.height - 34, 75, 20, I18n.format("menu.gman.supportGliby")));
-        this.buttonList.add(new GuiButton(2, centerW - 152, centerH - 25 - 55, 150, 20, !this.tester.recording?I18n.format("menu.microphoneTest"):I18n.format("menu.microphoneStopTest")));
+        this.buttonList.add(new GuiButton(2, centerW - 152, centerH - 25 - 55, 150, 20, !this.tester.recording ? I18n.format("menu.microphoneTest") : I18n.format("menu.microphoneStopTest")));
         final GuiButton returnToGame = new GuiButton(3, centerW - 75, this.height - 34, 150, 20, I18n.format("menu.returnToGame"));
         this.buttonList.add(returnToGame);
-        this.buttonList.add(new GuiButton(10, centerW + 77, this.height - 34, 75, 20, I18n.format("menu.gman.supportIvasik")));
+        this.buttonList.add(new GuiButton(10, centerW - 75, this.height - 56, 150, 20, I18n.format("menu.gman.supportIvasik")));
         this.buttonList.add(this.advancedOptions);
         this.buttonList.add(new GuiCustomButton(898, centerW - 152, centerH + 49 - 55, 150, 20, I18n.format("menu.openOptionsWizard")));
         this.buttonList.add(UIPosition);
@@ -157,11 +151,11 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
         if (this.voiceChat.getSettings().getDeviceHandler().isEmpty())
             this.warningMessages.add(ChatFormatting.DARK_RED + "No input devices found, add input device and restart Minecraft.");
 
-        if (this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic())
+        if (this.mc.isSingleplayer() || this.mc.world == null)
             this.warningMessages.add(ChatFormatting.RED + I18n.format("menu.warningSingleplayer"));
 
         if (!this.voiceChat.getClientNetwork().isConnected() && !this.mc.isSingleplayer())
-            this.warningMessages.add(ChatFormatting.RED + I18n.format("Server doesn\'t support voice chat."));
+            this.warningMessages.add(ChatFormatting.RED + I18n.format("Server doesn't support voice chat."));
     }
 
     @Override
@@ -200,7 +194,7 @@ public class GuiScreenVoiceChatOptions extends GuiScreen {
 
         this.voiceChat.getSettings().setWorldVolume(this.voiceVolume.sliderValue);
         this.voiceChat.getSettings().setInputBoost(this.boostSlider.sliderValue);
-        this.voiceVolume.setDisplayString(I18n.format("menu.worldVolume") + ": " + (volume == 0F ? I18n.format("options.off"):(int) (volume * 100.0F) + "%"));
+        this.voiceVolume.setDisplayString(I18n.format("menu.worldVolume") + ": " + (volume == 0F ? I18n.format("options.off") : (int) (volume * 100.0F) + "%"));
         this.boostSlider.setDisplayString(I18n.format("menu.boost") + ": " + ((int) (boost) <= 0 ? I18n.format("options.off") : (int) (boost) + "db"));
         this.advancedOptions.allowed = !this.dropDown.dropDownMenu;
         this.mutePlayer.allowed = !this.dropDown.dropDownMenu;

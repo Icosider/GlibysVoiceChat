@@ -27,7 +27,7 @@ public class ClientStreamManager {
     public List<ClientStream> currentStreams = new ArrayList<>();
     public List<Integer> playersMuted = new ArrayList<>();
     public ConcurrentLinkedQueue<Datalet> queue = new ConcurrentLinkedQueue<>();
-    private ConcurrentHashMap<Integer, ClientStream> streaming = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, ClientStream> streaming = new ConcurrentHashMap<>();
     private final SoundPreProcessor soundPreProcessor;
     public ConcurrentHashMap<Integer, PlayerProxy> playerData = new ConcurrentHashMap<>();
     private Thread threadUpdate;
@@ -93,7 +93,7 @@ public class ClientStreamManager {
 
     public void alertEnd(int id) {
         if (!this.playersMuted.contains(id)) {
-            this.queue.offer(new Datalet(false, id, null, (byte)0));
+            this.queue.offer(new Datalet(false, id, null, (byte) 0));
 
             synchronized (this.threadQueue) {
                 this.threadQueue.notify();
@@ -124,14 +124,14 @@ public class ClientStreamManager {
 
         if (data.direct) {
             Vector3f position = player.position();
-            sndSystem.rawDataStream(universalAudioFormat, true, identifier, position.x, position.y, position.z, 2, (float)this.voiceChat.getSettings().getSoundDistance());
+            sndSystem.rawDataStream(universalAudioFormat, true, identifier, position.x, position.y, position.z, 2, (float) this.voiceChat.getSettings().getSoundDistance());
         } else
-            sndSystem.rawDataStream(universalAudioFormat, true, identifier, (float) this.mc.player.posX, (float)this.mc.player.posY, (float)this.mc.player.posZ, 2, (float)this.voiceChat.getSettings().getSoundDistance());
+            sndSystem.rawDataStream(universalAudioFormat, true, identifier, (float) this.mc.player.posX, (float) this.mc.player.posY, (float) this.mc.player.posZ, 2, (float) this.voiceChat.getSettings().getSoundDistance());
 
         sndSystem.setPitch(identifier, 1.0F);
 
         if (data.volume != -1) {
-            sndSystem.setVolume(identifier, this.voiceChat.getSettings().getWorldVolume() * (float)data.volume);
+            sndSystem.setVolume(identifier, this.voiceChat.getSettings().getWorldVolume() * (float) data.volume);
         } else {
             sndSystem.setVolume(identifier, this.voiceChat.getSettings().getWorldVolume());
         }

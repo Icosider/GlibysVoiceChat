@@ -9,65 +9,54 @@ import javax.sound.sampled.TargetDataLine;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class MicrophoneTester implements Runnable
-{
+public class MicrophoneTester implements Runnable {
     private Thread thread;
     public boolean recording;
     private final VoiceChatClient voiceChat;
     public float currentAmplitude;
 
-    public MicrophoneTester(VoiceChatClient voiceChat)
-    {
+    public MicrophoneTester(VoiceChatClient voiceChat) {
         this.voiceChat = voiceChat;
     }
 
-    private byte[] boostVolume(byte[] data)
-    {
+    private byte[] boostVolume(byte[] data) {
         ByteBuffer buf = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
         ByteBuffer newBuf = ByteBuffer.allocate(data.length).order(ByteOrder.LITTLE_ENDIAN);
 
-        while (buf.hasRemaining())
-        {
+        while (buf.hasRemaining()) {
             int sample = buf.getShort();
-            sample *= 1 + (int)(this.voiceChat.getSettings().getInputBoost() * 5.0F);
-            newBuf.putShort((short)(sample));
+            sample *= 1 + (int) (this.voiceChat.getSettings().getInputBoost() * 5.0F);
+            newBuf.putShort((short) (sample));
         }
         return newBuf.array();
     }
 
-    public Thread getThread()
-    {
+    public Thread getThread() {
         return this.thread;
     }
 
-    public void run()
-    {
+    public void run() {
         this.voiceChat.setRecorderActive(false);
         this.voiceChat.recorder.stop();
         TargetDataLine line = this.voiceChat.getSettings().getInputDevice().getLine();
 
-        if (line == null)
-        {
+        if (line == null) {
             VoiceChatClient.getLogger().fatal("No line in found, cannot test input device.");
-        }
-        else {
+        } else {
             Info sourceInfo = new Info(SourceDataLine.class, ClientStreamManager.universalAudioFormat);
 
-            try
-            {
+            try {
                 line.open(ClientStreamManager.universalAudioFormat);
                 line.start();
-                SourceDataLine sourceLine = (SourceDataLine)AudioSystem.getLine(sourceInfo);
+                SourceDataLine sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
                 sourceLine.open(ClientStreamManager.universalAudioFormat);
                 sourceLine.start();
                 byte[] targetData = new byte[line.getBufferSize() / 5];
 
-                while (this.recording)
-                {
+                while (this.recording) {
                     int numBytesRead = line.read(targetData, 0, targetData.length);
 
-                    if (numBytesRead == -1)
-                    {
+                    if (numBytesRead == -1) {
                         break;
                     }
 
@@ -75,48 +64,39 @@ public class MicrophoneTester implements Runnable
                     sourceLine.write(boostedTargetData, 0, numBytesRead);
                     double sum = 0.0D;
 
-                    for (int i = 0; i < numBytesRead; ++i)
-                    {
-                        sum += (double)(boostedTargetData[i] * boostedTargetData[i]);
+                    for (int i = 0; i < numBytesRead; ++i) {
+                        sum += boostedTargetData[i] * boostedTargetData[i];
                     }
 
-                    if (numBytesRead > 0)
-                    {
-                        this.currentAmplitude = (float)((int)Math.sqrt(sum / (double)numBytesRead));
+                    if (numBytesRead > 0) {
+                        this.currentAmplitude = (float) ((int) Math.sqrt(sum / (double) numBytesRead));
                     }
                 }
                 sourceLine.flush();
                 sourceLine.close();
                 line.flush();
                 line.close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void start()
-    {
+    public void start() {
         this.thread = new Thread(this, "Input Device Tester");
         this.recording = true;
         this.thread.start();
     }
 
-    public void stop()
-    {
+    public void stop() {
         this.recording = false;
         this.thread = null;
     }
 
-    public void toggle()
-    {
-        if (this.recording)
-        {
+    public void toggle() {
+        if (this.recording) {
             this.start();
-        }
-        else {
+        } else {
             this.stop();
         }
     }

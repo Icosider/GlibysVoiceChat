@@ -6,10 +6,8 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EnumPlayerModelParts;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_ZERO;
 
 public class GuiUIPlacementSpeak extends GuiPlaceableInterface {
     GuiUIPlacementSpeak(UIPosition position, int width, int height) {
@@ -28,7 +26,7 @@ public class GuiUIPlacementSpeak extends GuiPlaceableInterface {
         IndependentGUITexture.TEXTURES.bindTexture(mc);
         gui.drawTexturedModalRect(0, 0, 0, 0, 54, 46);
 
-        switch ((int)((float)(Minecraft.getSystemTime() % 1000L) / 350.0F)) {
+        switch ((int) ((float) (Minecraft.getSystemTime() % 1000L) / 350.0F)) {
             case 0:
                 gui.drawTexturedModalRect(12, -3, 0, 47, 22, 49);
                 break;

@@ -5,8 +5,7 @@ import net.gliby.voicechat.VoiceChat;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
-public class ServerSettings
-{
+public class ServerSettings {
     private ServerConfiguration configuration;
     private int soundDist = 64;
     private int udpPort = 0;
@@ -21,136 +20,112 @@ public class ServerSettings
     private boolean behindProxy;
     private int modPackID = 1;
 
-    ServerSettings(VoiceChatServer voiceChatServer) {}
+    ServerSettings(VoiceChatServer voiceChatServer) {
+    }
 
-    public boolean canShowVoiceIcons()
-    {
+    public boolean canShowVoiceIcons() {
         return this.canShowVoiceIcons;
     }
 
-    public final boolean canShowVoicePlates()
-    {
+    public final boolean canShowVoicePlates() {
         return this.canShowVoicePlates;
     }
 
-    final int getAdvancedNetworkType()
-    {
+    final int getAdvancedNetworkType() {
         return this.advancedNetworkType;
     }
 
-    public final int getBufferSize()
-    {
+    public final int getBufferSize() {
         return this.bufferSize;
     }
 
-    public final int getDefaultChatMode()
-    {
+    public final int getDefaultChatMode() {
         return this.defaultChatMode;
     }
 
-    public final int getMaximumSoundQuality()
-    {
+    public final int getMaximumSoundQuality() {
         return this.maximumQuality;
     }
 
-    public final int getMinimumSoundQuality()
-    {
+    public final int getMinimumSoundQuality() {
         return this.minimumQuality;
     }
 
-    int getModPackID()
-    {
+    int getModPackID() {
         return this.modPackID;
     }
 
-    public final int getSoundDistance()
-    {
+    public final int getSoundDistance() {
         return this.soundDist;
     }
 
-    public final int getUDPPort()
-    {
+    public final int getUDPPort() {
         return this.udpPort;
     }
 
-    public final boolean isUsingProxy()
-    {
+    public final boolean isUsingProxy() {
         return this.behindProxy;
     }
 
-    void preInit(File file)
-    {
+    void preInit(File file) {
         this.configuration = new ServerConfiguration(this, file);
         (new Thread(() -> ServerSettings.this.configuration.init(), "Configuration Process")).start();
         (new Thread(() -> {
             ModPackSettings settings = new ModPackSettings();
 
-            try
-            {
+            try {
                 ModPackSettings.GVCModPackInstructions e = settings.init();
-                if(e.ID != ServerSettings.this.getModPackID()) {
+                if (e.ID != ServerSettings.this.getModPackID()) {
                     VoiceChat.getLogger().info("Modpack defaults applied, original settings overwritten.");
                     ServerSettings.this.setCanShowVoicePlates(e.SHOW_PLATES);
                     ServerSettings.this.setCanShowVoiceIcons(e.SHOW_PLAYER_ICONS);
                     ServerSettings.this.setModPackID(e.ID);
                     ServerSettings.this.configuration.save();
                 }
-            }
-            catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }, "Mod Pack Overwrite Process")).start();
     }
 
-    void setAdvancedNetworkType(int type)
-    {
+    void setAdvancedNetworkType(int type) {
         this.advancedNetworkType = type;
     }
 
-    void setBufferSize(int bufferSize)
-    {
+    void setBufferSize(int bufferSize) {
         this.bufferSize = bufferSize;
     }
 
-    final void setCanShowVoiceIcons(boolean canShowVoiceIcons)
-    {
+    final void setCanShowVoiceIcons(boolean canShowVoiceIcons) {
         this.canShowVoiceIcons = canShowVoiceIcons;
     }
 
-    void setCanShowVoicePlates(boolean canShowVoicePlates)
-    {
+    void setCanShowVoicePlates(boolean canShowVoicePlates) {
         this.canShowVoicePlates = canShowVoicePlates;
     }
 
-    void setDefaultChatMode(int defaultChatMode)
-    {
+    void setDefaultChatMode(int defaultChatMode) {
         this.defaultChatMode = defaultChatMode;
     }
 
-    void setModPackID(int id)
-    {
+    void setModPackID(int id) {
         this.modPackID = id;
     }
 
-    void setQuality(int x0, int x1)
-    {
+    void setQuality(int x0, int x1) {
         this.minimumQuality = x0;
         this.maximumQuality = x1;
     }
 
-    void setSoundDistance(int dist)
-    {
+    void setSoundDistance(int dist) {
         this.soundDist = dist;
     }
 
-    void setUDPPort(int udp)
-    {
+    void setUDPPort(int udp) {
         this.udpPort = udp;
     }
 
-    void setUsingProxy(boolean val)
-    {
+    void setUsingProxy(boolean val) {
         this.behindProxy = val;
     }
 }

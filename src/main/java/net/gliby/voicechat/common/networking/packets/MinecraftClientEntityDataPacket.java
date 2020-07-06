@@ -7,17 +7,17 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MinecraftClientEntityDataPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientEntityDataPacket, MinecraftClientEntityDataPacket>
-{
+public class MinecraftClientEntityDataPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientEntityDataPacket, MinecraftClientEntityDataPacket> {
     private int entityID;
     private String username;
     private double x;
     private double y;
     private double z;
 
-    public MinecraftClientEntityDataPacket() {}
-    public MinecraftClientEntityDataPacket(int entityID, String username, double x, double y, double z)
-    {
+    public MinecraftClientEntityDataPacket() {
+    }
+
+    public MinecraftClientEntityDataPacket(int entityID, String username, double x, double y, double z) {
         this.entityID = entityID;
         this.username = username;
         this.x = x;
@@ -25,8 +25,7 @@ public class MinecraftClientEntityDataPacket extends MinecraftPacket implements 
         this.z = z;
     }
 
-    public void fromBytes(ByteBuf buf)
-    {
+    public void fromBytes(ByteBuf buf) {
         this.entityID = buf.readInt();
         this.x = buf.readDouble();
         this.y = buf.readDouble();
@@ -34,8 +33,7 @@ public class MinecraftClientEntityDataPacket extends MinecraftPacket implements 
         this.username = ByteBufUtils.readUTF8String(buf);
     }
 
-    public void toBytes(ByteBuf buf)
-    {
+    public void toBytes(ByteBuf buf) {
         buf.writeInt(this.entityID);
         buf.writeDouble(this.x);
         buf.writeDouble(this.y);
@@ -43,10 +41,8 @@ public class MinecraftClientEntityDataPacket extends MinecraftPacket implements 
         ByteBufUtils.writeUTF8String(buf, this.username);
     }
 
-    public MinecraftClientEntityDataPacket onMessage(MinecraftClientEntityDataPacket packet, MessageContext ctx)
-    {
-        if (VoiceChat.getProxyInstance().getClientNetwork().isConnected())
-        {
+    public MinecraftClientEntityDataPacket onMessage(MinecraftClientEntityDataPacket packet, MessageContext ctx) {
+        if (VoiceChat.getProxyInstance().getClientNetwork().isConnected()) {
             VoiceChat.getProxyInstance().getClientNetwork().handleEntityData(packet.entityID, packet.username, packet.x, packet.y, packet.z);
         }
         return null;

@@ -21,7 +21,7 @@ public class GuiUIPlacement extends GuiScreen {
     private final GuiScreen parent;
     private int offsetX;
     private int offsetY;
-    private String[] positionTypes = new String[2];
+    private final String[] positionTypes = new String[2];
     private GuiButton positionTypeButton;
     private GuiButton resetButton;
     private GuiBoostSlider scaleSlider;
@@ -42,10 +42,10 @@ public class GuiUIPlacement extends GuiScreen {
             par1 = par3;
             par3 = j1;
         }
-        float f = (float)(par4 >> 24 & 255) / 255.0F;
-        float f1 = (float)(par4 >> 16 & 255) / 255.0F;
-        float f2 = (float)(par4 >> 8 & 255) / 255.0F;
-        float f3 = (float)(par4 & 255) / 255.0F;
+        float f = (float) (par4 >> 24 & 255) / 255.0F;
+        float f1 = (float) (par4 >> 16 & 255) / 255.0F;
+        float f2 = (float) (par4 >> 8 & 255) / 255.0F;
+        float f3 = (float) (par4 & 255) / 255.0F;
         Tessellator tessellator = Tessellator.getInstance();
         glEnable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
@@ -53,10 +53,10 @@ public class GuiUIPlacement extends GuiScreen {
         glColor4f(f1, f2, f3, f);
         BufferBuilder vb = tessellator.getBuffer();
         vb.begin(2, DefaultVertexFormats.POSITION);
-        vb.pos((double)par0, (double)par3, 0.0D).endVertex();
-        vb.pos((double)par2, (double)par3, 0.0D).endVertex();
-        vb.pos((double)par2, (double)par1, 0.0D).endVertex();
-        vb.pos((double)par0, (double)par1, 0.0D).endVertex();
+        vb.pos(par0, par3, 0.0D).endVertex();
+        vb.pos(par2, par3, 0.0D).endVertex();
+        vb.pos(par2, par1, 0.0D).endVertex();
+        vb.pos(par0, par1, 0.0D).endVertex();
         tessellator.draw();
         glEnable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
@@ -67,21 +67,22 @@ public class GuiUIPlacement extends GuiScreen {
     }
 
     public void actionPerformed(GuiButton button) {
-        if (button.id == 0 && this.lastSelected != null) {
-            if (this.lastSelected.positionType >= 1)
-                this.lastSelected.positionType = 0;
-            else
-                ++this.lastSelected.positionType;
-        }
+        if (this.lastSelected == null)
+            return;
 
-        if (button.id == 1 && this.lastSelected != null) {
-            if (this.lastSelected.info.positionType == 0) {
-                this.lastSelected.x = this.lastSelected.info.x * (float)this.width;
-                this.lastSelected.y = this.lastSelected.info.y * (float)this.height;
-            } else {
-                this.lastSelected.x = this.lastSelected.info.x;
-                this.lastSelected.y = this.lastSelected.info.y;
-            }
+        switch (button.id) {
+            case 0:
+                if (this.lastSelected.positionType >= 1) this.lastSelected.positionType = 0;
+                else ++this.lastSelected.positionType;
+                break;
+            case 1:
+                if (this.lastSelected.info.positionType == 0) {
+                    this.lastSelected.x = this.lastSelected.info.x * (float) this.width;
+                    this.lastSelected.y = this.lastSelected.info.y * (float) this.height;
+                } else {
+                    this.lastSelected.x = this.lastSelected.info.x;
+                    this.lastSelected.y = this.lastSelected.info.y;
+                }
         }
     }
 
@@ -91,25 +92,25 @@ public class GuiUIPlacement extends GuiScreen {
         this.drawCenteredString(this.fontRenderer, I18n.format("menu.pressESCtoReturn"), this.width / 2, 2, -1);
 
         if (this.selectedUIPlaceable != null) {
-            this.selectedUIPlaceable.x = (float)(mouseX - this.offsetX);
-            this.selectedUIPlaceable.y = (float)(mouseY - this.offsetY);
+            this.selectedUIPlaceable.x = (float) (mouseX - this.offsetX);
+            this.selectedUIPlaceable.y = (float) (mouseY - this.offsetY);
 
             if (!Mouse.isButtonDown(0))
                 this.selectedUIPlaceable = null;
         }
 
         if (this.lastSelected != null) {
-            this.scaleSlider.setDisplayString(I18n.format("menu.scale") + ": " + (int)(this.lastSelected.scale * 100.0F) + "%");
+            this.scaleSlider.setDisplayString(I18n.format("menu.scale") + ": " + (int) (this.lastSelected.scale * 100.0F) + "%");
             this.scaleSlider.sliderValue = this.lastSelected.scale;
-            boolean i = this.inBounds(this.lastSelected.x + (float)this.lastSelected.width + 151.0F, this.lastSelected.y + 42.0F, (float)this.width, 0.0F, (float)this.width, (float)(this.height * 2));
-            boolean placeable = this.inBounds(this.lastSelected.x + (float)this.lastSelected.width - 75.0F, this.lastSelected.y, (float)(-this.width), (float)(-this.height), (float)(this.width * 2), (float)this.height);
-            boolean bottomSide = this.inBounds(this.lastSelected.x + (float)this.lastSelected.width, this.lastSelected.y + 66.0F, 0.0F, (float)this.height, (float)(this.width * 2), (float)this.height);
-            this.positionTypeButton.x = (int)(this.lastSelected.x + (float)(i?-100:this.lastSelected.width + 2));
-            this.positionTypeButton.y = (int)(this.lastSelected.y - (bottomSide?this.lastSelected.y + 66.0F - (float)this.height:(placeable ? this.lastSelected.y - 0.0F : 0.0F)));
-            this.scaleSlider.x = (int)(this.lastSelected.x + (float)(i?-154:this.lastSelected.width + 2));
-            this.scaleSlider.y = (int)(this.lastSelected.y + 22.0F - (bottomSide?this.lastSelected.y + 66.0F - (float)this.height:(placeable ? this.lastSelected.y - 0.0F : 0.0F)));
-            this.resetButton.x = (int)(this.lastSelected.x + (float)(i?-100:this.lastSelected.width + 2));
-            this.resetButton.y = (int)(this.lastSelected.y + 44.0F - (bottomSide?this.lastSelected.y + 66.0F - (float)this.height:(placeable ? this.lastSelected.y - 0.0F : 0.0F)));
+            boolean i = this.inBounds(this.lastSelected.x + (float) this.lastSelected.width + 151.0F, this.lastSelected.y + 42.0F, (float) this.width, 0.0F, (float) this.width, (float) (this.height * 2));
+            boolean placeable = this.inBounds(this.lastSelected.x + (float) this.lastSelected.width - 75.0F, this.lastSelected.y, (float) (-this.width), (float) (-this.height), (float) (this.width * 2), (float) this.height);
+            boolean bottomSide = this.inBounds(this.lastSelected.x + (float) this.lastSelected.width, this.lastSelected.y + 66.0F, 0.0F, (float) this.height, (float) (this.width * 2), (float) this.height);
+            this.positionTypeButton.x = (int) (this.lastSelected.x + (float) (i ? -100 : this.lastSelected.width + 2));
+            this.positionTypeButton.y = (int) (this.lastSelected.y - (bottomSide ? this.lastSelected.y + 66.0F - (float) this.height : (placeable ? this.lastSelected.y - 0.0F : 0.0F)));
+            this.scaleSlider.x = (int) (this.lastSelected.x + (float) (i ? -154 : this.lastSelected.width + 2));
+            this.scaleSlider.y = (int) (this.lastSelected.y + 22.0F - (bottomSide ? this.lastSelected.y + 66.0F - (float) this.height : (placeable ? this.lastSelected.y - 0.0F : 0.0F)));
+            this.resetButton.x = (int) (this.lastSelected.x + (float) (i ? -100 : this.lastSelected.width + 2));
+            this.resetButton.y = (int) (this.lastSelected.y + 44.0F - (bottomSide ? this.lastSelected.y + 66.0F - (float) this.height : (placeable ? this.lastSelected.y - 0.0F : 0.0F)));
             this.positionTypeButton.displayString = I18n.format("menu.position") + ": " + this.positionTypes[this.lastSelected.positionType];
             this.positionTypeButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
             this.resetButton.drawButton(this.mc, mouseX, mouseY, partialTicks);
@@ -149,10 +150,8 @@ public class GuiUIPlacement extends GuiScreen {
         this.buttonList.add(this.resetButton = new GuiButton(1, 2, 2, 96, 20, I18n.format("menu.resetLocation")));
         this.buttonList.add(this.scaleSlider = new GuiBoostSlider(2, 2, 2, "", "Scale: 100%", 0.0F));
 
-        for (GuiPlaceableInterface placeable : this.placeables)
-        {
-            if (placeable.positionType == 0)
-            {
+        for (GuiPlaceableInterface placeable : this.placeables) {
+            if (placeable.positionType == 0) {
                 this.resize(placeable);
             }
         }
@@ -203,7 +202,7 @@ public class GuiUIPlacement extends GuiScreen {
     }
 
     private void resize(GuiPlaceableInterface placeable) {
-        placeable.update((int)((float)this.width * (placeable.x * 1.0F / (float)placeable.screenWidth)), (int)((float)this.height * (placeable.y * 1.0F / (float)placeable.screenHeight)), this.width, this.height);
+        placeable.update((int) ((float) this.width * (placeable.x * 1.0F / (float) placeable.screenWidth)), (int) ((float) this.height * (placeable.y * 1.0F / (float) placeable.screenHeight)), this.width, this.height);
     }
 
     private void save() {

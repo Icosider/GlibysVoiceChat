@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.Map.Entry;
 
 public class ClientEventHandler {
-    private VoiceChatClient voiceChat;
+    private final VoiceChatClient voiceChat;
 
     public ClientEventHandler(VoiceChatClient voiceChatClient) {
         this.voiceChat = voiceChatClient;
@@ -21,7 +21,7 @@ public class ClientEventHandler {
         if (event.getWorld().isRemote) {
             (new Thread(() -> {
                 if (event.getEntity() instanceof EntityOtherPlayerMP) {
-                    EntityOtherPlayerMP player = (EntityOtherPlayerMP)event.getEntity();
+                    EntityOtherPlayerMP player = (EntityOtherPlayerMP) event.getEntity();
 
                     if (!VoiceChatClient.getSoundManager().playersMuted.contains(player.getEntityId())) {
                         VoiceChatClient.getSoundManager();

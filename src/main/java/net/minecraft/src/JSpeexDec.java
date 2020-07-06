@@ -3,7 +3,6 @@ package net.minecraft.src;
 import org.xiph.speex.*;
 
 import java.io.*;
-import java.util.Objects;
 import java.util.Random;
 
 public class JSpeexDec {
@@ -225,7 +224,7 @@ public class JSpeexDec {
         }
 
         if (this.printlevel <= 0) {
-            System.out.println("");
+            System.out.println();
         }
 
         if (this.printlevel <= 0) {
@@ -325,7 +324,7 @@ public class JSpeexDec {
                         if (this.destFormat == 2) {
                             var21 = new PcmWaveWriter(this.sampleRate, this.channels);
                             if (this.printlevel <= 0) {
-                                System.out.println("");
+                                System.out.println();
                                 System.out.println("Output File: " + var2);
                                 System.out.println("File Format: PCM Wave");
                                 System.out.println("Perceptual Enhancement: " + this.enhanced);
@@ -333,7 +332,7 @@ public class JSpeexDec {
                         } else {
                             var21 = new RawWriter();
                             if (this.printlevel <= 0) {
-                                System.out.println("");
+                                System.out.println();
                                 System.out.println("Output File: " + var2);
                                 System.out.println("File Format: Raw Audio");
                                 System.out.println("Perceptual Enhancement: " + this.enhanced);
@@ -386,7 +385,7 @@ public class JSpeexDec {
                 for (int var28 = 0; var28 < var27; ++var28) {
                     var17 = var3[27 + var28] & 255;
                     if (var17 == 255) {
-                        System.err.println("sorry, don\'t handle 255 sizes!");
+                        System.err.println("sorry, don't handle 255 sizes!");
                         return;
                     }
 
@@ -405,7 +404,7 @@ public class JSpeexDec {
                             if (this.destFormat == 2) {
                                 var21 = new PcmWaveWriter(this.speexDecoder.getSampleRate(), this.speexDecoder.getChannels());
                                 if (this.printlevel <= 0) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Output File: " + var2);
                                     System.out.println("File Format: PCM Wave");
                                     System.out.println("Perceptual Enhancement: " + this.enhanced);
@@ -413,7 +412,7 @@ public class JSpeexDec {
                             } else {
                                 var21 = new RawWriter();
                                 if (this.printlevel <= 0) {
-                                    System.out.println("");
+                                    System.out.println();
                                     System.out.println("Output File: " + var2);
                                     System.out.println("File Format: Raw Audio");
                                     System.out.println("Perceptual Enhancement: " + this.enhanced);

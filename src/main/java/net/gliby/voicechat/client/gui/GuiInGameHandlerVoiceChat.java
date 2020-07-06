@@ -40,7 +40,7 @@ public class GuiInGameHandlerVoiceChat extends Gui {
 
     private int getDelta() {
         long time = this.getTime();
-        int delta = (int)(time - this.lastFrame);
+        int delta = (int) (time - this.lastFrame);
         this.lastFrame = time;
         return delta;
     }
@@ -60,10 +60,10 @@ public class GuiInGameHandlerVoiceChat extends Gui {
 
             if (stats != null) {
                 int settings = 1 | ValueFormat.PRECISION(2) | 192;
-                String encodedAvg = ValueFormat.format((long)stats.getEncodedAverageDataReceived(), settings);
-                String decodedAvg = ValueFormat.format((long)stats.getDecodedAverageDataReceived(), settings);
-                String encodedData = ValueFormat.format((long)stats.getEncodedDataReceived(), settings);
-                String decodedData = ValueFormat.format((long)stats.getDecodedDataReceived(), settings);
+                String encodedAvg = ValueFormat.format(stats.getEncodedAverageDataReceived(), settings);
+                String decodedAvg = ValueFormat.format(stats.getDecodedAverageDataReceived(), settings);
+                String encodedData = ValueFormat.format(stats.getEncodedDataReceived(), settings);
+                String decodedData = ValueFormat.format(stats.getDecodedDataReceived(), settings);
                 text.getRight().add("Voice Chat Debug Info");
                 text.getRight().add("VC Data [ENC AVG]: " + encodedAvg + "");
                 text.getRight().add("VC Data [DEC AVG]: " + decodedAvg + "");
@@ -89,12 +89,11 @@ public class GuiInGameHandlerVoiceChat extends Gui {
 
             if (!VoiceChat.getProxyInstance().isRecorderActive()) {
                 if (this.fade > 0.0F)
-                    this.fade -= 0.01F * (float)delta;
+                    this.fade -= 0.01F * (float) delta;
                 else
                     this.fade = 0.0F;
-            }
-            else if (this.fade < 1.0F && VoiceChat.getProxyInstance().isRecorderActive())
-                this.fade += 0.01F * (float)delta;
+            } else if (this.fade < 1.0F && VoiceChat.getProxyInstance().isRecorderActive())
+                this.fade += 0.01F * (float) delta;
             else
                 this.fade = 1.0F;
 
@@ -114,7 +113,7 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                     glScalef(positionUI.scale, positionUI.scale, 1.0F);
                     this.drawTexturedModalRect(0, 0, 0, 0, 54, 46);
 
-                    switch ((int)((float)(Minecraft.getSystemTime() % 1000L) / 350.0F)) {
+                    switch ((int) ((float) (Minecraft.getSystemTime() % 1000L) / 350.0F)) {
                         case 0:
                             this.drawTexturedModalRect(12, -3, 0, 47, 22, 49);
                             break;
@@ -152,15 +151,15 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                         int length = this.mc.fontRenderer.getStringWidth(s);
                         scale = 0.75F * positionUI.scale;
                         glPushMatrix();
-                        glTranslatef(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY + (float)(i * 23) * scale, 0.0F);
+                        glTranslatef(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY + (float) (i * 23) * scale, 0.0F);
                         glScalef(scale, scale, 0.0F);
                         glColor4f(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
                         glTranslatef(0.0F, 0.0F, 0.0F);
                         IndependentGUITexture.TEXTURES.bindTexture(this.mc);
                         this.drawTexturedModalRect(0, 0, 56, stream.special * 22, 109, 22);
                         glPushMatrix();
-                        scale = MathUtility.clamp(50.5F / (float)length, 0.0F, 1.25F);
-                        glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(this.mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
+                        scale = MathUtility.clamp(50.5F / (float) length, 0.0F, 1.25F);
+                        glTranslatef(25.0F + scale / 2.0F, 11.0F - (float) (this.mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
                         glScalef(scale, scale, 0.0F);
                         this.drawString(this.mc.fontRenderer, s, 0, 0, -1);
                         glPopMatrix();
@@ -172,7 +171,6 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                             IndependentGUITexture.bindDefaultPlayer(this.mc);
 
                         glColor4f(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
-                        glColor4f(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
                         glTranslatef(3.25F, 3.25F, 0.0F);
                         glScalef(2.0F, 2.0F, 0.0F);
                         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
@@ -183,7 +181,6 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                         glPopMatrix();
                     }
                 }
-                glDisable(GL_BLEND);
             }
 
             if (VoiceChatClient.getSoundManager().currentStreams.isEmpty())

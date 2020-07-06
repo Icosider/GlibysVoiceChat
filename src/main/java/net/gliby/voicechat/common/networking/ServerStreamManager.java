@@ -27,14 +27,13 @@ public class ServerStreamManager {
     public EntityHandler entityHandler;
     volatile boolean running;
 
-    ServerStreamManager(VoiceChatServer voiceChat)
-    {
+    ServerStreamManager(VoiceChatServer voiceChat) {
         this.voiceChat = voiceChat;
     }
 
     public void addQueue(EntityPlayerMP player, byte[] decoded_data, byte divider, int id, boolean end) {
         if (!this.mutedPlayers.contains(player.getPersistentID())) {
-            this.dataQueue.offer(new ServerDatalet(player, id, decoded_data, divider, end, (byte)-1));
+            this.dataQueue.offer(new ServerDatalet(player, id, decoded_data, divider, end, (byte) -1));
 
             synchronized (this.treadQueue) {
                 this.treadQueue.notify();

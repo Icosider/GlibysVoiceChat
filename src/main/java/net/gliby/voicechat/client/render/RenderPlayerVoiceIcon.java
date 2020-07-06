@@ -28,13 +28,12 @@ public class RenderPlayerVoiceIcon extends Gui {
     private void enableEntityLighting(Entity entity, float partialTicks) {
         int i1 = entity.getBrightnessForRender();
 
-        if (entity.isBurning())
-        {
+        if (entity.isBurning()) {
             i1 = 15728880;
         }
         int j = i1 % 65536;
         int k = i1 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j / 1.0F, (float) k / 1.0F);
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         glEnable(GL_TEXTURE_2D);
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -54,11 +53,11 @@ public class RenderPlayerVoiceIcon extends Gui {
             OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
             this.translateWorld(this.mc, event.getPartialTicks());
 
-            for (int i = 0; (float)i < MathUtility.clamp((float)VoiceChatClient.getSoundManager().currentStreams.size(), 0.0F, (float)this.voiceChat.getSettings().getMaximumRenderableVoiceIcons()); ++i) {
+            for (int i = 0; (float) i < MathUtility.clamp((float) VoiceChatClient.getSoundManager().currentStreams.size(), 0.0F, (float) this.voiceChat.getSettings().getMaximumRenderableVoiceIcons()); ++i) {
                 ClientStream stream = VoiceChatClient.getSoundManager().currentStreams.get(i);
 
                 if (stream.player.getPlayer() != null && stream.player.usesEntity) {
-                    EntityLivingBase entity = (EntityLivingBase)stream.player.getPlayer();
+                    EntityLivingBase entity = (EntityLivingBase) stream.player.getPlayer();
 
                     if (!entity.isInvisible() && !this.mc.gameSettings.hideGUI) {
                         GL11.glPushMatrix();

@@ -23,7 +23,7 @@ public class PlayerProxy {
     }
 
     public String entityName() {
-        return this.entityName != null?this.entityName: String.valueOf(this.player.getDisplayName());
+        return this.entityName != null ? this.entityName : String.valueOf(this.player.getDisplayName());
     }
 
     public Entity getPlayer() {

@@ -8,7 +8,6 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import java.util.Random;
 
@@ -16,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface {
     private static final ResourceLocation skinDefault = new ResourceLocation("textures/entity/steve.png");
-    private String[] players;
+    private final String[] players;
 
     GuiUIPlacementVoicePlate(UIPosition position, int width, int height) {
         super(position, width, height);
@@ -32,7 +31,7 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface {
             int length = mc.fontRenderer.getStringWidth(stream);
             float scale = 0.75F * super.scale;
             glPushMatrix();
-            glTranslatef(super.positionUI.x + (float)super.positionUI.info.offsetX, super.positionUI.y + (float)super.positionUI.info.offsetY + (float)(i * 23) * scale, 0.0F);
+            glTranslatef(super.positionUI.x + (float) super.positionUI.info.offsetX, super.positionUI.y + (float) super.positionUI.info.offsetY + (float) (i * 23) * scale, 0.0F);
             glScalef(scale, scale, 0.0F);
             glEnable(GL_BLEND);
             OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
@@ -40,8 +39,8 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface {
             IndependentGUITexture.TEXTURES.bindTexture(mc);
             gui.drawTexturedModalRect(0, 0, 56, 0, 109, 22);
             glPushMatrix();
-            scale = MathUtility.clamp(50.5F / (float)length, 0.0F, 1.25F);
-            glTranslatef(25.0F + scale / 2.0F, 11.0F - (float)(mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
+            scale = MathUtility.clamp(50.5F / (float) length, 0.0F, 1.25F);
+            glTranslatef(25.0F + scale / 2.0F, 11.0F - (float) (mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
             glScalef(scale, scale, 0.0F);
             gui.drawString(mc.fontRenderer, stream, 0, 0, -1);
             glPopMatrix();

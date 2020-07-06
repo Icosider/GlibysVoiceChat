@@ -28,7 +28,7 @@ public class UDPVoiceClient extends VoiceAuthenticatedClient {
     private UDPVoiceClientHandler handler;
     private DatagramSocket datagramSocket;
     private InetSocketAddress address;
-    private int key;
+    private final int key;
     private ByteArrayDataOutput packetBuffer = ByteStreams.newDataOutput();
 
     public UDPVoiceClient(EnumVoiceNetworkType enumVoiceServer, String hash, String host, int udpPort) {
@@ -36,7 +36,7 @@ public class UDPVoiceClient extends VoiceAuthenticatedClient {
         this.port = udpPort;
         this.host = host;
         this.soundManager = VoiceChatClient.getSoundManager();
-        this.key = (int)(new BigInteger(hash.replaceAll("[^0-9.]", ""))).longValue();
+        this.key = (int) (new BigInteger(hash.replaceAll("[^0-9.]", ""))).longValue();
     }
 
     @Override

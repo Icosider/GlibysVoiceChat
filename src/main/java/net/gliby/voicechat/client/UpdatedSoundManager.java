@@ -12,7 +12,7 @@ import java.util.Iterator;
 
 class UpdatedSoundManager {
     UpdatedSoundManager() {
-        Iterator iter = Loader.instance().getModList().iterator();
+        final Iterator<ModContainer> iter = Loader.instance().getModList().iterator();
 
         ModContainer mod;
 
@@ -24,14 +24,14 @@ class UpdatedSoundManager {
                     SoundSystemConfig.setCodec("ogg", CodecJOrbis.class);
                     SoundSystemConfig.setCodec("wav", CodecWav.class);
                 } catch (Exception e) {
-                    VoiceChat.getLogger().info("Failed to replaced sound libraries, you won\'t be hearing any voice chat.");
+                    VoiceChat.getLogger().info("Failed to replaced sound libraries, you won't be hearing any voice chat.");
                     e.printStackTrace();
                 }
                 VoiceChat.getLogger().info("Successfully replaced sound libraries.");
                 return;
             }
-            mod = (ModContainer)iter.next();
+            mod = iter.next();
         } while (!mod.getModId().equals("soundfilters"));
-        VoiceChat.getLogger().info("Found Sound Filters mod, won\'t replace OpenAL library.");
+        VoiceChat.getLogger().info("Found Sound Filters mod, won't replace OpenAL library.");
     }
 }

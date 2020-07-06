@@ -191,8 +191,7 @@ public class JINIFile extends ArrayList<String> {
                 ioe.newLine();
             }
             return true;
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             return false;
         }
     }

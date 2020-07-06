@@ -6,7 +6,6 @@ import net.gliby.voicechat.client.gui.GuiUIPlacement;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -41,9 +40,9 @@ public class GuiScreenOptionsUI extends GuiScreen {
 
         this.drawDefaultBackground();
         glPushMatrix();
-        glTranslatef((float) (centerW - this.fontRenderer.getStringWidth("Gliby\'s Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
+        glTranslatef((float) (centerW - this.fontRenderer.getStringWidth("Gliby's Voice Chat Options") / 2) * 1.5F, 0.0F, 0.0F);
         glScalef(1.5F, 1.5F, 0F);
-        this.drawString(this.mc.fontRenderer, "Gliby\'s Voice Chat Options", 0, 6, -1);
+        this.drawString(this.mc.fontRenderer, "Gliby's Voice Chat Options", 0, 6, -1);
         glPopMatrix();
         glPushMatrix();
         glTranslatef((float) (centerW - this.fontRenderer.getStringWidth(I18n.format("menu.uiOptions")) / 2), 12.0F, 0.0F);
@@ -57,7 +56,7 @@ public class GuiScreenOptionsUI extends GuiScreen {
         this.buttonList.add(new GuiButton(0, this.width / 2 - 75, this.height - 34, 150, 20, I18n.format("gui.back")));
         this.buttonList.add(new GuiButton(1, this.width / 2 - 75, 73, 150, 20, I18n.format("menu.resetAll")));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 150, 50, 150, 20, I18n.format("menu.uiPlacement")));
-        this.buttonList.add(this.opacity = new GuiBoostSlider(-1, this.width / 2 + 2, 50, "", I18n.format("menu.uiOpacity") + ": " + (this.voiceChat.getSettings().getUIOpacity() == 0.0F?I18n.format("options.off"):(int)(this.voiceChat.getSettings().getUIOpacity() * 100.0F) + "%"), 0.0F));
+        this.buttonList.add(this.opacity = new GuiBoostSlider(-1, this.width / 2 + 2, 50, "", I18n.format("menu.uiOpacity") + ": " + (this.voiceChat.getSettings().getUIOpacity() == 0.0F ? I18n.format("options.off") : (int) (this.voiceChat.getSettings().getUIOpacity() * 100.0F) + "%"), 0.0F));
         this.opacity.sliderValue = this.voiceChat.getSettings().getUIOpacity();
     }
 
@@ -71,6 +70,6 @@ public class GuiScreenOptionsUI extends GuiScreen {
     public void updateScreen() {
         super.onGuiClosed();
         this.voiceChat.getSettings().setUIOpacity(this.opacity.sliderValue);
-        this.opacity.setDisplayString(I18n.format("menu.uiOpacity") + ": " + (this.voiceChat.getSettings().getUIOpacity() == 0.0F?I18n.format("options.off"):(int)(this.voiceChat.getSettings().getUIOpacity() * 100.0F) + "%"));
+        this.opacity.setDisplayString(I18n.format("menu.uiOpacity") + ": " + (this.voiceChat.getSettings().getUIOpacity() == 0.0F ? I18n.format("options.off") : (int) (this.voiceChat.getSettings().getUIOpacity() * 100.0F) + "%"));
     }
 }

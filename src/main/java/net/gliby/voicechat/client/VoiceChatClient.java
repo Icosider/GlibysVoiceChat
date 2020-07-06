@@ -28,8 +28,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VoiceChatClient extends VoiceChatServer
-{
+public class VoiceChatClient extends VoiceChatServer {
     @SideOnly(Side.CLIENT)
     private static ClientStreamManager soundManager;
 
@@ -52,69 +51,57 @@ public class VoiceChatClient extends VoiceChatServer
 
     public Recorder recorder;
     public Map<String, Integer> specialPlayers = new HashMap<>();
-    private String[] testPlayers = new String[]{"captaindogfish", "starguy1245", "SheheryaB", "arsham123", "Chris9awesome", "TechnoX_X", "bubz052", "McJackson3180", "InfamousArgyle", "jdf2", "XxNotexX0", "SirDenerim", "Frankspark", "smith70831", "killazombiecow", "CraftAeternalis", "choclaterainxx", "dragonballkid4", "TH3_CR33PER", "yetshadow", "KristinnVikarJ", "TheMCBros99", "kevinlame"};
+    private final String[] testPlayers = new String[]{"captaindogfish", "starguy1245", "SheheryaB", "arsham123", "Chris9awesome", "TechnoX_X", "bubz052", "McJackson3180", "InfamousArgyle", "jdf2", "XxNotexX0", "SirDenerim", "Frankspark", "smith70831", "killazombiecow", "CraftAeternalis", "choclaterainxx", "dragonballkid4", "TH3_CR33PER", "yetshadow", "KristinnVikarJ", "TheMCBros99", "kevinlame"};
     private boolean init;
 
-    public static synchronized Logger getLogger()
-    {
+    public static synchronized Logger getLogger() {
         return VoiceChatServer.LOGGER;
     }
 
-    public static ModMetadata getModMetadata()
-    {
+    public static ModMetadata getModMetadata() {
         return modMetadata;
     }
 
-    public static ClientStreamManager getSoundManager()
-    {
+    public static ClientStreamManager getSoundManager() {
         return soundManager;
     }
 
-    public static Statistics getStatistics()
-    {
+    public static Statistics getStatistics() {
         return stats;
     }
 
-    public ClientNetwork getClientNetwork()
-    {
+    public ClientNetwork getClientNetwork() {
         return this.clientNetwork;
     }
 
-    public Settings getSettings()
-    {
+    public Settings getSettings() {
         return this.settings;
     }
 
-    public String[] getTestPlayers()
-    {
+    public String[] getTestPlayers() {
         return this.testPlayers;
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onJoin(TickEvent.PlayerTickEvent event)
-    {
-        if (event.phase == TickEvent.Phase.END && event.side == Side.CLIENT && !this.init)
-        {
+    public void onJoin(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && event.side == Side.CLIENT && !this.init) {
             Minecraft mc = Minecraft.getMinecraft();
             VoiceChatClient voiceChat = VoiceChat.getProxyInstance();
 
-            if (voiceChat.getSettings().isSetupNeeded())
-            {
+            if (voiceChat.getSettings().isSetupNeeded()) {
                 mc.displayGuiScreen(new GuiScreenOptionsWizard(voiceChat, null));
             }
             this.init = true;
         }
     }
 
-    public void initMod(VoiceChat voiceChat, FMLInitializationEvent event)
-    {
+    public void initMod(VoiceChat voiceChat, FMLInitializationEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         this.recorder = new Recorder(this);
         this.keyManager.init();
 
-        if (this.settings.isDebug())
-        {
+        if (this.settings.isDebug()) {
             getLogger().info("Debug enabled!");
             stats = new Statistics();
         }
@@ -129,14 +116,12 @@ public class VoiceChatClient extends VoiceChatServer
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public void preInitClient(FMLPreInitializationEvent event)
-    {
+    public void preInitClient(FMLPreInitializationEvent event) {
         new UpdatedSoundManager();
         modMetadata = event.getModMetadata();
         File configurationDirectory = new File(event.getModConfigurationDirectory(), "gliby_vc");
 
-        if (!configurationDirectory.exists())
-        {
+        if (!configurationDirectory.exists()) {
             configurationDirectory.mkdir();
         }
         this.settings = new Settings(new File(configurationDirectory, "ClientSettings.ini"));
@@ -155,15 +140,12 @@ public class VoiceChatClient extends VoiceChatServer
         soundManager.init();
     }
 
-    public final boolean isRecorderActive()
-    {
+    public final boolean isRecorderActive() {
         return this.recorderActive;
     }
 
-    public void setRecorderActive(boolean b)
-    {
-        if (this.clientNetwork.voiceClientExists())
-        {
+    public void setRecorderActive(boolean b) {
+        if (this.clientNetwork.voiceClientExists()) {
             this.recorderActive = b;
         }
     }

@@ -24,145 +24,114 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.util.Random;
 
-public class VoiceChatServer
-{
-    protected static final Logger LOGGER = LogManager.getLogger("Gliby\'s Voice Chat Mod");
+public class VoiceChatServer {
+    protected static final Logger LOGGER = LogManager.getLogger("Gliby's Voice Chat Mod");
     private VoiceServer voiceServer;
     private Thread voiceServerThread;
     public ServerNetwork serverNetwork;
     public ServerSettings serverSettings;
     private File configurationDirectory;
 
-    private static boolean available(int port)
-    {
-        if (port >= 4000 && port <= '\uffff')
-        {
+    private static boolean available(int port) {
+        if (port >= 4000 && port <= '\uffff') {
             ServerSocket ss = null;
             DatagramSocket ds = null;
 
-            try
-            {
+            try {
                 ss = new ServerSocket(port);
                 ss.setReuseAddress(true);
                 ds = new DatagramSocket(port);
                 ds.setReuseAddress(true);
                 return true;
-            }
-            catch (IOException var13)
-            {
+            } catch (IOException var13) {
                 var13.printStackTrace();
-            }
-            finally
-            {
-                if (ds != null)
-                {
+            } finally {
+                if (ds != null) {
                     ds.close();
                 }
 
-                if (ss != null)
-                {
-                    try
-                    {
+                if (ss != null) {
+                    try {
                         ss.close();
-                    }
-                    catch (IOException e)
-                    {
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
             }
             return false;
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Invalid start port: " + port);
         }
     }
 
-    public static synchronized Logger getLogger()
-    {
+    public static synchronized Logger getLogger() {
         return LOGGER;
     }
 
-    public static int randInt(int min, int max)
-    {
+    public static int randInt(int min, int max) {
         return new Random().nextInt(max - min + 1) + min;
     }
 
-    public void commonInit(final FMLPreInitializationEvent event)
-    {
+    public void commonInit(final FMLPreInitializationEvent event) {
         (new VoiceChatAPI()).init();
     }
 
-    private int getAvailablePort() throws IOException
-    {
+    private int getAvailablePort() throws IOException {
         int port1;
 
         do {
             port1 = randInt(4001, '\ufffe');
         }
-        while(!available(port1));
+        while (!available(port1));
         return port1;
     }
 
-    private int getNearestPort(int port)
-    {
+    private int getNearestPort(int port) {
         ++port;
         return port;
     }
 
-    public synchronized ServerNetwork getServerNetwork()
-    {
+    public synchronized ServerNetwork getServerNetwork() {
         return this.serverNetwork;
     }
 
-    public ServerSettings getServerSettings()
-    {
+    public ServerSettings getServerSettings() {
         return this.serverSettings;
     }
 
-    public String getVersion()
-    {
+    public String getVersion() {
         return "0.7.0";
     }
 
-    public VoiceServer getVoiceServer()
-    {
+    public VoiceServer getVoiceServer() {
         return this.voiceServer;
     }
 
-    public void initMod(VoiceChat voiceChat, FMLInitializationEvent event) {}
+    public void initMod(VoiceChat voiceChat, FMLInitializationEvent event) {
+    }
 
-    public void initServer(FMLServerStartedEvent event)
-    {
+    public void initServer(FMLServerStartedEvent event) {
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
-        if (this.serverSettings.getUDPPort() == 0)
-        {
-            if (server.isDedicatedServer())
-            {
+        if (this.serverSettings.getUDPPort() == 0) {
+            if (server.isDedicatedServer()) {
                 int e = -1;
 
-                if (((DedicatedServer)server).getBooleanProperty("enable-query", false))
-                {
-                    e = ((DedicatedServer)server).getIntProperty("query.port", 0);
+                if (((DedicatedServer) server).getBooleanProperty("enable-query", false)) {
+                    e = ((DedicatedServer) server).getIntProperty("query.port", 0);
                 }
 
                 boolean portTaken = e == server.getServerPort();
-                this.serverSettings.setUDPPort(portTaken?this.getNearestPort(((DedicatedServer) server).getPort()):((DedicatedServer) server).getPort());
+                this.serverSettings.setUDPPort(portTaken ? this.getNearestPort(((DedicatedServer) server).getPort()) : ((DedicatedServer) server).getPort());
 
-                if (portTaken)
-                {
-                    getLogger().warn("Hey! Over Here! It seems you are running a query on the default port. We can\'t run a voice server on this port, so I\'ve found a new one just for you! I\'d recommend changing the UDPPort in your configuration, if the voice server can\'t bind!");
+                if (portTaken) {
+                    getLogger().warn("Hey! Over Here! It seems you are running a query on the default port. We can't run a voice server on this port, so I've found a new one just for you! I'd recommend changing the UDPPort in your configuration, if the voice server can't bind!");
                 }
-            }
-            else {
-                try
-                {
+            } else {
+                try {
                     this.serverSettings.setUDPPort(this.getAvailablePort());
-                }
-                catch (IOException e)
-                {
-                    getLogger().fatal("Couldn\'t start voice server.");
+                } catch (IOException e) {
+                    getLogger().fatal("Couldn't start voice server.");
                     e.printStackTrace();
                     return;
                 }
@@ -171,23 +140,22 @@ public class VoiceChatServer
         this.voiceServerThread = this.startVoiceServer();
     }
 
-    public void postInitMod(VoiceChat voiceChat, FMLPostInitializationEvent event) {}
+    public void postInitMod(VoiceChat voiceChat, FMLPostInitializationEvent event) {
+    }
 
-    public void preInitClient(FMLPreInitializationEvent event) {}
+    public void preInitClient(FMLPreInitializationEvent event) {
+    }
 
-    public void preInitServer(FMLServerStartingEvent event)
-    {
+    public void preInitServer(FMLServerStartingEvent event) {
         event.registerServerCommand(new CommandVoiceMute());
         event.registerServerCommand(new CommandChatMode());
     }
 
-    private Thread startVoiceServer()
-    {
+    private Thread startVoiceServer() {
         this.serverNetwork = new ServerNetwork(this);
         this.serverNetwork.init();
 
-        switch (this.serverSettings.getAdvancedNetworkType())
-        {
+        switch (this.serverSettings.getAdvancedNetworkType()) {
             case 1:
                 this.voiceServer = new UDPVoiceServer(this);
                 break;
@@ -201,27 +169,23 @@ public class VoiceChatServer
         return thread;
     }
 
-    public void stop()
-    {
+    public void stop() {
         this.serverNetwork.stop();
 
-        if (this.voiceServer instanceof VoiceAuthenticatedServer)
-        {
-            ((VoiceAuthenticatedServer)this.voiceServer).waitingAuth.clear();
+        if (this.voiceServer instanceof VoiceAuthenticatedServer) {
+            ((VoiceAuthenticatedServer) this.voiceServer).waitingAuth.clear();
         }
         this.voiceServer.stop();
         this.voiceServer = null;
         this.voiceServerThread.stop();
     }
 
-    public void aboutToStartServer(FMLServerAboutToStartEvent e)
-    {
+    public void aboutToStartServer(FMLServerAboutToStartEvent e) {
         MinecraftForge.EVENT_BUS.register(new ServerConnectionHandler(this));
         this.serverSettings = new ServerSettings(this);
         this.configurationDirectory = new File("config/gliby_vc");
 
-        if(!this.configurationDirectory.exists())
-        {
+        if (!this.configurationDirectory.exists()) {
             this.configurationDirectory.mkdir();
         }
         this.serverSettings.preInit(new File(this.configurationDirectory, "ServerSettings.ini"));

@@ -5,7 +5,7 @@ import net.gliby.voicechat.common.api.events.ServerStreamEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class ServerStreamHandler {
-    private VoiceChatServer voiceChat;
+    private final VoiceChatServer voiceChat;
 
     public ServerStreamHandler(VoiceChatServer voiceChat) {
         this.voiceChat = voiceChat;
@@ -39,5 +39,6 @@ public class ServerStreamHandler {
     }
 
     @SubscribeEvent
-    public void killStream(ServerStreamEvent.StreamDestroyed event) {}
+    public void killStream(ServerStreamEvent.StreamDestroyed event) {
+    }
 }

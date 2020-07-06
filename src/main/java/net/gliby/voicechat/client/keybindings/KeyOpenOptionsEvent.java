@@ -22,5 +22,6 @@ public class KeyOpenOptionsEvent extends KeyEvent {
     }
 
     @Override
-    public void keyUp(KeyBinding kb, boolean tickEnd) {}
+    public void keyUp(KeyBinding kb, boolean tickEnd) {
+    }
 }

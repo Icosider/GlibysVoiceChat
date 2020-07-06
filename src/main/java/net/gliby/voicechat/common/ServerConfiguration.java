@@ -41,7 +41,7 @@ public class ServerConfiguration {
                 this.settings.setModPackID(this.init.ReadInteger("Miscellaneous", "ModPackID", 1));
                 return true;
             } catch (Exception e) {
-                VoiceChat.getLogger().fatal("Couldn\'t read configuration file, fix it or delete it. Default settings being used.");
+                VoiceChat.getLogger().fatal("Couldn't read configuration file, fix it or delete it. Default settings being used.");
                 e.printStackTrace();
             }
         }
@@ -57,20 +57,20 @@ public class ServerConfiguration {
             }
         }
 
-        this.init.WriteFloat("Game", "SoundDistance", (float)this.settings.getSoundDistance());
+        this.init.WriteFloat("Game", "SoundDistance", (float) this.settings.getSoundDistance());
         this.init.WriteComment("Game", "Sound Distance is proximity in which players can hear you! @Whiskey.");
         this.init.WriteInteger("Game", "DefaultChatMode", this.settings.getDefaultChatMode());
         this.init.WriteComment("Game", "DefaultChatMode: 0 - distance based, 1 - world based, 2 - global.");
         this.init.WriteBool("Game", "ShowPlayerIcons", this.settings.canShowVoiceIcons());
         this.init.WriteBool("Game", "ShowVoicePlates", this.settings.canShowVoicePlates());
-        this.init.WriteComment("Game", "ShowPlayerIcons, if false - players won\'t see icons when someone talks; ShowVoicePlates, if false - players won\'t see player names(voice plates) on their screens.");
+        this.init.WriteComment("Game", "ShowPlayerIcons, if false - players won't see icons when someone talks; ShowVoicePlates, if false - players won't see player names(voice plates) on their screens.");
         this.init.WriteInteger("Network", "NetworkType", this.settings.getAdvancedNetworkType());
         this.init.WriteComment("Network", "NetworkType, 0 - Minecraft Network, 1 - UDP Network. UDP networking improves performance and network speeds extensively, it is highly recommended.");
         this.init.WriteInteger("Network", "UDPPort", this.settings.getUDPPort());
-        this.init.WriteComment("Network", "If UDPPort is set to 0, minecraft\'s own port will be used, this cannot be the same as query port! Change the network type to 0, if you can\'t port forward to a UDP custom port.");
+        this.init.WriteComment("Network", "If UDPPort is set to 0, minecraft's own port will be used, this cannot be the same as query port! Change the network type to 0, if you can't port forward to a UDP custom port.");
         this.init.WriteInteger("Network", "MinimumQuality", this.settings.getMinimumSoundQuality());
         this.init.WriteInteger("Network", "MaximumQuality", this.settings.getMaximumSoundQuality());
-        this.init.WriteComment("Network", "Sound Quality level, starting from 0 to 9. If you want to reduce bandwidth, make the maximum quality smaller. If you\'d like to make sound quality great, set the minimum quality to a high value.");
+        this.init.WriteComment("Network", "Sound Quality level, starting from 0 to 9. If you want to reduce bandwidth, make the maximum quality smaller. If you'd like to make sound quality great, set the minimum quality to a high value.");
         this.init.WriteInteger("Network", "BufferSize", this.settings.getBufferSize());
         this.init.WriteComment("Network", "BufferSize - recommended buffer size is 128, max 500, going any higher will cause issues. Buffer Size determines voice data amount in a single packet, big buffers equal in bigger latency. If you are experiencing stuttering with players, or having network lag - set this to a higher value. ");
         this.init.WriteBool("Network", "ServerBehindProxy", this.settings.isUsingProxy());

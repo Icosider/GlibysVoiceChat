@@ -7,43 +7,35 @@ import net.minecraftforge.fml.common.eventhandler.Cancelable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 
 @Cancelable
-public class ServerStreamEvent extends Event
-{
+public class ServerStreamEvent extends Event {
     public ServerStream stream;
     public ServerStreamManager streamManager;
 
-    ServerStreamEvent(ServerStreamManager serverStreamManager, ServerStream stream)
-    {
+    ServerStreamEvent(ServerStreamManager serverStreamManager, ServerStream stream) {
         this.stream = stream;
         this.streamManager = serverStreamManager;
     }
 
-    public static class StreamCreated extends ServerStreamEvent
-    {
+    public static class StreamCreated extends ServerStreamEvent {
         public ServerDatalet voiceLet;
 
-        public StreamCreated(ServerStreamManager serverStreamManager, ServerStream stream, ServerDatalet let)
-        {
+        public StreamCreated(ServerStreamManager serverStreamManager, ServerStream stream, ServerDatalet let) {
             super(serverStreamManager, stream);
             this.voiceLet = let;
         }
     }
 
-    public static class StreamFeed extends ServerStreamEvent
-    {
+    public static class StreamFeed extends ServerStreamEvent {
         public ServerDatalet voiceLet;
 
-        public StreamFeed(ServerStreamManager serverStreamManager, ServerStream stream, ServerDatalet voiceLet)
-        {
+        public StreamFeed(ServerStreamManager serverStreamManager, ServerStream stream, ServerDatalet voiceLet) {
             super(serverStreamManager, stream);
             this.voiceLet = voiceLet;
         }
     }
 
-    public static class StreamDestroyed extends ServerStreamEvent
-    {
-        public StreamDestroyed(ServerStreamManager serverStreamManager, ServerStream stream)
-        {
+    public static class StreamDestroyed extends ServerStreamEvent {
+        public StreamDestroyed(ServerStreamManager serverStreamManager, ServerStream stream) {
             super(serverStreamManager, stream);
         }
     }

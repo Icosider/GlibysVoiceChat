@@ -2,22 +2,18 @@ package net.gliby.voicechat.common.networking.voiceservers.udp;
 
 import com.google.common.io.ByteArrayDataOutput;
 
-public class UDPServerVoiceEndPacket extends UDPPacket
-{
-    private int entityID;
+public class UDPServerVoiceEndPacket extends UDPPacket {
+    private final int entityID;
 
-    UDPServerVoiceEndPacket(int entityID)
-    {
+    UDPServerVoiceEndPacket(int entityID) {
         this.entityID = entityID;
     }
 
-    public byte id()
-    {
+    public byte id() {
         return (byte) 2;
     }
 
-    public void write(ByteArrayDataOutput out)
-    {
+    public void write(ByteArrayDataOutput out) {
         out.writeInt(this.entityID);
     }
 }

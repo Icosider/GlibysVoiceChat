@@ -8,8 +8,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
-public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceAuthenticatedServer, MinecraftClientVoiceAuthenticatedServer>
-{
+public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceAuthenticatedServer, MinecraftClientVoiceAuthenticatedServer> {
     private boolean showVoicePlates;
     private boolean showVoiceIcons;
     private int minQuality;
@@ -21,9 +20,10 @@ public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket imp
     private String hash;
     private String ip;
 
-    public MinecraftClientVoiceAuthenticatedServer() {}
-    public MinecraftClientVoiceAuthenticatedServer(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType, int udpPort, String hash, String ip)
-    {
+    public MinecraftClientVoiceAuthenticatedServer() {
+    }
+
+    public MinecraftClientVoiceAuthenticatedServer(boolean canShowVoicePlates, boolean canShowVoiceIcons, int minQuality, int maxQuality, int bufferSize, int soundDistance, int voiceServerType, int udpPort, String hash, String ip) {
         this.showVoicePlates = canShowVoicePlates;
         this.showVoiceIcons = canShowVoiceIcons;
         this.minQuality = minQuality;
@@ -36,8 +36,7 @@ public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket imp
         this.ip = ip;
     }
 
-    public void fromBytes(ByteBuf buf)
-    {
+    public void fromBytes(ByteBuf buf) {
         this.showVoicePlates = buf.readBoolean();
         this.showVoiceIcons = buf.readBoolean();
         this.minQuality = buf.readInt();
@@ -50,8 +49,7 @@ public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket imp
         this.ip = ByteBufUtils.readUTF8String(buf);
     }
 
-    public void toBytes(ByteBuf buf)
-    {
+    public void toBytes(ByteBuf buf) {
         buf.writeBoolean(this.showVoicePlates);
         buf.writeBoolean(this.showVoiceIcons);
         buf.writeInt(this.minQuality);
@@ -64,8 +62,7 @@ public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket imp
         ByteBufUtils.writeUTF8String(buf, this.ip);
     }
 
-    public MinecraftClientVoiceAuthenticatedServer onMessage(final MinecraftClientVoiceAuthenticatedServer packet, MessageContext ctx)
-    {
+    public MinecraftClientVoiceAuthenticatedServer onMessage(final MinecraftClientVoiceAuthenticatedServer packet, MessageContext ctx) {
         Minecraft.getMinecraft().addScheduledTask(() -> VoiceChat.getProxyInstance().getClientNetwork().handleVoiceAuthenticatedServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType, packet.udpPort, packet.hash, packet.ip));
         return null;
     }

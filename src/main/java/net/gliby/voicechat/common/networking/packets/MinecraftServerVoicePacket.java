@@ -11,7 +11,9 @@ public class MinecraftServerVoicePacket extends MinecraftPacket implements IMess
     private byte[] data;
     private byte divider;
 
-    public MinecraftServerVoicePacket() {}
+    public MinecraftServerVoicePacket() {
+    }
+
     public MinecraftServerVoicePacket(byte divider, byte[] data) {
         this.divider = divider;
         this.data = data;

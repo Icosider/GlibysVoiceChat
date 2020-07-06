@@ -10,15 +10,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import java.util.List;
 
 public class ExampleStreamHandlerOnlyOP {
-    public ExampleStreamHandlerOnlyOP()
-    {
+    public ExampleStreamHandlerOnlyOP() {
         VoiceChatAPI.instance().setCustomStreamHandler(this);
     }
 
     @SubscribeEvent
     public void createStream(ServerStreamEvent.StreamCreated event) {
         if (!this.isOP(event.stream.player)) {
-            event.stream.player.sendMessage(new TextComponentString("Only OP\'s are allowed to talk!"));
+            event.stream.player.sendMessage(new TextComponentString("Only OP's are allowed to talk!"));
         }
     }
 

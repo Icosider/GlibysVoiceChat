@@ -18,5 +18,6 @@ public abstract class KeyEvent {
     }
 
     public abstract void keyDown(KeyBinding var1, boolean var2, boolean var3);
+
     public abstract void keyUp(KeyBinding var1, boolean var2);
 }

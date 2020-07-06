@@ -13,35 +13,29 @@ import org.lwjgl.input.Keyboard;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GuiScreenLocalMute extends GuiScreen
-{
+public class GuiScreenLocalMute extends GuiScreen {
     protected GuiScreen parent;
     private GuiScreenLocalMute.List listPlayers;
     private GuiTextField playerTextField;
     private boolean playerNotFound;
     private ArrayList<String> autoCompletionNames;
 
-    public GuiScreenLocalMute(GuiScreen parent, VoiceChatClient voiceChat)
-    {
+    public GuiScreenLocalMute(GuiScreen parent, VoiceChatClient voiceChat) {
         this.parent = parent;
     }
 
     @Override
-    protected void actionPerformed(GuiButton button)
-    {
-        switch(button.id)
-        {
+    protected void actionPerformed(GuiButton button) {
+        switch (button.id) {
             case 0:
                 this.playerNotFound = false;
                 EntityPlayer entityPlayer = this.mc.world.getPlayerEntityByName(this.playerTextField.getText().trim().replaceAll(" ", ""));
-                if (entityPlayer != null)
-                {
+                if (entityPlayer != null) {
                     if (!entityPlayer.isServerWorld() && !VoiceChatClient.getSoundManager().playersMuted.contains(entityPlayer.getEntityId())) {
                         VoiceChatClient.getSoundManager().playersMuted.add(entityPlayer.getEntityId());
                         ClientStreamManager.playerMutedData.put(entityPlayer.getEntityId(), entityPlayer.getName());
                     }
-                }
-                else {
+                } else {
                     this.playerNotFound = true;
                 }
                 break;
@@ -51,13 +45,11 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @Override
-    public void drawScreen(int mouseX, int mouseY, float ticks)
-    {
+    public void drawScreen(int mouseX, int mouseY, float ticks) {
         this.listPlayers.drawScreen(mouseX, mouseY, ticks);
         this.drawCenteredString(this.fontRenderer, I18n.format("menu.mutedPlayers"), this.width / 2, 16, -1);
 
-        if (this.playerNotFound)
-        {
+        if (this.playerNotFound) {
             this.drawCenteredString(this.fontRenderer, "§c" + I18n.format("commands.generic.player.notFound"), this.width / 2, this.height - 59, -1);
         }
         this.playerTextField.drawTextBox();
@@ -65,8 +57,7 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @Override
-    public void initGui()
-    {
+    public void initGui() {
         Keyboard.enableRepeatEvents(true);
         this.autoCompletionNames = new ArrayList<>();
         this.playerTextField = new GuiTextField(0, this.fontRenderer, this.width / 2 - 100, this.height - 57 - -9, 130, 20);
@@ -81,51 +72,40 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
         playerTextField.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
     @Override
-    public void handleMouseInput() throws IOException
-    {
+    public void handleMouseInput() throws IOException {
         super.handleMouseInput();
         listPlayers.handleMouseInput();
     }
 
     @Override
-    protected void keyTyped(char character, int key) throws IOException
-    {
+    protected void keyTyped(char character, int key) throws IOException {
         this.playerNotFound = false;
         this.playerTextField.textboxKeyTyped(character, key);
         super.keyTyped(character, key);
 
-        switch (key)
-        {
+        switch (key) {
             case 15:
-                if (this.autoCompletionNames.size() > 0)
-                {
-                    this.shuffleCompleition();
-                }
-                else {
+                if (this.autoCompletionNames.size() <= 0) {
                     this.autoCompletionNames.clear();
                     java.util.List<EntityPlayer> players = this.mc.world.playerEntities;
 
-                    for (EntityPlayer player : players)
-                    {
-                        if (player instanceof EntityOtherPlayerMP)
-                        {
+                    for (EntityPlayer player : players) {
+                        if (player instanceof EntityOtherPlayerMP) {
                             String name = player.getName();
 
-                            if (name.toLowerCase().startsWith(this.playerTextField.getText().toLowerCase().trim().replaceAll(" ", "")))
-                            {
+                            if (name.toLowerCase().startsWith(this.playerTextField.getText().toLowerCase().trim().replaceAll(" ", ""))) {
                                 this.autoCompletionNames.add(name);
                             }
                         }
                     }
-                    this.shuffleCompleition();
                 }
+                this.shuffleCompleition();
                 break;
             case 28:
                 this.actionPerformed(null);
@@ -137,16 +117,13 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @Override
-    public void onGuiClosed()
-    {
+    public void onGuiClosed() {
         super.onGuiClosed();
         Keyboard.enableRepeatEvents(false);
     }
 
-    private void shuffleCompleition()
-    {
-        if (this.autoCompletionNames.iterator().hasNext())
-        {
+    private void shuffleCompleition() {
+        if (this.autoCompletionNames.iterator().hasNext()) {
             String name = this.autoCompletionNames.iterator().next();
             this.autoCompletionNames.add(name);
             this.playerTextField.setText(name);
@@ -155,8 +132,7 @@ public class GuiScreenLocalMute extends GuiScreen
     }
 
     @Override
-    public void updateScreen()
-    {
+    public void updateScreen() {
         this.playerTextField.updateCursorCounter();
     }
 

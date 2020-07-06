@@ -2,57 +2,57 @@ package org.xiph.speex;
 
 public interface Encoder {
 
-   int encode(Bits var1, float[] var2);
+    int encode(Bits var1, float[] var2);
 
-   int getEncodedFrameSize();
+    int getEncodedFrameSize();
 
-   int getFrameSize();
+    int getFrameSize();
 
-   void setQuality(int var1);
+    void setQuality(int var1);
 
-   int getBitRate();
+    int getBitRate();
 
-   float[] getPiGain();
+    float[] getPiGain();
 
-   float[] getExc();
+    float[] getExc();
 
-   float[] getInnov();
+    float[] getInnov();
 
-   void setMode(int var1);
+    void setMode(int var1);
 
-   int getMode();
+    int getMode();
 
-   void setBitRate(int var1);
+    void setBitRate(int var1);
 
-   void setVbr(boolean var1);
+    void setVbr(boolean var1);
 
-   boolean getVbr();
+    boolean getVbr();
 
-   void setVad(boolean var1);
+    void setVad(boolean var1);
 
-   boolean getVad();
+    boolean getVad();
 
-   void setDtx(boolean var1);
+    void setDtx(boolean var1);
 
-   boolean getDtx();
+    boolean getDtx();
 
-   int getAbr();
+    int getAbr();
 
-   void setAbr(int var1);
+    void setAbr(int var1);
 
-   void setVbrQuality(float var1);
+    void setVbrQuality(float var1);
 
-   float getVbrQuality();
+    float getVbrQuality();
 
-   void setComplexity(int var1);
+    void setComplexity(int var1);
 
-   int getComplexity();
+    int getComplexity();
 
-   void setSamplingRate(int var1);
+    void setSamplingRate(int var1);
 
-   int getSamplingRate();
+    int getSamplingRate();
 
-   int getLookAhead();
+    int getLookAhead();
 
-   float getRelativeQuality();
+    float getRelativeQuality();
 }

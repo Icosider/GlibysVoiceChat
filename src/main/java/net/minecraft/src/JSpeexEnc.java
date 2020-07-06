@@ -209,7 +209,7 @@ public class JSpeexEnc {
         }
 
         if (this.printlevel <= 0) {
-            System.out.println("");
+            System.out.println();
         }
 
         if (this.printlevel <= 0) {

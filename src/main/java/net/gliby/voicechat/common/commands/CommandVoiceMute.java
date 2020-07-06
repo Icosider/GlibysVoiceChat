@@ -18,64 +18,53 @@ import java.util.List;
 public class CommandVoiceMute extends CommandBase {
     @Override
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-        return args.length == 1?getListOfStringsMatchingLastWord(args, this.getPlayers()):null;
+        return args.length == 1 ? getListOfStringsMatchingLastWord(args, this.getPlayers()) : null;
     }
 
     @Override
-    public String getName()
-    {
+    public String getName() {
         return "vmute";
     }
 
     @Override
-    public String getUsage(ICommandSender sender)
-    {
+    public String getUsage(ICommandSender sender) {
         return "Usage: /vmute <player>";
     }
 
-    protected String[] getPlayers()
-    {
+    protected String[] getPlayers() {
         return FMLCommonHandler.instance().getMinecraftServerInstance().getOnlinePlayerNames();
     }
 
     @Override
-    public int getRequiredPermissionLevel()
-    {
+    public int getRequiredPermissionLevel() {
         return 3;
     }
 
     @Override
-    public boolean isUsernameIndex(String[] args, int index)
-    {
+    public boolean isUsernameIndex(String[] args, int index) {
         return index == 0;
     }
 
     @Override
     public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws WrongUsageException, PlayerNotFoundException {
-        if (args.length == 1 && args[0].length() > 0)
-        {
+        if (args.length == 1 && args[0].length() > 0) {
             ServerNetwork network = VoiceChat.getServerInstance().getServerNetwork();
             EntityPlayerMP player = getCommandSenderAsPlayer(sender);
 
-            if (player != null)
-            {
-                if (network.getDataManager().mutedPlayers.contains(player.getUniqueID()))
-                {
+            if (player != null) {
+                if (network.getDataManager().mutedPlayers.contains(player.getUniqueID())) {
                     network.getDataManager().mutedPlayers.remove(player.getUniqueID());
                     notifyCommandListener(sender, this, player.getDisplayName() + " has been unmuted.", args[0]);
                     player.sendMessage(new TextComponentString("You have been unmuted!"));
-                }
-                else {
+                } else {
                     notifyCommandListener(sender, this, player.getDisplayName() + " has been muted.", args[0]);
                     network.getDataManager().mutedPlayers.add(player.getUniqueID());
                     player.sendMessage(new TextComponentString("You have been voice muted, you cannot talk untill you have been unmuted."));
                 }
-            }
-            else {
+            } else {
                 sender.sendMessage(new TextComponentString("Player not found for vmute."));
             }
-        }
-        else {
+        } else {
             throw new WrongUsageException(this.getUsage(sender));
         }
     }

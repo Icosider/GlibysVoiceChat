@@ -19,8 +19,7 @@ public class GuiBoostSlider extends GuiButton {
     }
 
     @Override
-    public int getHoverState(boolean par1)
-    {
+    public int getHoverState(boolean par1) {
         return 0;
     }
 
@@ -28,7 +27,7 @@ public class GuiBoostSlider extends GuiButton {
     protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
         if (super.visible) {
             if (this.dragging) {
-                this.sliderValue = (float)(mouseX - (super.x + 4)) / (float)(super.width - 8);
+                this.sliderValue = (float) (mouseX - (super.x + 4)) / (float) (super.width - 8);
 
                 if (this.sliderValue < 0.0F)
                     this.sliderValue = 0.0F;
@@ -39,15 +38,15 @@ public class GuiBoostSlider extends GuiButton {
             }
 
             GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(super.x + (int)(this.sliderValue * (float)(super.width - 8)), super.y, 0, 66, 4, 20);
-            this.drawTexturedModalRect(super.x + (int)(this.sliderValue * (float)(super.width - 8)) + 4, super.y, 196, 66, 4, 20);
+            this.drawTexturedModalRect(super.x + (int) (this.sliderValue * (float) (super.width - 8)), super.y, 0, 66, 4, 20);
+            this.drawTexturedModalRect(super.x + (int) (this.sliderValue * (float) (super.width - 8)) + 4, super.y, 196, 66, 4, 20);
         }
     }
 
     @Override
     public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
         if (super.mousePressed(mc, mouseX, mouseY)) {
-            this.sliderValue = (float)(mouseX - (super.x + 4)) / (float)(super.width - 8);
+            this.sliderValue = (float) (mouseX - (super.x + 4)) / (float) (super.width - 8);
 
             if (this.sliderValue < 0.0F)
                 this.sliderValue = 0.0F;

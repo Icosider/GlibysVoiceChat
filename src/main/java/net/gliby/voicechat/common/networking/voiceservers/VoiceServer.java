@@ -9,7 +9,7 @@ public abstract class VoiceServer implements Runnable {
     public abstract void handleVoiceData(EntityPlayerMP var1, byte[] var2, byte var3, int var4, boolean var5);
 
     public final void run() {
-        VoiceChat.getLogger().info(this.start()?"Started [" + this.getType().name + "] Server.":"Failed to start [" + this.getType().name + "] Server.");
+        VoiceChat.getLogger().info(this.start() ? "Started [" + this.getType().name + "] Server." : "Failed to start [" + this.getType().name + "] Server.");
     }
 
     public abstract void sendChunkVoiceData(EntityPlayerMP var1, int var2, boolean var3, byte[] var4, byte var5, byte var6);

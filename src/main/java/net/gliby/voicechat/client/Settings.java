@@ -14,8 +14,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 @SideOnly(Side.CLIENT)
-public class Settings
-{
+public class Settings {
     private final DeviceHandler deviceHandler = new DeviceHandler();
     private boolean debugMode;
     private Device inputDevice;
@@ -38,41 +37,34 @@ public class Settings
     private boolean voiceIconsAllowed = true;
     private int bufferSize = 144;
     private int modPackId = 1;
-    private Configuration configuration;
+    private final Configuration configuration;
 
-    Settings(File file)
-    {
+    Settings(File file) {
         this.configuration = new Configuration(this, file);
         this.uiPositionSpeak = new UIPosition(EnumUIPlacement.SPEAK, EnumUIPlacement.SPEAK.x, EnumUIPlacement.SPEAK.y, EnumUIPlacement.SPEAK.positionType, 1.0F);
         this.uiPositionPlate = new UIPosition(EnumUIPlacement.VOICE_PLATES, EnumUIPlacement.VOICE_PLATES.x, EnumUIPlacement.VOICE_PLATES.y, EnumUIPlacement.VOICE_PLATES.positionType, 1.0F);
     }
 
-    public final int getBufferSize()
-    {
+    public final int getBufferSize() {
         return this.bufferSize;
     }
 
-    public Configuration getConfiguration()
-    {
+    public Configuration getConfiguration() {
         return this.configuration;
     }
 
-    public DeviceHandler getDeviceHandler()
-    {
+    public DeviceHandler getDeviceHandler() {
         return this.deviceHandler;
     }
 
-    public int getEncodingMode()
-    {
+    public int getEncodingMode() {
         return (int) MathUtility.clamp((float) this.encodingMode, 0.0F, 2.0F);
     }
 
-    public String getEncodingModeString()
-    {
+    public String getEncodingModeString() {
         String s = "";
 
-        switch (this.encodingMode)
-        {
+        switch (this.encodingMode) {
             case 0:
                 s = "Narrowband";
                 break;
@@ -85,87 +77,70 @@ public class Settings
         return s;
     }
 
-    public final float getEncodingQuality()
-    {
+    public final float getEncodingQuality() {
         return MathUtility.clamp(this.encodingQuality, 0.0F, 1.0F);
     }
 
-    public final float getInputBoost()
-    {
+    public final float getInputBoost() {
         return this.inputBoost;
     }
 
-    public Device getInputDevice()
-    {
-        if (this.inputDevice == null)
-        {
+    public Device getInputDevice() {
+        if (this.inputDevice == null) {
             this.inputDevice = this.deviceHandler.getDefaultDevice();
         }
         return this.inputDevice;
     }
 
-    public final int getMaximumQuality()
-    {
+    public final int getMaximumQuality() {
         return this.maximumQuality;
     }
 
-    public final int getMaximumRenderableVoiceIcons()
-    {
+    public final int getMaximumRenderableVoiceIcons() {
         return 20;
     }
 
-    public final int getMinimumQuality()
-    {
+    public final int getMinimumQuality() {
         return this.minimumQuality;
     }
 
-    final int getModPackID()
-    {
+    final int getModPackID() {
         return this.modPackId;
     }
 
-    public final int getSoundDistance()
-    {
+    public final int getSoundDistance() {
         return this.maxSoundDistance;
     }
 
-    public final int getSpeakMode()
-    {
+    public final int getSpeakMode() {
         return this.speakMode;
     }
 
-    public float getUIOpacity()
-    {
+    public float getUIOpacity() {
         return this.uiOpacity;
     }
 
-    public final UIPosition getUIPositionPlate()
-    {
+    public final UIPosition getUIPositionPlate() {
         return this.uiPositionPlate;
     }
 
-    public final UIPosition getUIPositionSpeak()
-    {
+    public final UIPosition getUIPositionSpeak() {
         return this.uiPositionSpeak;
     }
 
-    public float getWorldVolume()
-    {
+    public float getWorldVolume() {
         return this.worldVolume;
     }
 
-    public void init()
-    {
+    public void init() {
         (new Thread(() -> {
             Settings.this.deviceHandler.loadDevices();
             Settings.this.configuration.init(Settings.this.deviceHandler);
             ModPackSettings settings = new ModPackSettings();
 
-            try
-            {
+            try {
                 ModPackSettings.GVCModPackInstructions e = settings.init();
-                if (e.ID != Settings.this.getModPackID())
-                {
+                if (e.ID != Settings.this.getModPackID()) {
                     VoiceChat.getLogger().info("Modpack defaults applied, original settings overwritten.");
                     Settings.this.uiPositionSpeak = new UIPosition(EnumUIPlacement.SPEAK, e.SPEAK_ICON.X, e.SPEAK_ICON.Y, e.SPEAK_ICON.TYPE, e.SPEAK_ICON.SCALE);
                     Settings.this.uiPositionPlate = new UIPosition(EnumUIPlacement.VOICE_PLATES, e.VOICE_PLATE.X, e.VOICE_PLATE.Y, e.VOICE_PLATE.TYPE, e.VOICE_PLATE.SCALE);
@@ -177,57 +152,46 @@ public class Settings
                     Settings.this.setModPackID(e.ID);
                     Settings.this.configuration.save();
                 }
-            }
-            catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
         }, "Settings Process")).start();
     }
 
-    public final boolean isDebug()
-    {
+    public final boolean isDebug() {
         return this.debugMode;
     }
 
-    public final boolean isPerceptualEnchantmentAllowed()
-    {
+    public final boolean isPerceptualEnchantmentAllowed() {
         return this.perceptualEnchantment;
     }
 
-    final boolean isSetupNeeded()
-    {
+    final boolean isSetupNeeded() {
         return this.setupNeeded;
     }
 
-    public final boolean isSnooperAllowed()
-    {
+    public final boolean isSnooperAllowed() {
         return this.snooperEnabled;
     }
 
-    public final boolean isVoiceIconAllowed()
-    {
+    public final boolean isVoiceIconAllowed() {
         return this.voiceIconsAllowed;
     }
 
-    public final boolean isVoicePlateAllowed()
-    {
+    public final boolean isVoicePlateAllowed() {
         return this.voicePlatesAllowed;
     }
 
-    public final boolean isVolumeControlled()
-    {
+    public final boolean isVolumeControlled() {
         return this.volumeControl;
     }
 
-    public void resetQuality()
-    {
+    public void resetQuality() {
         this.minimumQuality = 0;
         this.maximumQuality = 10;
     }
 
-    public void resetUI(int width, int height)
-    {
+    public void resetUI(int width, int height) {
         this.uiPositionSpeak.type = this.uiPositionSpeak.info.positionType;
         this.uiPositionSpeak.x = this.uiPositionSpeak.info.x;
         this.uiPositionSpeak.y = this.uiPositionSpeak.info.y;
@@ -238,107 +202,86 @@ public class Settings
         this.uiPositionPlate.scale = 1.0F;
     }
 
-    public void setBufferSize(int bufferSize)
-    {
+    public void setBufferSize(int bufferSize) {
         this.bufferSize = bufferSize;
     }
 
-    void setDebug(boolean debugMode)
-    {
+    void setDebug(boolean debugMode) {
         this.debugMode = debugMode;
     }
 
-    public void setEncodingMode(int encodingMode)
-    {
+    public void setEncodingMode(int encodingMode) {
         this.encodingMode = encodingMode;
     }
 
-    public void setEncodingQuality(float encodingQuality)
-    {
+    public void setEncodingQuality(float encodingQuality) {
         this.encodingQuality = encodingQuality;
     }
 
-    public void setInputBoost(float inputBoost)
-    {
+    public void setInputBoost(float inputBoost) {
         this.inputBoost = inputBoost;
     }
 
-    public void setInputDevice(Device loadedDevice)
-    {
+    public void setInputDevice(Device loadedDevice) {
         this.inputDevice = loadedDevice;
     }
 
-    void setModPackID(int modPackId)
-    {
+    void setModPackID(int modPackId) {
         this.modPackId = modPackId;
     }
 
-    public void setNetworkQuality(int soundQualityMin, int soundQualityMax)
-    {
+    public void setNetworkQuality(int soundQualityMin, int soundQualityMax) {
         this.minimumQuality = soundQualityMin;
         this.maximumQuality = soundQualityMax;
     }
 
-    public void setPerceptualEnchantment(boolean perceptualEnchantment)
-    {
+    public void setPerceptualEnchantment(boolean perceptualEnchantment) {
         this.perceptualEnchantment = perceptualEnchantment;
     }
 
-    public void setSetupNeeded(boolean setupNeeded)
-    {
+    public void setSetupNeeded(boolean setupNeeded) {
         this.setupNeeded = setupNeeded;
     }
 
-    public void setSnooperAllowed(boolean b)
-    {
+    public void setSnooperAllowed(boolean b) {
         this.snooperEnabled = b;
     }
 
-    public void setSoundDistance(int soundDist)
-    {
+    public void setSoundDistance(int soundDist) {
         this.maxSoundDistance = soundDist;
     }
 
-    public void setSpeakMode(int speakMode)
-    {
+    public void setSpeakMode(int speakMode) {
         this.speakMode = speakMode;
     }
 
-    public void setUIOpacity(float chatIconOpacity)
-    {
+    public void setUIOpacity(float chatIconOpacity) {
         this.uiOpacity = chatIconOpacity;
     }
 
-    void setUIPosition(EnumUIPlacement placement, float x, float y, float scale, int type)
-    {
-        if (placement == EnumUIPlacement.SPEAK)
-        {
+    void setUIPosition(EnumUIPlacement placement, float x, float y, float scale, int type) {
+        if (placement == EnumUIPlacement.SPEAK) {
             this.uiPositionSpeak = new UIPosition(placement, x, y, type, scale);
         }
 
-        if (placement == EnumUIPlacement.VOICE_PLATES)
-        {
+        if (placement == EnumUIPlacement.VOICE_PLATES) {
             this.uiPositionPlate = new UIPosition(placement, x, y, type, scale);
         }
     }
 
-    public final void setVoiceIconsAllowed(boolean voiceIconsAllowed)
-    {
+    public final void setVoiceIconsAllowed(boolean voiceIconsAllowed) {
         this.voiceIconsAllowed = voiceIconsAllowed;
     }
 
-    public final void setVoicePlatesAllowed(boolean voicePlatesAllowed)
-    {
+    public final void setVoicePlatesAllowed(boolean voicePlatesAllowed) {
         this.voicePlatesAllowed = voicePlatesAllowed;
     }
 
-    public void setVolumeControl(boolean volumeControl)
-    {
+    public void setVolumeControl(boolean volumeControl) {
         this.volumeControl = volumeControl;
     }
 
-    public void setWorldVolume(float worldVolume)
-    {
+    public void setWorldVolume(float worldVolume) {
         this.worldVolume = worldVolume;
     }
 }

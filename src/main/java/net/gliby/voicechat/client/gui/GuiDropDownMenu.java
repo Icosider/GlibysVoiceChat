@@ -70,7 +70,7 @@ public class GuiDropDownMenu extends GuiButton {
                 for (int i = 0; i < this.amountOfItems; ++i) {
                     this.mouseOn[i] = this.inBounds(x, y, super.x, super.y + this.prevHeight * (i + 1), super.width, this.prevHeight);
                     String s = normalText(this.array[i].substring(0, Math.min(this.array[i].length(), 26)) + "..");
-                    this.drawCenteredString(fontrenderer, s, super.x + super.width / 2, super.y + this.prevHeight * (i + 1) + 7, this.mouseOn[i]?16777120:14737632);
+                    this.drawCenteredString(fontrenderer, s, super.x + super.width / 2, super.y + this.prevHeight * (i + 1) + 7, this.mouseOn[i] ? 16777120 : 14737632);
                 }
             }
             GL11.glPopMatrix();

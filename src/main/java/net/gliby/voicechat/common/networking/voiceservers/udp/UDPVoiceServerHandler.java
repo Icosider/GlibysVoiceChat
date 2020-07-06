@@ -7,7 +7,6 @@ import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +22,7 @@ public class UDPVoiceServerHandler {
 
     UDPVoiceServerHandler(UDPVoiceServer server) {
         this.server = server;
-        this.threadService = Executors.newFixedThreadPool((int)MathUtility.clamp((float)FMLCommonHandler.instance().getMinecraftServerInstance().getMaxPlayers(), 1.0F, 10.0F));
+        this.threadService = Executors.newFixedThreadPool((int) MathUtility.clamp((float) FMLCommonHandler.instance().getMinecraftServerInstance().getMaxPlayers(), 1.0F, 10.0F));
         this.clientNetworkMap = new HashMap<>();
     }
 
@@ -55,11 +54,11 @@ public class UDPVoiceServerHandler {
     }
 
     private void handleVoiceEnd(UDPClient client) {
-        this.server.handleVoiceData(client.player, null, (byte)0, client.player.getEntityId(), true);
+        this.server.handleVoiceData(client.player, null, (byte) 0, client.player.getEntityId(), true);
     }
 
     public void read(byte[] data, final DatagramPacket packet) {
-        final InetSocketAddress address = (InetSocketAddress)packet.getSocketAddress();
+        final InetSocketAddress address = (InetSocketAddress) packet.getSocketAddress();
         final UDPClient client = this.clientNetworkMap.get(address);
         final ByteArrayDataInput in = ByteStreams.newDataInput(data);
         final byte id = in.readByte();

@@ -12,44 +12,35 @@ import java.io.File;
 import java.io.IOException;
 
 @SideOnly(Side.CLIENT)
-public class Configuration
-{
+public class Configuration {
     private final File location;
     private JINIFile init;
     private final Settings settings;
 
-    Configuration(Settings settings, File file)
-    {
+    Configuration(Settings settings, File file) {
         this.settings = settings;
         this.location = file;
     }
 
-    void init(DeviceHandler deviceHandler)
-    {
-        if (!this.load(deviceHandler))
-        {
+    void init(DeviceHandler deviceHandler) {
+        if (!this.load(deviceHandler)) {
             VoiceChat.getLogger().info("No Configuration file found, will create one with default settings.");
             this.settings.setSetupNeeded(true);
 
-            if (this.save())
-            {
+            if (this.save()) {
                 VoiceChat.getLogger().info("Created Configuration file with default settings.");
             }
         }
     }
 
-    private boolean load(DeviceHandler handler)
-    {
-        try
-        {
-            if (this.location.exists())
-            {
+    private boolean load(DeviceHandler handler) {
+        try {
+            if (this.location.exists()) {
                 this.init = new JINIFile(this.location);
                 this.settings.setVolumeControl(this.init.ReadBool("Game", "VolumeControl", true));
                 Device e = handler.getDefaultDevice();
 
-                if (e != null)
-                {
+                if (e != null) {
                     this.settings.setInputDevice(handler.getDeviceByName(this.init.ReadString("Audio", "InputDevice", e.getName())));
                 }
                 this.settings.setWorldVolume(this.init.ReadFloat("Audio", "WorldVolume", 1.0F));
@@ -69,35 +60,28 @@ public class Configuration
                 return true;
             }
             return false;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean save()
-    {
-        if (this.init == null || !this.location.exists())
-        {
-            try
-            {
+    public boolean save() {
+        if (this.init == null || !this.location.exists()) {
+            try {
                 this.init = new JINIFile(this.location);
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
 
         this.init.WriteBool("Game", "VolumeControl", this.settings.isVolumeControlled());
-        this.init.WriteString("Audio", "InputDevice", this.settings.getInputDevice() != null?this.settings.getInputDevice().getName():"none");
+        this.init.WriteString("Audio", "InputDevice", this.settings.getInputDevice() != null ? this.settings.getInputDevice().getName() : "none");
         this.init.WriteFloat("Audio", "WorldVolume", this.settings.getWorldVolume());
         this.init.WriteFloat("Audio", "InputBoost", this.settings.getInputBoost());
-        this.init.WriteFloat("Audio", "SpeakMode", (float)this.settings.getSpeakMode());
+        this.init.WriteFloat("Audio", "SpeakMode", (float) this.settings.getSpeakMode());
         this.init.WriteFloat("AdvancedAudio", "EncodingQuality", this.settings.getEncodingQuality());
-        this.init.WriteFloat("AdvancedAudio", "EncodingMode", (float)this.settings.getEncodingMode());
+        this.init.WriteFloat("AdvancedAudio", "EncodingMode", (float) this.settings.getEncodingMode());
         this.init.WriteBool("AdvancedAudio", "EnhancedDecoding", this.settings.isPerceptualEnchantmentAllowed());
         this.init.WriteFloat("Interface", "UIOpacity", this.settings.getUIOpacity());
         this.init.WriteString("Interface", "UIPositionSpeak", this.settings.getUIPositionSpeak().x + ":" + this.settings.getUIPositionSpeak().y + ":" + this.settings.getUIPositionSpeak().type + ":" + this.settings.getUIPositionSpeak().scale);
