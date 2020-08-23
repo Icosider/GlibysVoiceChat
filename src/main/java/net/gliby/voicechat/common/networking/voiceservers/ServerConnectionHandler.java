@@ -30,10 +30,18 @@ public class ServerConnectionHandler {
     }
 
     @SubscribeEvent
-    public void onJoin(TickEvent.PlayerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.side == Side.SERVER && !this.loggedIn.contains(event.player.getGameProfile())) {
+    public void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
             this.loggedIn.add(event.player.getGameProfile());
             this.onConnected(event.player);
+        }
+    }
+    
+    @SubscribeEvent
+    public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+            this.loggedIn.remove(event.player.getGameProfile());
+            this.voiceChat.serverNetwork.dataManager.entityHandler.disconnected(event.player.getEntityId());
         }
     }
 
@@ -56,14 +64,6 @@ public class ServerConnectionHandler {
         } else
             VoiceChat.getDispatcher().sendTo(new MinecraftClientVoiceServerPacket(this.voiceChat.getServerSettings().canShowVoicePlates(), this.voiceChat.getServerSettings().canShowVoiceIcons(), this.voiceChat.getServerSettings().getMinimumSoundQuality(), this.voiceChat.getServerSettings().getMaximumSoundQuality(), this.voiceChat.getServerSettings().getBufferSize(), this.voiceChat.getServerSettings().getSoundDistance(), this.voiceChat.getVoiceServer().getType().ordinal()), player);
         this.voiceChat.serverNetwork.dataManager.entityHandler.connected(player);
-    }
-
-    @SubscribeEvent
-    public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
-            this.loggedIn.remove(event.player.getGameProfile());
-            this.voiceChat.serverNetwork.dataManager.entityHandler.disconnected(event.player.getEntityId());
-        }
     }
 
     private String sha256(String s) throws NoSuchAlgorithmException {
