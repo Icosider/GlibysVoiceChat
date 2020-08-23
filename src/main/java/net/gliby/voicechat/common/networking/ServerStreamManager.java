@@ -82,7 +82,9 @@ public class ServerStreamManager {
         if (voiceData.end) {
             if (this.voiceChat.getVoiceServer() != null && target != null) {
                 this.voiceChat.getVoiceServer().sendVoiceEnd(target, stream.id);
-            } else {
+            }
+        } else {
+            if (this.voiceChat.getVoiceServer() != null && target != null) {
                 this.entityHandler.whileSpeaking(stream, speaker, target);
                 this.voiceChat.getVoiceServer().sendChunkVoiceData(target, voiceData.id, direct, voiceData.data, voiceData.divider, voiceData.volume);
             }
