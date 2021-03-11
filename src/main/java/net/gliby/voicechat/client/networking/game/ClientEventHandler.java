@@ -24,19 +24,11 @@ public class ClientEventHandler {
                     EntityOtherPlayerMP player = (EntityOtherPlayerMP) event.getEntity();
 
                     if (!VoiceChatClient.getSoundManager().playersMuted.contains(player.getEntityId())) {
-                        VoiceChatClient.getSoundManager();
-
-                        for (Object o : ClientStreamManager.playerMutedData.entrySet()) {
-                            Entry entry = (Entry) o;
-                            Integer key = (Integer) entry.getKey();
-                            String value = (String) entry.getValue();
-
-                            if (value.equals(player.getName())) {
-                                VoiceChatClient.getSoundManager().playersMuted.remove(key);
-                                VoiceChatClient.getSoundManager();
-                                ClientStreamManager.playerMutedData.remove(key);
+                        for (Entry<Integer, String> entry : ClientStreamManager.playerMutedData.entrySet()) {
+                            if (entry.getValue().equals(player.getName())) {
+                                VoiceChatClient.getSoundManager().playersMuted.remove(entry.getKey());
+                                ClientStreamManager.playerMutedData.remove(entry.getKey());
                                 VoiceChatClient.getSoundManager().playersMuted.add(player.getEntityId());
-                                VoiceChatClient.getSoundManager();
                                 ClientStreamManager.playerMutedData.put(player.getEntityId(), player.getName());
                                 break;
                             }

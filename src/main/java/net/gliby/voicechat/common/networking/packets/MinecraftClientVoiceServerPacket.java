@@ -5,6 +5,7 @@ import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceServerPacket, MinecraftClientVoiceServerPacket> {
     private boolean showVoicePlates;
@@ -49,7 +50,7 @@ public class MinecraftClientVoiceServerPacket extends MinecraftPacket implements
     }
 
     public MinecraftClientVoiceServerPacket onMessage(MinecraftClientVoiceServerPacket packet, MessageContext ctx) {
-        VoiceChat.getProxyInstance().getClientNetwork().handleVoiceServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType);
+        AsyncCatcher.INSTANCE.executeClient(() -> VoiceChat.getProxyInstance().getClientNetwork().handleVoiceServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType));
         return null;
     }
 }

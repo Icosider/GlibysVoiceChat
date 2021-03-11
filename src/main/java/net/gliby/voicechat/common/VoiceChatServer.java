@@ -25,7 +25,7 @@ import java.net.ServerSocket;
 import java.util.Random;
 
 public class VoiceChatServer {
-    protected static final Logger LOGGER = LogManager.getLogger("Gliby's Voice Chat Mod");
+    protected static final Logger LOGGER = LogManager.getLogger("Voice Chat Mod");
     private VoiceServer voiceServer;
     private Thread voiceServerThread;
     public ServerNetwork serverNetwork;
@@ -34,34 +34,18 @@ public class VoiceChatServer {
 
     private static boolean available(int port) {
         if (port >= 4000 && port <= '\uffff') {
-            ServerSocket ss = null;
             DatagramSocket ds = null;
 
-            try {
-                ss = new ServerSocket(port);
-                ss.setReuseAddress(true);
-                ds = new DatagramSocket(port);
-                ds.setReuseAddress(true);
+            try (ServerSocket serverSocket = new ServerSocket(port);
+                 DatagramSocket datagramSocket = new DatagramSocket(port)) {
+                serverSocket.setReuseAddress(true);
+                datagramSocket.setReuseAddress(true);
                 return true;
-            } catch (IOException var13) {
-                var13.printStackTrace();
-            } finally {
-                if (ds != null) {
-                    ds.close();
-                }
-
-                if (ss != null) {
-                    try {
-                        ss.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
             return false;
-        } else {
-            throw new IllegalArgumentException("Invalid start port: " + port);
-        }
+        } else throw new IllegalArgumentException("Invalid start port: " + port);
     }
 
     public static synchronized Logger getLogger() {
@@ -73,7 +57,7 @@ public class VoiceChatServer {
     }
 
     public void commonInit(final FMLPreInitializationEvent event) {
-        (new VoiceChatAPI()).init();
+        new VoiceChatAPI().init();
     }
 
     private int getAvailablePort() throws IOException {
@@ -100,7 +84,7 @@ public class VoiceChatServer {
     }
 
     public String getVersion() {
-        return "0.7.0";
+        return "1.2.6";
     }
 
     public VoiceServer getVoiceServer() {

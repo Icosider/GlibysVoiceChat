@@ -6,6 +6,7 @@ import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftServerVoicePacket extends MinecraftPacket implements IMessageHandler<MinecraftServerVoicePacket, MinecraftServerVoicePacket> {
     private byte[] data;
@@ -34,8 +35,10 @@ public class MinecraftServerVoicePacket extends MinecraftPacket implements IMess
 
     @Override
     public MinecraftServerVoicePacket onMessage(MinecraftServerVoicePacket packet, MessageContext ctx) {
-        final EntityPlayerMP player = ctx.getServerHandler().player;
-        VoiceChat.getServerInstance().getVoiceServer().handleVoiceData(player, packet.data, packet.divider, player.getEntityId(), false);
+        AsyncCatcher.INSTANCE.execute(() -> {
+            final EntityPlayerMP player = ctx.getServerHandler().player;
+            VoiceChat.getServerInstance().getVoiceServer().handleVoiceData(player, packet.data, packet.divider, player.getEntityId(), false);
+        });
         return null;
     }
 }

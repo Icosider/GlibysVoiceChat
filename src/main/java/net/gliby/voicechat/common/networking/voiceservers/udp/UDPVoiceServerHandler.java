@@ -5,6 +5,7 @@ import com.google.common.io.ByteStreams;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.net.DatagramPacket;
@@ -22,7 +23,7 @@ public class UDPVoiceServerHandler {
 
     UDPVoiceServerHandler(UDPVoiceServer server) {
         this.server = server;
-        this.threadService = Executors.newFixedThreadPool((int) MathUtility.clamp((float) FMLCommonHandler.instance().getMinecraftServerInstance().getMaxPlayers(), 1.0F, 10.0F));
+        this.threadService = Executors.newFixedThreadPool((int) MathHelper.clamp((float) FMLCommonHandler.instance().getMinecraftServerInstance().getMaxPlayers(), 1.0F, 10.0F));
         this.clientNetworkMap = new HashMap<>();
     }
 

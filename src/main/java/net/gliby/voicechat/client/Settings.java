@@ -7,6 +7,7 @@ import net.gliby.voicechat.client.gui.EnumUIPlacement;
 import net.gliby.voicechat.client.gui.UIPosition;
 import net.gliby.voicechat.common.MathUtility;
 import net.gliby.voicechat.common.ModPackSettings;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -58,7 +59,7 @@ public class Settings {
     }
 
     public int getEncodingMode() {
-        return (int) MathUtility.clamp((float) this.encodingMode, 0.0F, 2.0F);
+        return (int) MathHelper.clamp((float) this.encodingMode, 0.0F, 2.0F);
     }
 
     public String getEncodingModeString() {
@@ -78,7 +79,7 @@ public class Settings {
     }
 
     public final float getEncodingQuality() {
-        return MathUtility.clamp(this.encodingQuality, 0.0F, 1.0F);
+        return MathHelper.clamp(this.encodingQuality, 0.0F, 1.0F);
     }
 
     public final float getInputBoost() {

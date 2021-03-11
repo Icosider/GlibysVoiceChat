@@ -2,9 +2,11 @@ package net.gliby.voicechat.common.networking.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.gliby.voicechat.VoiceChat;
+import net.gliby.voicechat.client.networking.ClientNetwork;
 import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftClientVoicePacket extends MinecraftPacket implements IMessageHandler<MinecraftClientVoicePacket, MinecraftClientVoicePacket> {
     private byte divider;
@@ -42,9 +44,11 @@ public class MinecraftClientVoicePacket extends MinecraftPacket implements IMess
     }
 
     public MinecraftClientVoicePacket onMessage(MinecraftClientVoicePacket packet, MessageContext ctx) {
-        if (VoiceChat.getProxyInstance().getClientNetwork().isConnected()) {
-            VoiceChat.getProxyInstance().getClientNetwork().getVoiceClient().handlePacket(packet.entityID, packet.samples, packet.divider, packet.direct, packet.volume);
-        }
+        AsyncCatcher.INSTANCE.executeClient(() -> {
+            final ClientNetwork network = VoiceChat.getProxyInstance().getClientNetwork();
+            if (network.isConnected())
+                network.getVoiceClient().handlePacket(packet.entityID, packet.samples, packet.divider, packet.direct, packet.volume);
+        });
         return null;
     }
 }

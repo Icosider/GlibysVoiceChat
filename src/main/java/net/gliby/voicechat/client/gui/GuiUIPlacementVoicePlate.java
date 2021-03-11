@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 import java.util.Random;
 
@@ -39,7 +40,7 @@ public class GuiUIPlacementVoicePlate extends GuiPlaceableInterface {
             IndependentGUITexture.TEXTURES.bindTexture(mc);
             gui.drawTexturedModalRect(0, 0, 56, 0, 109, 22);
             glPushMatrix();
-            scale = MathUtility.clamp(50.5F / (float) length, 0.0F, 1.25F);
+            scale = MathHelper.clamp(50.5F / (float) length, 0.0F, 1.25F);
             glTranslatef(25.0F + scale / 2.0F, 11.0F - (float) (mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
             glScalef(scale, scale, 0.0F);
             gui.drawString(mc.fontRenderer, stream, 0, 0, -1);

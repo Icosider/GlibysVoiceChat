@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket implements IMessageHandler<MinecraftClientVoiceAuthenticatedServer, MinecraftClientVoiceAuthenticatedServer> {
     private boolean showVoicePlates;
@@ -63,7 +64,7 @@ public class MinecraftClientVoiceAuthenticatedServer extends MinecraftPacket imp
     }
 
     public MinecraftClientVoiceAuthenticatedServer onMessage(final MinecraftClientVoiceAuthenticatedServer packet, MessageContext ctx) {
-        Minecraft.getMinecraft().addScheduledTask(() -> VoiceChat.getProxyInstance().getClientNetwork().handleVoiceAuthenticatedServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType, packet.udpPort, packet.hash, packet.ip));
+        AsyncCatcher.INSTANCE.executeClient(() -> VoiceChat.getProxyInstance().getClientNetwork().handleVoiceAuthenticatedServer(packet.showVoicePlates, packet.showVoiceIcons, packet.minQuality, packet.maxQuality, packet.bufferSize, packet.soundDistance, packet.voiceServerType, packet.udpPort, packet.hash, packet.ip));
         return null;
     }
 }

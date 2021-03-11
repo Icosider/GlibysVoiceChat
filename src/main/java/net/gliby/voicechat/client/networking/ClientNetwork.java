@@ -71,8 +71,8 @@ public class ClientNetwork {
             case UDP:
                 String serverAddress = ip;
                 if (ip.isEmpty()) {
-                    ServerData serverData;
-                    if ((serverData = Minecraft.getMinecraft().getCurrentServerData()) != null) {
+                    ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
+                    if (serverData != null) {
                         ServerAddress server = ServerAddress.fromString(serverData.serverIP);
                         serverAddress = server.getIP();
                     } else

@@ -2,9 +2,11 @@ package net.gliby.voicechat.common.networking.packets;
 
 import io.netty.buffer.ByteBuf;
 import net.gliby.voicechat.VoiceChat;
+import net.gliby.voicechat.client.networking.ClientNetwork;
 import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftClientEntityPositionPacket extends MinecraftPacket implements IMessageHandler<MinecraftClientEntityPositionPacket, MinecraftClientEntityPositionPacket> {
     private int entityID;
@@ -37,9 +39,11 @@ public class MinecraftClientEntityPositionPacket extends MinecraftPacket impleme
     }
 
     public MinecraftClientEntityPositionPacket onMessage(MinecraftClientEntityPositionPacket packet, MessageContext ctx) {
-        if (VoiceChat.getProxyInstance().getClientNetwork().isConnected()) {
-            VoiceChat.getProxyInstance().getClientNetwork().getVoiceClient().handleEntityPosition(packet.entityID, packet.x, packet.y, packet.z);
-        }
+        AsyncCatcher.INSTANCE.executeClient(() -> {
+            final ClientNetwork network = VoiceChat.getProxyInstance().getClientNetwork();
+            if (network.isConnected())
+                network.getVoiceClient().handleEntityPosition(packet.entityID, packet.x, packet.y, packet.z);
+        });
         return null;
     }
 }

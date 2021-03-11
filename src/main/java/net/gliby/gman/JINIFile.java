@@ -1,8 +1,13 @@
 package net.gliby.gman;
 
+import com.google.common.io.Files;
+import org.apache.commons.io.FileUtils;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JINIFile extends ArrayList<String> {
     private final File userFileName;
@@ -10,27 +15,14 @@ public class JINIFile extends ArrayList<String> {
     public JINIFile(File file) throws IOException {
         this.clear();
         this.userFileName = file;
-        BufferedReader inbuf;
 
         if (this.userFileName.exists()) {
-            inbuf = new BufferedReader(new FileReader(this.userFileName));
-
-            while (true) {
-                String s = inbuf.readLine();
-
-                if (s == null) {
-                    inbuf.close();
-                    break;
-                }
-
-                if (!s.startsWith(";"))
-                    this.add(s);
+            for (String text : Files.readLines(this.userFileName, StandardCharsets.UTF_8)) {
+                if (!text.startsWith(";"))
+                    this.add(text);
             }
-        } else {
+        } else
             file.createNewFile();
-            inbuf = new BufferedReader(new FileReader(this.userFileName));
-            inbuf.close();
-        }
     }
 
     private void addToList(String Section, String key, String value) {
@@ -79,8 +71,6 @@ public class JINIFile extends ArrayList<String> {
     }
 
     public Float ReadFloat(String Section, String key, Float defaultValue) throws JINIFile.JINIReadException {
-        new Float(0.0F);
-
         if (this.ValuePosition(Section, key) > 0) {
             final int strLen = key.length() + 1;
             return Float.valueOf(this.get(this.ValuePosition(Section, key)).substring(strLen));
@@ -183,13 +173,9 @@ public class JINIFile extends ArrayList<String> {
     }
 
     public boolean UpdateFile() {
-        try (final BufferedWriter ioe = new BufferedWriter(new FileWriter(this.userFileName, false))) {
-            for (String s : this) {
-                if (s == null)
-                    break;
-                ioe.write(s);
-                ioe.newLine();
-            }
+        try {
+            final String data = String.join("", this);
+            FileUtils.writeStringToFile(this.userFileName, data, StandardCharsets.UTF_8);
             return true;
         } catch (IOException e) {
             return false;

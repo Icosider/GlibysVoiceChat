@@ -9,8 +9,10 @@ import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Post;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Text;
@@ -104,13 +106,13 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                 position = this.getPosition(width, height, positionUI);
 
                 if (positionUI.scale != 0.0F) {
-                    glPushMatrix();
-                    glEnable(GL_BLEND);
-                    OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
-                    glColor4f(1.0F, 1.0F, 1.0F, this.fade * this.voiceChat.getSettings().getUIOpacity());
+                    GlStateManager.pushMatrix();
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, this.fade * this.voiceChat.getSettings().getUIOpacity());
                     IndependentGUITexture.TEXTURES.bindTexture(this.mc);
-                    glTranslatef(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY, 0.0F);
-                    glScalef(positionUI.scale, positionUI.scale, 1.0F);
+                    GlStateManager.translate(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY, 0.0F);
+                    GlStateManager.scale(positionUI.scale, positionUI.scale, 1.0F);
                     this.drawTexturedModalRect(0, 0, 0, 0, 54, 46);
 
                     switch ((int) ((float) (Minecraft.getSystemTime() % 1000L) / 350.0F)) {
@@ -124,14 +126,14 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                             this.drawTexturedModalRect(40, -3, 38, 47, 16, 49);
                     }
                     this.mc.getTextureManager().bindTexture(this.mc.player.getLocationSkin());
-                    glTranslatef(0.0F, 14.0F, 0.0F);
-                    glScalef(2.4F, 2.4F, 0.0F);
+                    GlStateManager.translate(0.0F, 14.0F, 0.0F);
+                    GlStateManager.scale(2.4F, 2.4F, 0.0F);
                     Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
                     if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                         Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
-                    glDisable(GL_BLEND);
-                    glPopMatrix();
+                    GlStateManager.disableBlend();
+                    GlStateManager.popMatrix();
                 }
             }
 
@@ -139,8 +141,9 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                 float scale;
                 positionUI = this.voiceChat.getSettings().getUIPositionPlate();
                 position = this.getPosition(width, height, positionUI);
-                glEnable(GL_BLEND);
-                OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+                GlStateManager.pushMatrix();
+                GlStateManager.enableBlend();
+                GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
                 for (int i = 0; i < VoiceChatClient.getSoundManager().currentStreams.size(); ++i) {
                     ClientStream stream = VoiceChatClient.getSoundManager().currentStreams.get(i);
@@ -150,37 +153,39 @@ public class GuiInGameHandlerVoiceChat extends Gui {
                         boolean playerExists = stream.player.getPlayer() != null;
                         int length = this.mc.fontRenderer.getStringWidth(s);
                         scale = 0.75F * positionUI.scale;
-                        glPushMatrix();
-                        glTranslatef(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY + (float) (i * 23) * scale, 0.0F);
-                        glScalef(scale, scale, 0.0F);
-                        glColor4f(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
-                        glTranslatef(0.0F, 0.0F, 0.0F);
+                        GlStateManager.pushMatrix();
+                        GlStateManager.translate(position.x + (float) positionUI.info.offsetX, position.y + (float) positionUI.info.offsetY + (float) (i * 23) * scale, 0.0F);
+                        GlStateManager.scale(scale, scale, 0.0F);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
+                        GlStateManager.translate(0.0F, 0.0F, 0.0F);
                         IndependentGUITexture.TEXTURES.bindTexture(this.mc);
                         this.drawTexturedModalRect(0, 0, 56, stream.special * 22, 109, 22);
-                        glPushMatrix();
-                        scale = MathUtility.clamp(50.5F / (float) length, 0.0F, 1.25F);
-                        glTranslatef(25.0F + scale / 2.0F, 11.0F - (float) (this.mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
-                        glScalef(scale, scale, 0.0F);
+                        GlStateManager.pushMatrix();
+                        scale = MathHelper.clamp(50.5F / (float) length, 0.0F, 1.25F);
+                        GlStateManager.translate(25.0F + scale / 2.0F, 11.0F - (float) (this.mc.fontRenderer.FONT_HEIGHT - 1) * scale / 2.0F, 0.0F);
+                        GlStateManager.scale(scale, scale, 0.0F);
                         this.drawString(this.mc.fontRenderer, s, 0, 0, -1);
-                        glPopMatrix();
-                        glPushMatrix();
+                        GlStateManager.popMatrix();
+                        GlStateManager.pushMatrix();
 
                         if (playerExists)
                             IndependentGUITexture.bindPlayer(this.mc, stream.player.getPlayer());
                         else
                             IndependentGUITexture.bindDefaultPlayer(this.mc);
 
-                        glColor4f(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
-                        glTranslatef(3.25F, 3.25F, 0.0F);
-                        glScalef(2.0F, 2.0F, 0.0F);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, this.voiceChat.getSettings().getUIOpacity());
+                        GlStateManager.translate(3.25F, 3.25F, 0.0F);
+                        GlStateManager.scale(2.0F, 2.0F, 0.0F);
                         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
                         if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
-                        glPopMatrix();
-                        glPopMatrix();
+                        GlStateManager.popMatrix();
+                        GlStateManager.popMatrix();
                     }
                 }
+
+                GlStateManager.popMatrix();
             }
 
             if (VoiceChatClient.getSoundManager().currentStreams.isEmpty())

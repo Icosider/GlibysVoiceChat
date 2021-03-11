@@ -6,6 +6,7 @@ import net.gliby.voicechat.common.networking.MinecraftPacket;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class MinecraftServerVoiceEndPacket extends MinecraftPacket implements IMessageHandler<MinecraftServerVoiceEndPacket, MinecraftServerVoiceEndPacket> {
     @Override
@@ -18,8 +19,10 @@ public class MinecraftServerVoiceEndPacket extends MinecraftPacket implements IM
 
     @Override
     public MinecraftServerVoiceEndPacket onMessage(MinecraftServerVoiceEndPacket packet, MessageContext ctx) {
-        final EntityPlayerMP player = ctx.getServerHandler().player;
-        VoiceChat.getServerInstance().getVoiceServer().handleVoiceData(player, null, (byte) 0, player.getEntityId(), true);
+        AsyncCatcher.INSTANCE.execute(() -> {
+            final EntityPlayerMP player = ctx.getServerHandler().player;
+            VoiceChat.getServerInstance().getVoiceServer().handleVoiceData(player, null, (byte) 0, player.getEntityId(), true);
+        });
         return null;
     }
 }

@@ -31,7 +31,7 @@ public class ServerConnectionHandler {
 
     @SubscribeEvent
     public void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (event.player.world.isRemote) {
             this.loggedIn.add(event.player.getGameProfile());
             this.onConnected(event.player);
         }
@@ -39,7 +39,7 @@ public class ServerConnectionHandler {
     
     @SubscribeEvent
     public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (FMLCommonHandler.instance().getEffectiveSide().isServer()) {
+        if (event.player.world.isRemote) {
             this.loggedIn.remove(event.player.getGameProfile());
             this.voiceChat.serverNetwork.dataManager.entityHandler.disconnected(event.player.getEntityId());
         }

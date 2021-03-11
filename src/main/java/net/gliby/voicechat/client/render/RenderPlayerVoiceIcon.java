@@ -6,10 +6,12 @@ import net.gliby.voicechat.client.textures.IndependentGUITexture;
 import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
@@ -33,71 +35,71 @@ public class RenderPlayerVoiceIcon extends Gui {
         }
         int j = i1 % 65536;
         int k = i1 / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j / 1.0F, (float) k / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        glEnable(GL_TEXTURE_2D);
+        GlStateManager.enableTexture2D();
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     private void disableEntityLighting() {
         OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-        glDisable(GL_TEXTURE_2D);
+        GlStateManager.disableTexture2D();
         OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
     }
 
     @SubscribeEvent
     public void render(RenderWorldLastEvent event) {
         if (!VoiceChatClient.getSoundManager().currentStreams.isEmpty() && this.voiceChat.getSettings().isVoiceIconAllowed()) {
-            glDisable(GL_DEPTH_TEST);
-            glEnable(GL_BLEND);
-            OpenGlHelper.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
+            GlStateManager.disableDepth();
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             this.translateWorld(this.mc, event.getPartialTicks());
 
-            for (int i = 0; (float) i < MathUtility.clamp((float) VoiceChatClient.getSoundManager().currentStreams.size(), 0.0F, (float) this.voiceChat.getSettings().getMaximumRenderableVoiceIcons()); ++i) {
+            for (int i = 0; (float) i < MathHelper.clamp((float) VoiceChatClient.getSoundManager().currentStreams.size(), 0.0F, (float) this.voiceChat.getSettings().getMaximumRenderableVoiceIcons()); ++i) {
                 ClientStream stream = VoiceChatClient.getSoundManager().currentStreams.get(i);
 
                 if (stream.player.getPlayer() != null && stream.player.usesEntity) {
                     EntityLivingBase entity = (EntityLivingBase) stream.player.getPlayer();
 
                     if (!entity.isInvisible() && !this.mc.gameSettings.hideGUI) {
-                        GL11.glPushMatrix();
+                        GlStateManager.pushMatrix();
                         this.enableEntityLighting(entity, event.getPartialTicks());
-                        GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-                        GL11.glDepthMask(false);
+                        GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+                        GlStateManager.depthMask(false);
                         this.translateEntity(entity, event.getPartialTicks());
-                        GL11.glRotatef(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-                        GL11.glTranslatef(-0.25F, entity.height + 0.7F, 0.0F);
-                        GL11.glRotatef(mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-                        GL11.glScalef(0.015F, 0.015F, 1.0F);
+                        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+                        GlStateManager.translate(-0.25F, entity.height + 0.7F, 0.0F);
+                        GlStateManager.rotate(mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+                        GlStateManager.scale(0.015F, 0.015F, 1.0F);
                         IndependentGUITexture.TEXTURES.bindTexture(this.mc);
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.25F);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, 0.25F);
 
                         if (!entity.isSneaking())
                             this.renderIcon();
 
-                        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-                        glEnable(GL_DEPTH_TEST);
-                        GL11.glDepthMask(true);
+                        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                        GlStateManager.enableDepth();
+                        GlStateManager.depthMask(true);
                         this.renderIcon();
                         IndependentGUITexture.bindPlayer(this.mc, entity);
-                        GL11.glPushMatrix();
-                        GL11.glTranslatef(20.0F, 30.0F, 0.0F);
-                        GL11.glScalef(-1.0F, -1.0F, -1.0F);
-                        GL11.glScalef(2.0F, 2.0F, 0.0F);
+                        GlStateManager.pushMatrix();
+                        GlStateManager.translate(20.0F, 30.0F, 0.0F);
+                        GlStateManager.scale(-1.0F, -1.0F, -1.0F);
+                        GlStateManager.scale(2.0F, 2.0F, 0.0F);
                         Gui.drawScaledCustomSizeModalRect(0, 0, 8.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
                         if (this.mc.player != null && this.mc.player.isWearing(EnumPlayerModelParts.HAT))
                             Gui.drawScaledCustomSizeModalRect(0, 0, 40.0F, 8.0F, 8, 8, 8, 8, 64.0F, 64.0F);
 
-                        GL11.glPopMatrix();
+                        GlStateManager.popMatrix();
                         this.disableEntityLighting();
-                        GL11.glPopMatrix();
+                        GlStateManager.popMatrix();
                     }
                 }
             }
-            glDisable(GL_BLEND);
-            glEnable(GL_DEPTH_TEST);
-            glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.disableBlend();
+            GlStateManager.enableBlend();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         }
     }
 
@@ -117,10 +119,10 @@ public class RenderPlayerVoiceIcon extends Gui {
     }
 
     private void translateEntity(Entity entity, float tick) {
-        GL11.glTranslated(entity.prevPosX + (entity.posX - entity.prevPosX) * (double) tick, entity.prevPosY + (entity.posY - entity.prevPosY) * (double) tick, entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) tick);
+        GlStateManager.translate(entity.prevPosX + (entity.posX - entity.prevPosX) * (double) tick, entity.prevPosY + (entity.posY - entity.prevPosY) * (double) tick, entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) tick);
     }
 
     private void translateWorld(Minecraft mc, float tick) {
-        GL11.glTranslated(-(mc.player.prevPosX + (mc.player.posX - mc.player.prevPosX) * (double) tick), -(mc.player.prevPosY + (mc.player.posY - mc.player.prevPosY) * (double) tick), -(mc.player.prevPosZ + (mc.player.posZ - mc.player.prevPosZ) * (double) tick));
+        GlStateManager.translate(-(mc.player.prevPosX + (mc.player.posX - mc.player.prevPosX) * (double) tick), -(mc.player.prevPosY + (mc.player.posY - mc.player.prevPosY) * (double) tick), -(mc.player.prevPosZ + (mc.player.posZ - mc.player.prevPosZ) * (double) tick));
     }
 }

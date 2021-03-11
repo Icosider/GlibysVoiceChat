@@ -3,6 +3,7 @@ package net.gliby.voicechat.client.sound;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.client.VoiceChatClient;
 import net.gliby.voicechat.common.MathUtility;
+import net.minecraft.util.math.MathHelper;
 import org.xiph.speex.SpeexEncoder;
 
 import javax.sound.sampled.AudioFormat;
@@ -44,7 +45,7 @@ public class Recorder implements Runnable {
             this.stop();
         } else {
             SpeexEncoder encoder = new SpeexEncoder();
-            encoder.init(0, (int) MathUtility.clamp(MathUtility.clamp((float) ((int) (this.voiceChat.getSettings().getEncodingQuality() * 10.0F)), 1.0F, 9.0F), (float) this.voiceChat.getSettings().getMinimumQuality(), (float) this.voiceChat.getSettings().getMaximumQuality()), (int) format.getSampleRate(), format.getChannels());
+            encoder.init(0, (int) MathHelper.clamp(MathHelper.clamp((float) ((int) (this.voiceChat.getSettings().getEncodingQuality() * 10.0F)), 1.0F, 9.0F), (float) this.voiceChat.getSettings().getMinimumQuality(), (float) this.voiceChat.getSettings().getMaximumQuality()), (int) format.getSampleRate(), format.getChannels());
             int blockSize = encoder.getFrameSize() * format.getChannels() * 2;
             byte[] normBuffer = new byte[blockSize * 2];
             recordingLine.start();

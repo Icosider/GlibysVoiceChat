@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = "gvc", name = "Gliby's Voice Chat Mod", version = "1.2.0", updateJSON = "https://github.com/Ivasik78/GlibysVoiceChat/raw/master/gvc_updates.json")
+@Mod(modid = "gvc", name = "Gliby's Voice Chat Mod", version = "1.2.5", updateJSON = "https://github.com/Ivasik78/GlibysVoiceChat/raw/master/gvc_updates.json")
 public class VoiceChat {
     @Mod.Instance
     public static VoiceChat instance;
@@ -78,9 +78,9 @@ public class VoiceChat {
 
     private void registerNetwork() {
         DISPATCH = NetworkRegistry.INSTANCE.newSimpleChannel("GVC");
-        DISPATCH.registerMessage(MinecraftServerVoicePacket.class, MinecraftServerVoicePacket.class, 1, Side.SERVER);
-        DISPATCH.registerMessage(MinecraftServerVoiceEndPacket.class, MinecraftServerVoiceEndPacket.class, 2, Side.SERVER);
-        DISPATCH.registerMessage(MinecraftClientVoiceEndPacket.class, MinecraftClientVoiceEndPacket.class, 9, Side.CLIENT);
+        DISPATCH.registerMessage(MinecraftServerVoicePacket.class, MinecraftServerVoicePacket.class, 0, Side.SERVER);
+        DISPATCH.registerMessage(MinecraftServerVoiceEndPacket.class, MinecraftServerVoiceEndPacket.class, 1, Side.SERVER);
+        DISPATCH.registerMessage(MinecraftClientVoiceEndPacket.class, MinecraftClientVoiceEndPacket.class, 2, Side.CLIENT);
         DISPATCH.registerMessage(MinecraftClientVoicePacket.class, MinecraftClientVoicePacket.class, 3, Side.CLIENT);
         DISPATCH.registerMessage(MinecraftClientEntityDataPacket.class, MinecraftClientEntityDataPacket.class, 4, Side.CLIENT);
         DISPATCH.registerMessage(MinecraftClientEntityPositionPacket.class, MinecraftClientEntityPositionPacket.class, 5, Side.CLIENT);

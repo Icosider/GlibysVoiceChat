@@ -6,6 +6,7 @@ import net.gliby.voicechat.client.sound.ClientStreamManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundManager.SoundSystemStarterThread;
 import org.lwjgl.util.vector.Vector3f;
+import ru.icosider.voicechat.AsyncCatcher;
 
 public class ThreadUpdateStream implements Runnable {
     private final Minecraft mc;
@@ -58,7 +59,7 @@ public class ThreadUpdateStream implements Runnable {
 
                     if (stream.volume >= 0)
                         sndSystem.setVolume(source, this.voiceChat.getSettings().getWorldVolume() * (float) stream.volume * 0.01F);
-                    Minecraft.getMinecraft().addScheduledTask(() -> stream.player.update(ThreadUpdateStream.this.mc.world));
+                    AsyncCatcher.INSTANCE.executeClient(() -> stream.player.update(ThreadUpdateStream.this.mc.world));
                 }
 
                 try {
