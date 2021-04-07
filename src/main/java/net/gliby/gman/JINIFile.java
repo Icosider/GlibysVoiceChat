@@ -174,7 +174,7 @@ public class JINIFile extends ArrayList<String> {
 
     public boolean UpdateFile() {
         try {
-            final String data = String.join("", this);
+            final String data = String.join("\n", this);
             FileUtils.writeStringToFile(this.userFileName, data, StandardCharsets.UTF_8);
             return true;
         } catch (IOException e) {
