@@ -3,6 +3,7 @@ package net.gliby.voicechat.common.networking;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.VoiceChatServer;
 import net.gliby.voicechat.common.networking.packets.MinecraftClientEntityDataPacket;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
@@ -31,7 +32,7 @@ public class ServerNetwork {
     }
 
     public String[] getPlayerIPs() {
-        List players = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().playerEntities;
+        List<EntityPlayer> players = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().playerEntities;
         String[] ips = new String[players.size()];
 
         for (int i = 0; i < players.size(); ++i) {

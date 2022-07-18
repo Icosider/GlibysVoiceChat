@@ -202,7 +202,7 @@ public class GuiUIPlacement extends GuiScreen {
     }
 
     private void resize(GuiPlaceableInterface placeable) {
-        placeable.update((int) ((float) this.width * (placeable.x * 1.0F / (float) placeable.screenWidth)), (int) ((float) this.height * (placeable.y * 1.0F / (float) placeable.screenHeight)), this.width, this.height);
+        placeable.update((int) ((float) this.width * (placeable.x / (float) placeable.screenWidth)), (int) ((float) this.height * (placeable.y / (float) placeable.screenHeight)), this.width, this.height);
     }
 
     private void save() {
@@ -210,8 +210,8 @@ public class GuiUIPlacement extends GuiScreen {
 
         for (GuiPlaceableInterface placeable : this.placeables) {
             if (placeable.positionType == 0) {
-                placeable.positionUI.x = placeable.x * 1.0F / (float) placeable.screenWidth;
-                placeable.positionUI.y = placeable.y * 1.0F / (float) placeable.screenHeight;
+                placeable.positionUI.x = placeable.x / (float) placeable.screenWidth;
+                placeable.positionUI.y = placeable.y / (float) placeable.screenHeight;
             } else {
                 placeable.positionUI.x = placeable.x;
                 placeable.positionUI.y = placeable.y;
@@ -223,5 +223,6 @@ public class GuiUIPlacement extends GuiScreen {
     }
 
     @Override
-    public void updateScreen() {}
+    public void updateScreen() {
+    }
 }

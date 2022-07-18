@@ -1,7 +1,6 @@
 package net.gliby.voicechat.client.gui;
 
 import net.gliby.voicechat.client.textures.IndependentGUITexture;
-import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;

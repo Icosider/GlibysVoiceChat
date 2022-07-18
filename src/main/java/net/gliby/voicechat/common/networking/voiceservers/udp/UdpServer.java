@@ -171,21 +171,19 @@ public class UdpServer {
     }
 
     private synchronized void reset() {
-        switch (this.currentState) {
-            case STARTED:
-                this.addPropertyChangeListener("state", new PropertyChangeListener() {
-                    public void propertyChange(PropertyChangeEvent evt) {
-                        UdpServer.State newState = (UdpServer.State) evt.getNewValue();
+        if (this.currentState == State.STARTED) {
+            this.addPropertyChangeListener("state", new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent evt) {
+                    State newState = (State) evt.getNewValue();
 
-                        if (newState == UdpServer.State.STOPPED) {
-                            UdpServer server = (UdpServer) evt.getSource();
-                            server.removePropertyChangeListener("state", this);
-                            server.start();
-                        }
+                    if (newState == State.STOPPED) {
+                        UdpServer server = (UdpServer) evt.getSource();
+                        server.removePropertyChangeListener("state", this);
+                        server.start();
                     }
-                });
-                this.stop();
-            default:
+                }
+            });
+            this.stop();
         }
     }
 

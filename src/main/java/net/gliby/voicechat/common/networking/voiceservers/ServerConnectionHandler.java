@@ -7,11 +7,8 @@ import net.gliby.voicechat.common.networking.packets.MinecraftClientVoiceAuthent
 import net.gliby.voicechat.common.networking.packets.MinecraftClientVoiceServerPacket;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.security.MessageDigest;
@@ -31,15 +28,15 @@ public class ServerConnectionHandler {
 
     @SubscribeEvent
     public void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.player.world.isRemote) {
+        if (!event.player.world.isRemote) {
             this.loggedIn.add(event.player.getGameProfile());
             this.onConnected(event.player);
         }
     }
-    
+
     @SubscribeEvent
     public void onDisconnect(PlayerEvent.PlayerLoggedOutEvent event) {
-        if (event.player.world.isRemote) {
+        if (!event.player.world.isRemote) {
             this.loggedIn.remove(event.player.getGameProfile());
             this.voiceChat.serverNetwork.dataManager.entityHandler.disconnected(event.player.getEntityId());
         }

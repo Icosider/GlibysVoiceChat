@@ -3,7 +3,6 @@ package net.gliby.voicechat.common.networking.packets;
 import io.netty.buffer.ByteBuf;
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.common.networking.MinecraftPacket;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;

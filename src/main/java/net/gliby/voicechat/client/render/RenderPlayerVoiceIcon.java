@@ -3,7 +3,6 @@ package net.gliby.voicechat.client.render;
 import net.gliby.voicechat.client.VoiceChatClient;
 import net.gliby.voicechat.client.sound.ClientStream;
 import net.gliby.voicechat.client.textures.IndependentGUITexture;
-import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
@@ -14,9 +13,6 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import org.lwjgl.opengl.GL11;
-
-import static org.lwjgl.opengl.GL11.*;
 
 public class RenderPlayerVoiceIcon extends Gui {
     private final VoiceChatClient voiceChat;

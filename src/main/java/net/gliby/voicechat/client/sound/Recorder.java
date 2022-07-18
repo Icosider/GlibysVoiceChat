@@ -2,7 +2,6 @@ package net.gliby.voicechat.client.sound;
 
 import net.gliby.voicechat.VoiceChat;
 import net.gliby.voicechat.client.VoiceChatClient;
-import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.util.math.MathHelper;
 import org.xiph.speex.SpeexEncoder;
 

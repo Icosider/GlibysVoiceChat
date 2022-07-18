@@ -5,7 +5,6 @@ import net.gliby.voicechat.client.device.Device;
 import net.gliby.voicechat.client.device.DeviceHandler;
 import net.gliby.voicechat.client.gui.EnumUIPlacement;
 import net.gliby.voicechat.client.gui.UIPosition;
-import net.gliby.voicechat.common.MathUtility;
 import net.gliby.voicechat.common.ModPackSettings;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;

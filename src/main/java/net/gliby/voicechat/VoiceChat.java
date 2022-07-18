@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = "gvc", name = "Gliby's Voice Chat Mod", version = "1.2.5", updateJSON = "https://github.com/Ivasik78/GlibysVoiceChat/raw/master/gvc_updates.json")
+@Mod(modid = "gvc", name = "Gliby's Voice Chat Mod", version = "1.2.5")
 public class VoiceChat {
     @Mod.Instance
     public static VoiceChat instance;

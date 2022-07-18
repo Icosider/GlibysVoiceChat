@@ -3,7 +3,6 @@ package net.gliby.voicechat.common.networking.voiceservers.udp;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import net.gliby.voicechat.VoiceChat;
-import net.gliby.voicechat.common.MathUtility;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.common.FMLCommonHandler;
